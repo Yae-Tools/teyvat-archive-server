@@ -57,9 +57,9 @@
 
     "dunder-proto": ["dunder-proto@1.0.1", "", { "dependencies": { "call-bind-apply-helpers": "^1.0.1", "es-errors": "^1.3.0", "gopd": "^1.2.0" } }, "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="],
 
-    "elysia": ["elysia@1.2.24", "", { "dependencies": { "@sinclair/typebox": "^0.34.27", "cookie": "^1.0.2", "memoirist": "^0.3.0", "openapi-types": "^12.1.3" }, "peerDependencies": { "typescript": ">= 5.0.0" }, "optionalPeers": ["typescript"] }, "sha512-z849iAFdOCLd/a/ra3dtOmMd9jN4ow1G5Enq5RRRfheu/HEcO61cnwSaj0EScbT91pDiVbozhzqxF/K6b6amEw=="],
+    "elysia": ["elysia@1.2.25", "", { "dependencies": { "@sinclair/typebox": "^0.34.27", "cookie": "^1.0.2", "memoirist": "^0.3.0", "openapi-types": "^12.1.3" }, "peerDependencies": { "typescript": ">= 5.0.0" }, "optionalPeers": ["typescript"] }, "sha512-WsdQpORJvb4uszzeqYT0lg97knw1iBW1NTzJ1Jm57tiHg+DfAotlWXYbjmvQ039ssV0fYELDHinLLoUazZkEHg=="],
 
-    "enka-network-api": ["enka-network-api@4.6.5", "", { "dependencies": { "axios": "^1.4.0", "config_file.js": "^1.4.0", "enka-system": "^0.3.6", "unzip-stream": "^0.3.1" } }, "sha512-7u+7DEwSw/Vei0bxbHsei4xXKlqvQD1yH0wnCBUeHachM1CG5hh4zZ0RPqgilDE/I8P4wDudqCAqOTWoj4MdGQ=="],
+    "enka-network-api": ["enka-network-api@4.6.6", "", { "dependencies": { "axios": "^1.4.0", "config_file.js": "^1.4.0", "enka-system": "^0.3.7", "unzip-stream": "^0.3.1" } }, "sha512-q+NMH5GCWeZGeu4DVdJiCxzWExIzRpN9AJVl+4N4oQVi+x5xdoef8pWk7nrt+mR77bgzLx9INBtfDZq0aYQDJA=="],
 
     "enka-system": ["enka-system@0.3.7", "", { "dependencies": { "axios": "^1.5.0", "config_file.js": "^1.4.0" } }, "sha512-Pr2k5dtfYynNZqBoI5LlvAH7BFDGO6AvmPyxRJ7SuHALkr98zZp7d8jEAzkuzjs7in9WOg3epPxUcINCkMiZrA=="],
 
