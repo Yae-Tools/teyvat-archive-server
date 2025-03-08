@@ -72,6 +72,7 @@ export const getCharacterBySkillDepotId = async (
       sideIcon,
       releasedAt,
       isArchon,
+      bodyType,
     } = response;
 
     const character = {
@@ -102,6 +103,7 @@ export const getCharacterBySkillDepotId = async (
       releasedAt,
       isArchon,
       birthday: details?.birthday,
+      bodyType
     };
 
     return character;
