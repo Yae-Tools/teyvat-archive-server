@@ -17,8 +17,16 @@ export const getAllCharacters = async () => {
     const response: CharacterData[] = getAllCharactersFromEnka();
 
     const characters = response.map((character) => {
-      const { _nameId, rarity, icon, element, skillDepotId, isTraveler, id } =
-        character;
+      const {
+        _nameId,
+        rarity,
+        icon,
+        element,
+        skillDepotId,
+        isTraveler,
+        id,
+        weaponType,
+      } = character;
 
       return {
         id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
@@ -31,6 +39,7 @@ export const getAllCharacters = async () => {
         nameCard: character.nameCard?.pictures[0].url,
         element: element ? decryptTextAsset(element?.name) : null,
         isTraveler,
+        weaponType,
       };
     });
 
@@ -103,7 +112,7 @@ export const getCharacterBySkillDepotId = async (
       releasedAt,
       isArchon,
       birthday: details?.birthday,
-      bodyType
+      bodyType,
     };
 
     return character;
