@@ -1,9 +1,9 @@
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 
-import { characterRoutes, materialRoutes } from "./routes";
+import { characterRoutes, materialRoutes, weaponRoutes } from "./routes";
 
-const routes = [characterRoutes, materialRoutes];
+const routes = [characterRoutes, materialRoutes, weaponRoutes];
 
 const app = new Elysia();
 
