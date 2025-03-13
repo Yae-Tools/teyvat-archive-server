@@ -28,6 +28,10 @@ export function getAllWeaponsFromEnka() {
   return enka.getAllWeapons();
 }
 
+export const getWeaponByIdFromEnka = (id: string) => {
+  return enka.getWeaponById(id);
+};
+
 export const getAllArtifactsFromEnka = () => {
   return enka.getAllArtifacts();
 };

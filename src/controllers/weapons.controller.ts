@@ -1,5 +1,8 @@
 import { WeaponData } from "enka-network-api";
-import { getAllWeaponsFromEnka } from "../services/enkaClient.service";
+import {
+  getAllWeaponsFromEnka,
+  getWeaponByIdFromEnka,
+} from "../services/enkaClient.service";
 import { decryptTextAsset } from "../utils/enkaAssetMapper";
 
 export const getAllWeapons = async () => {
@@ -27,6 +30,40 @@ export const getAllWeapons = async () => {
   } catch (error) {
     console.log("Error fetching weapons", error);
     return [];
+  }
+};
+
+export const getWeaponById = async (id: string) => {
+  try {
+    const response: WeaponData = getWeaponByIdFromEnka(id);
+
+    const {
+      name,
+      _nameId,
+      awakenIcon,
+      icon,
+      stars,
+      weaponType,
+      _data,
+      description,
+      splashImage,
+    } = response;
+    return {
+      id: _nameId,
+      enkaId: id,
+      name: decryptTextAsset(name),
+      awakenIcon: awakenIcon.url,
+      description: decryptTextAsset(description),
+      icon: icon.url,
+      splashImage: splashImage.url,
+      stars,
+      series: _nameId.split("_")[1],
+      weaponType,
+      data: _data,
+    };
+  } catch (error) {
+    console.log("Error fetching weapon by id", error);
+    return {};
   }
 };
 
