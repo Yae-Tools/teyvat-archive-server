@@ -18,6 +18,7 @@ export const getAllWeapons = async () => {
         icon: icon.url,
         stars,
         weaponType,
+        series: _nameId.split("_")[1],
         data: _data,
       };
     });
@@ -25,6 +26,41 @@ export const getAllWeapons = async () => {
     return weapons;
   } catch (error) {
     console.log("Error fetching weapons", error);
+    return [];
+  }
+};
+
+export const getAllWeaponSeries = async () => {
+  try {
+    const response: WeaponData[] = getAllWeaponsFromEnka();
+
+    //filter them to groups by _nameId
+    // eg: if _nameId is "Sword_Blunt", group it as Blunt series. find other weapons with same 2nd part of _nameId
+
+    const weaponSeries = response.reduce(
+      (acc: { [key: string]: any[] }, weapon) => {
+        const { id, name, _nameId } = weapon;
+
+        const series = _nameId.split("_")[1];
+
+        if (!acc[series]) {
+          acc[series] = [];
+        }
+
+        acc[series].push({
+          id: _nameId,
+          enkaId: id,
+          name: decryptTextAsset(name),
+        });
+
+        return acc;
+      },
+      {}
+    );
+
+    return weaponSeries;
+  } catch (error) {
+    console.log("Error fetching weapon series", error);
     return [];
   }
 };
