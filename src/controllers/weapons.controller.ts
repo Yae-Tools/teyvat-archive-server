@@ -7,26 +7,18 @@ export const getAllWeapons = async () => {
     const response: WeaponData[] = getAllWeaponsFromEnka();
 
     const weapons = response.map((weapon) => {
-      const {
-        id,
-        name,
-        _nameId,
-        description,
-        awakenIcon,
-        icon,
-        stars,
-        weaponType,
-      } = weapon;
+      const { id, name, _nameId, awakenIcon, icon, stars, weaponType, _data } =
+        weapon;
 
       return {
         id: _nameId,
         enkaId: id,
         name: decryptTextAsset(name),
-        description: decryptTextAsset(description),
         awakenIcon: awakenIcon.url,
         icon: icon.url,
         stars,
         weaponType,
+        data: _data,
       };
     });
 

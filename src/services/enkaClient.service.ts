@@ -28,6 +28,14 @@ export function getAllWeaponsFromEnka() {
   return enka.getAllWeapons();
 }
 
+export const getAllArtifactsFromEnka = () => {
+  return enka.getAllArtifacts();
+};
+
+export const getAllArtifactSetsFromEnka = () => {
+  return enka.getAllArtifactSets();
+};
+
 export function getMaterialByEnkaId(materialId: number) {
   return enka.getMaterialById(materialId);
 }

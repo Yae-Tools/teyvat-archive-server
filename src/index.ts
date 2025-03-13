@@ -2,13 +2,20 @@ import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 
 import {
+  artifactRoutes,
   characterRoutes,
   eventRoutes,
   materialRoutes,
   weaponRoutes,
 } from "./routes";
 
-const routes = [characterRoutes, materialRoutes, weaponRoutes, eventRoutes];
+const routes = [
+  characterRoutes,
+  materialRoutes,
+  weaponRoutes,
+  eventRoutes,
+  artifactRoutes,
+];
 
 const app = new Elysia();
 
