@@ -1,6 +1,6 @@
 import Elysia from "elysia";
 
-import { getAllEvents } from "../controllers/events.contrioller";
+import { getAllEvents } from "../controllers/events.controller";
 import { ILanguageCode } from "../types/events.type";
 
 export const eventRoutes = async (app: Elysia) => {

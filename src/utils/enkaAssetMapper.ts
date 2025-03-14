@@ -8,6 +8,8 @@ import {
   PassiveTalent,
   Skill,
   TextAssets,
+  WeaponData,
+  WeaponRefinement,
 } from "enka-network-api";
 import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
 
@@ -79,6 +81,30 @@ function mapAscensionData(characterData: CharacterData) {
   );
 }
 
+function mapRefinemetData(refinements: WeaponRefinement[]) {
+  return refinements.map((refinement) => {
+    const { name, description, id, level, addProps, paramList } = refinement;
+
+    return {
+      name: decryptTextAsset(name),
+      description: decryptTextAsset(description),
+      id,
+      level,
+      addProps: addProps.map((prop) => {
+        return {
+          name: decryptTextAsset(prop.fightPropName),
+          propData: prop._propData,
+          isPercent: prop.isPercent,
+          value: prop.value,
+          rawValue: prop.rawValue,
+          fightPropType: prop.fightProp,
+        };
+      }),
+      paramList,
+    };
+  });
+}
+
 export {
   decryptTextAsset,
   mapAbility,
@@ -87,4 +113,5 @@ export {
   mapCostumes,
   mapPassiveTalents,
   mapSkills,
+  mapRefinemetData,
 };

@@ -3,7 +3,7 @@ import {
   getAllWeaponsFromEnka,
   getWeaponByIdFromEnka,
 } from "../services/enkaClient.service";
-import { decryptTextAsset } from "../utils/enkaAssetMapper";
+import { decryptTextAsset, mapRefinemetData } from "../utils/enkaAssetMapper";
 
 export const getAllWeapons = async () => {
   try {
@@ -37,6 +37,8 @@ export const getWeaponById = async (id: string) => {
   try {
     const response: WeaponData = getWeaponByIdFromEnka(id);
 
+    const refinements = mapRefinemetData(response.refinements);
+
     const {
       name,
       _nameId,
@@ -48,6 +50,7 @@ export const getWeaponById = async (id: string) => {
       description,
       splashImage,
     } = response;
+
     return {
       id: _nameId,
       enkaId: id,
@@ -59,6 +62,7 @@ export const getWeaponById = async (id: string) => {
       stars,
       series: _nameId.split("_")[1],
       weaponType,
+      refinements,
       data: _data,
     };
   } catch (error) {
