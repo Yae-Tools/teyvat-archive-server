@@ -6,6 +6,7 @@ import {
   characterRoutes,
   eventRoutes,
   materialRoutes,
+  systemRoutes,
   weaponRoutes,
 } from "./routes";
 
@@ -15,6 +16,7 @@ const routes = [
   weaponRoutes,
   eventRoutes,
   artifactRoutes,
+  systemRoutes,
 ];
 
 const app = new Elysia();
