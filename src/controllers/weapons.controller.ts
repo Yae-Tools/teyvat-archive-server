@@ -3,7 +3,11 @@ import {
   getAllWeaponsFromEnka,
   getWeaponByIdFromEnka,
 } from "../services/enkaClient.service";
-import { decryptTextAsset, mapRefinemetData } from "../utils/enkaAssetMapper";
+import {
+  decryptTextAsset,
+  mapRefinemetData,
+  mapWeaponStats,
+} from "../utils/enkaAssetMapper";
 
 export const getAllWeapons = async () => {
   try {
@@ -38,6 +42,7 @@ export const getWeaponById = async (id: string) => {
     const response: WeaponData = getWeaponByIdFromEnka(id);
 
     const refinements = mapRefinemetData(response.refinements);
+    const stats = mapWeaponStats(response);
 
     const {
       name,
@@ -63,7 +68,7 @@ export const getWeaponById = async (id: string) => {
       series: _nameId.split("_")[1],
       weaponType,
       refinements,
-      data: _data,
+      stats,
     };
   } catch (error) {
     console.log("Error fetching weapon by id", error);

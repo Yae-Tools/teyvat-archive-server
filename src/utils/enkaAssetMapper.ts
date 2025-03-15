@@ -21,7 +21,7 @@ function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   }
 }
 
-function mapSkills(skills: Skill[]): any[] {
+function mapSkills(skills: Skill[]) {
   return skills.map((skill) => ({
     id: skill.id,
     name: decryptTextAsset(skill.name),
@@ -30,7 +30,7 @@ function mapSkills(skills: Skill[]): any[] {
   }));
 }
 
-function mapPassiveTalents(passiveTalents: PassiveTalent[]): any[] {
+function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
   return passiveTalents.map((passive) => ({
     id: passive.id,
     name: decryptTextAsset(passive.name),
@@ -39,7 +39,7 @@ function mapPassiveTalents(passiveTalents: PassiveTalent[]): any[] {
   }));
 }
 
-function mapConstellations(constellations: Constellation[]): any[] {
+function mapConstellations(constellations: Constellation[]) {
   return constellations.map((cons) => ({
     id: cons.id,
     name: decryptTextAsset(cons.name),
@@ -90,19 +90,65 @@ function mapRefinemetData(refinements: WeaponRefinement[]) {
       description: decryptTextAsset(description),
       id,
       level,
-      addProps: addProps.map((prop) => {
-        return {
-          name: decryptTextAsset(prop.fightPropName),
-          propData: prop._propData,
-          isPercent: prop.isPercent,
-          value: prop.value,
-          rawValue: prop.rawValue,
-          fightPropType: prop.fightProp,
-        };
-      }),
       paramList,
     };
   });
+}
+
+function mapWeaponStats(weaonData: WeaponData) {
+  // ascension ascension level 0-6 for 3-5 stars, and 0-4 for 1-2 stars.
+  // level weapon level 1-90 for 3-5 stars, and 1-70 for 1-2 stars.
+  const maxAscensionLevels = weaonData.stars > 2 ? 6 : 4;
+  const maxWeaponLevels = weaonData.stars > 2 ? 90 : 70;
+
+  const ascensionRanges = [
+    { ascension: 0, start: 1, end: 20 },
+    { ascension: 1, start: 20, end: 40 },
+    { ascension: 2, start: 40, end: 50 },
+    { ascension: 3, start: 50, end: 60 },
+    { ascension: 4, start: 60, end: 70 },
+    { ascension: 5, start: 70, end: 80 },
+    { ascension: 6, start: 80, end: 90 },
+  ];
+
+  const unsanitizedStats = ascensionRanges.flatMap(
+    ({ ascension, start, end }) =>
+      Array.from({ length: end - start + 1 }, (_, i) => {
+        const level = start + i;
+        if (level > maxWeaponLevels || ascension > maxAscensionLevels)
+          return [];
+        return weaonData.getStats(ascension, level).map((stat) => {
+          return {
+            level: level,
+            fightProp: stat.fightProp,
+            fightPropName: decryptTextAsset(stat.fightPropName),
+            isPercent: stat.isPercent,
+            rawValue: stat.rawValue,
+            value: stat.value,
+            multiplier: stat.getMultipliedValue(),
+          };
+        });
+      })
+  );
+
+  //Remove empty arrays and flatten the array
+  const sanitizedStats = unsanitizedStats.flat();
+
+  return sanitizedStats.reduce((acc: { [key: number]: any[] }, stat) => {
+    const level = stat.level;
+    if (!acc[level]) {
+      acc[level] = [];
+    }
+    acc[level].push({
+      fightProp: stat.fightProp,
+      fightPropName: stat.fightPropName,
+      isPercent: stat.isPercent,
+      rawValue: stat.rawValue,
+      value: stat.value,
+      multiplier: stat.multiplier,
+    });
+    return acc;
+  }, {});
 }
 
 export {
@@ -114,4 +160,5 @@ export {
   mapPassiveTalents,
   mapSkills,
   mapRefinemetData,
+  mapWeaponStats,
 };
