@@ -6,6 +6,7 @@ import {
 import {
   decryptTextAsset,
   mapAscensionData,
+  mapCharacterRegion,
   mapConstellations,
   mapPassiveTalents,
   mapSkills,
@@ -64,6 +65,7 @@ export const getCharacterBySkillDepotId = async (
     const passiveTalents = mapPassiveTalents(response.passiveTalents);
     const constellations = mapConstellations(response.constellations);
     const ascensionData = mapAscensionData(response);
+    const region = await mapCharacterRegion(response.id);
 
     const {
       _nameId,
@@ -98,7 +100,10 @@ export const getCharacterBySkillDepotId = async (
       nameCard: nameCard?.pictures[0].url,
       element: decryptTextAsset(element?.name),
       constellations,
-      location: decryptTextAsset(details?.location),
+      location: {
+        faction: decryptTextAsset(details?.location),
+        region: !isTraveler ? region : "Unknown",
+      },
       vision: decryptTextAsset(details?.vision),
       constellation: decryptTextAsset(details?.constellation),
       constellationIcon: details?.constellationIcon?.url,

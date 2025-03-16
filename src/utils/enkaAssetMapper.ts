@@ -12,6 +12,7 @@ import {
   WeaponRefinement,
 } from "enka-network-api";
 import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
+import { fetchFetterInfoExcelConfigData } from "../services/system.service";
 
 function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   try {
@@ -79,6 +80,40 @@ function mapAscensionData(characterData: CharacterData) {
     { length: ascensionLevels },
     (_, i) => characterData.getAscensionData(i + 1)._data
   );
+}
+
+async function mapCharacterRegion(characterId: number) {
+  const fetterResponse: {
+    avatarId: number;
+    avatarAssocType: string;
+  }[] = await fetchFetterInfoExcelConfigData();
+
+  const fetterChar = fetterResponse.find(
+    (fetter) => fetter.avatarId === characterId
+  );
+
+  switch (fetterChar?.avatarAssocType) {
+    case "ASSOC_TYPE_MONDSTADT":
+      return "mondstadt";
+    case "ASSOC_TYPE_LIYUE":
+      return "Liyue";
+    case "ASSOC_TYPE_INAZUMA":
+      return "Inazuma";
+    case "ASSOC_TYPE_SUMERU":
+      return "Sumeru";
+    case "SNEZHNAYA":
+      return "snezhnaya";
+    case "ASSOC_TYPE_FONTAINE":
+      return "fontaine";
+    case "ASSOC_TYPE_NATLAN":
+      return "Natlan";
+    case "ASSOC_TYPE_FATUI":
+      return "Fatui";
+    case "ASSOC_TYPE_RANGER":
+      return "Ranger";
+    default:
+      return "other";
+  }
 }
 
 function mapRefinemetData(refinements: WeaponRefinement[]) {
@@ -161,4 +196,5 @@ export {
   mapSkills,
   mapRefinemetData,
   mapWeaponStats,
+  mapCharacterRegion,
 };
