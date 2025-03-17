@@ -94,7 +94,7 @@ async function mapCharacterRegion(characterId: number) {
 
   switch (fetterChar?.avatarAssocType) {
     case "ASSOC_TYPE_MONDSTADT":
-      return "mondstadt";
+      return "Mondstadt";
     case "ASSOC_TYPE_LIYUE":
       return "Liyue";
     case "ASSOC_TYPE_INAZUMA":
@@ -102,7 +102,7 @@ async function mapCharacterRegion(characterId: number) {
     case "ASSOC_TYPE_SUMERU":
       return "Sumeru";
     case "SNEZHNAYA":
-      return "snezhnaya";
+      return "Snezhnaya";
     case "ASSOC_TYPE_FONTAINE":
       return "fontaine";
     case "ASSOC_TYPE_NATLAN":
