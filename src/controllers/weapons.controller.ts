@@ -51,7 +51,6 @@ export const getWeaponById = async (id: string) => {
       icon,
       stars,
       weaponType,
-      _data,
       description,
       splashImage,
     } = response;
