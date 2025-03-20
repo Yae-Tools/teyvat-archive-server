@@ -4,7 +4,7 @@ import { decryptTextAsset } from "../utils/enkaAssetMapper";
 
 export const getMaterialById = (id: string) => {
   try {
-    const response: Material = getMaterialByEnkaId(Number(id));
+    const response = getMaterialByEnkaId(Number(id));
 
     const materialData = {
       enkaId: response.id,

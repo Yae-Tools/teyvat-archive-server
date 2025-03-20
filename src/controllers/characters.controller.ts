@@ -15,7 +15,7 @@ import uniqueIdMapper from "../utils/uniqueIdMapper";
 
 export const getAllCharacters = async () => {
   try {
-    const response: CharacterData[] = getAllCharactersFromEnka();
+    const response = getAllCharactersFromEnka();
 
     const characters = response.map((character) => {
       const {
@@ -53,12 +53,12 @@ export const getAllCharacters = async () => {
 
 export const getCharacterBySkillDepotId = async (
   charcterId: string,
-  skillDepotId: number
+  skillDepotId: number,
 ) => {
   try {
     const response: CharacterData = getCharacterByIdFromEnka(
       charcterId,
-      skillDepotId
+      skillDepotId,
     );
 
     const skills = mapSkills(response.skills);
