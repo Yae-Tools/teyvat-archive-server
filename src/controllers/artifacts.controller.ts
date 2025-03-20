@@ -36,19 +36,30 @@ export const getAllArtifacts = async () => {
 
 export const getAllArtifactSets = async () => {
   try {
-    const response = getAllArtifactSetsFromEnka();
+    const [artifactSets, artifacts] = await Promise.all([
+      getAllArtifactSetsFromEnka(),
+      getAllArtifactsFromEnka(),
+    ]);
 
-    const artifactSets = response.map((artifactSet) => {
+    // Create a map of set ID to highest rarity beforehand
+    const setRarityMap = new Map<string, number>();
+    artifacts.forEach((artifact) => {
+      const setId = artifact.set.id.toString();
+      const currentMax = setRarityMap.get(setId) || 3;
+      setRarityMap.set(setId, Math.max(currentMax, artifact.stars));
+    });
+
+    const mappedArtifactSets = artifactSets.map((artifactSet) => {
       const { id, name, icon } = artifactSet;
-
       return {
         id,
         name: decryptTextAsset(name),
         icon: icon.url,
+        highestRarity: setRarityMap.get(id.toString()) || 3,
       };
     });
 
-    return artifactSets;
+    return mappedArtifactSets;
   } catch (error) {
     console.log("Error fetching artifact sets", error);
     return [];
