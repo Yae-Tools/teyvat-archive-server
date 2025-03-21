@@ -1,4 +1,3 @@
-import { ArtifactData } from "enka-network-api";
 import {
   getAllArtifactSetsFromEnka,
   getAllArtifactsFromEnka,

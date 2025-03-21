@@ -100,7 +100,7 @@ export const getAllWeaponSeries = async () => {
 
         return acc;
       },
-      {}
+      {},
     );
 
     return weaponSeries;
