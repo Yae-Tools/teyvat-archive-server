@@ -107,6 +107,7 @@ export const getArtifactSetById = async (id: string) => {
           value: prop.value,
           isPercent: prop.isPercent,
           rawValue: prop.rawValue,
+          multiplier: prop.getMultipliedValue(),
         })),
       })),
       collection: artifactCollection,
