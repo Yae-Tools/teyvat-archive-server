@@ -18,7 +18,6 @@ enka.cachedAssetsManager.activateAutoCacheUpdater({
 });
 
 export function getAllCharactersFromEnka() {
-  console.log("cache directory:", enka.cachedAssetsManager.cacheDirectoryPath);
   return enka.getAllCharacters();
 }
 
