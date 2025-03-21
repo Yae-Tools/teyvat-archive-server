@@ -2,11 +2,12 @@ import { EnkaClient } from "enka-network-api";
 
 const enka = new EnkaClient({
   defaultLanguage: "en",
+  githubToken: process.env.GITHUB_TOKEN,
 });
 
 enka.cachedAssetsManager.activateAutoCacheUpdater({
   instant: true, // Run the first update check immediately
-  timeout: 60 * 60 * 1000, // 1 hour interval
+  timeout: 60 * 120 * 1000, // 2 hour interval
   onUpdateStart: async () => {
     console.log("Updating Genshin Data...");
   },
@@ -17,6 +18,7 @@ enka.cachedAssetsManager.activateAutoCacheUpdater({
 });
 
 export function getAllCharactersFromEnka() {
+  console.log("cache directory:", enka.cachedAssetsManager.cacheDirectoryPath);
   return enka.getAllCharacters();
 }
 
@@ -38,6 +40,10 @@ export const getAllArtifactsFromEnka = () => {
 
 export const getAllArtifactSetsFromEnka = () => {
   return enka.getAllArtifactSets();
+};
+
+export const getArtifactSetByIdFromEnka = (id: string) => {
+  return enka.getArtifactSetById(id);
 };
 
 export function getMaterialByEnkaId(materialId: number) {
