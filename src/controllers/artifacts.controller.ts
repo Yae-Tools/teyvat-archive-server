@@ -88,14 +88,21 @@ export const getArtifactSetById = async (id: string) => {
     const artifactCollection: {
       id: number;
       equipType: string;
+      equipTypeName: string;
+      name: string;
+      icon: string;
+      stars: number;
     }[] = [];
     artifacts.forEach((artifact) => {
-      if (
-        artifact.set.id.toString() === id &&
-        //make sure only one from each equipment type
-        !artifactCollection.some((art) => art.equipType === artifact.equipType)
-      ) {
-        artifactCollection.push(artifact);
+      if (artifact.set.id.toString() === id) {
+        artifactCollection.push({
+          id: artifact.id,
+          equipType: artifact.equipType,
+          equipTypeName: artifact.equipTypeName as string,
+          name: artifact.name as string,
+          icon: artifact.icon as string,
+          stars: artifact.stars,
+        });
       }
     });
     return {
