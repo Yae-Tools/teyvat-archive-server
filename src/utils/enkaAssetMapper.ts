@@ -13,6 +13,7 @@ import {
 } from "enka-network-api";
 import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
 import { fetchFetterInfoExcelConfigData } from "../services/system.service";
+import { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
 
 function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   try {
@@ -59,7 +60,7 @@ function mapCostumes(costumes: Costume[]): any[] {
 }
 
 function mapAbility(
-  abilityData: ElementalBurst | ElementalSkill | NormalAttack
+  abilityData: ElementalBurst | ElementalSkill | NormalAttack,
 ) {
   if (!abilityData) return null;
 
@@ -78,7 +79,7 @@ function mapAscensionData(characterData: CharacterData) {
   const ascensionLevels = 6;
   return Array.from(
     { length: ascensionLevels },
-    (_, i) => characterData.getAscensionData(i + 1)._data
+    (_, i) => characterData.getAscensionData(i + 1)._data,
   );
 }
 
@@ -89,7 +90,7 @@ async function mapCharacterRegion(characterId: number) {
   }[] = await fetchFetterInfoExcelConfigData();
 
   const fetterChar = fetterResponse.find(
-    (fetter) => fetter.avatarId === characterId
+    (fetter) => fetter.avatarId === characterId,
   );
 
   switch (fetterChar?.avatarAssocType) {
@@ -163,7 +164,7 @@ function mapWeaponStats(weaonData: WeaponData) {
             multiplier: stat.getMultipliedValue(),
           };
         });
-      })
+      }),
   );
 
   //Remove empty arrays and flatten the array
@@ -186,6 +187,25 @@ function mapWeaponStats(weaonData: WeaponData) {
   }, {});
 }
 
+function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
+  const artifactCollection: ICustomBaseArtifact[] = [];
+
+  artifacts.forEach((artifact) => {
+    if (artifact.set.id.toString() === setId) {
+      artifactCollection.push({
+        id: artifact.id,
+        equipType: artifact.equipType,
+        equipTypeName: artifact.equipTypeName as string,
+        name: artifact.name as string,
+        icon: artifact.icon as string,
+        stars: artifact.stars,
+      });
+    }
+  });
+
+  return artifactCollection;
+}
+
 export {
   decryptTextAsset,
   mapAbility,
@@ -197,4 +217,5 @@ export {
   mapRefinemetData,
   mapWeaponStats,
   mapCharacterRegion,
+  getArtifactCollection,
 };

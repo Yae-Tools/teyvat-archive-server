@@ -3,7 +3,10 @@ import {
   getAllArtifactsFromEnka,
   getArtifactSetByIdFromEnka,
 } from "../services/enkaClient.service";
-import { decryptTextAsset } from "../utils/enkaAssetMapper";
+import {
+  decryptTextAsset,
+  getArtifactCollection,
+} from "../utils/enkaAssetMapper";
 
 export const getAllArtifacts = async () => {
   try {
@@ -85,26 +88,8 @@ export const getArtifactSetById = async (id: string) => {
 
     const { name, icon, setBonus } = artifactSet;
 
-    const artifactCollection: {
-      id: number;
-      equipType: string;
-      equipTypeName: string;
-      name: string;
-      icon: string;
-      stars: number;
-    }[] = [];
-    artifacts.forEach((artifact) => {
-      if (artifact.set.id.toString() === id) {
-        artifactCollection.push({
-          id: artifact.id,
-          equipType: artifact.equipType,
-          equipTypeName: artifact.equipTypeName as string,
-          name: artifact.name as string,
-          icon: artifact.icon as string,
-          stars: artifact.stars,
-        });
-      }
-    });
+    const artifactCollection = getArtifactCollection(artifacts, id);
+
     return {
       id,
       name: decryptTextAsset(name),
