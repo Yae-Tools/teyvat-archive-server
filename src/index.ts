@@ -9,7 +9,10 @@ import {
   systemRoutes,
   weaponRoutes,
 } from "./routes";
-import { fetchFetterInfoExcelConfigData } from "./services/system.service";
+import {
+  fetchFetterInfoExcelConfigData,
+  fetchHoyoPlayRequest,
+} from "./services/system.service";
 
 const routes = [
   characterRoutes,
@@ -32,7 +35,7 @@ routes.forEach(async (route) => {
   await route(app);
 });
 
-await fetchFetterInfoExcelConfigData();
+await Promise.all([fetchFetterInfoExcelConfigData(), fetchHoyoPlayRequest()]);
 
 app.listen(3000);
 
