@@ -13,7 +13,16 @@ export const getAllArtifacts = async () => {
     const response = getAllArtifactsFromEnka();
 
     const artifacts = response.map((artifact) => {
-      const { id, name, equipType, equipTypeName, icon, stars, set } = artifact;
+      const {
+        id,
+        name,
+        equipType,
+        equipTypeName,
+        icon,
+        stars,
+        set,
+        description,
+      } = artifact;
 
       return {
         id,
@@ -22,6 +31,7 @@ export const getAllArtifacts = async () => {
         equipTypeName: decryptTextAsset(equipTypeName),
         icon: icon.url,
         stars,
+        description: decryptTextAsset(description),
         set: {
           id: set.id,
           name: decryptTextAsset(set.name),

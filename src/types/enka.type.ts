@@ -7,6 +7,7 @@ interface ICustomBaseArtifact {
   name: string | undefined;
   icon: string | null;
   stars: number;
+  description: string | undefined;
 }
 
 interface ICustomArtifact extends ICustomBaseArtifact {
