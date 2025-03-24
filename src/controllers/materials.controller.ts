@@ -1,4 +1,3 @@
-import { Material } from "enka-network-api";
 import { getMaterialByEnkaId } from "../services/enkaClient.service";
 import { decryptTextAsset } from "../utils/enkaAssetMapper";
 

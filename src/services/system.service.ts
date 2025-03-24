@@ -10,13 +10,13 @@ const FILE_PATH = path.join(
   __dirname,
   "..",
   "data",
-  "FetterInfoExcelConfigData.json",
+  "FetterInfoExcelConfigData.json"
 );
 const METADATA_PATH = path.join(
   __dirname,
   "..",
   "data",
-  "FetterInfoMetadata.json",
+  "FetterInfoMetadata.json"
 );
 
 export async function fetchHoyoPlayRequest() {
@@ -43,10 +43,10 @@ export async function fetchFetterInfoExcelConfigData() {
 
   if (fs.existsSync(METADATA_PATH)) {
     const metadata: IMetadata = JSON.parse(
-      fs.readFileSync(METADATA_PATH, "utf8"),
+      fs.readFileSync(METADATA_PATH, "utf8")
     );
     lastFetched = metadata.lastFetched || 0;
-    lastHash = metadata.hash || null;
+    lastHash = metadata.hash ?? null;
   }
 
   const now = getCurrentTimestamp();
@@ -63,7 +63,7 @@ export async function fetchFetterInfoExcelConfigData() {
 
   // Fetch the remote data
   const response = await fetch(
-    ANIME_GAME_DATA_FETTER_EXCEL_OUTPUT_URL as string,
+    ANIME_GAME_DATA_FETTER_EXCEL_OUTPUT_URL as string
   );
   if (!response.ok) {
     console.error("Failed to fetch data:", response.statusText);

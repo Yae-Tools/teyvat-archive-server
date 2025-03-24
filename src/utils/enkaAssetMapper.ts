@@ -14,8 +14,6 @@ import {
 import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
 import { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
 
-// import fetterInfoExcelConfigData from "../data/FetterInfoExcelConfigData.json";
-
 const regionMap = new Map<string, string>([
   ["ASSOC_TYPE_MONDSTADT", "Mondstadt"],
   ["ASSOC_TYPE_LIYUE", "Liyue"],
@@ -83,7 +81,7 @@ function mapCostumes(costumes: Costume[]): any[] {
 }
 
 function mapAbility(
-  abilityData: ElementalBurst | ElementalSkill | NormalAttack,
+  abilityData: ElementalBurst | ElementalSkill | NormalAttack
 ) {
   if (!abilityData) return null;
 
@@ -102,7 +100,7 @@ function mapAscensionData(characterData: CharacterData) {
   const ascensionLevels = 6;
   return Array.from(
     { length: ascensionLevels },
-    (_, i) => characterData.getAscensionData(i + 1)._data,
+    (_, i) => characterData.getAscensionData(i + 1)._data
   );
 }
 
@@ -115,8 +113,8 @@ async function mapCharacterRegion(characterId: number) {
 
   const fetterCharData = fetterInfoExcelConfigData.find((fetter) =>
     Object.values(fetter).some(
-      (value) => typeof value === "number" && value === characterId,
-    ),
+      (value) => typeof value === "number" && value === characterId
+    )
   );
   if (!fetterCharData) {
     return "Unknown Region";
@@ -124,16 +122,16 @@ async function mapCharacterRegion(characterId: number) {
 
   const fetterValues = Object.values(fetterCharData);
   const regionId = fetterValues.find(
-    (value) => typeof value === "string" && regionMap.has(value),
+    (value) => typeof value === "string" && regionMap.has(value)
   );
 
   // Return mapped region or default
-  return regionMap.get(regionId) || "Unknown Region";
+  return regionMap.get(regionId) ?? "Unknown Region";
 }
 
 function mapRefinemetData(refinements: WeaponRefinement[]) {
   return refinements.map((refinement) => {
-    const { name, description, id, level, addProps, paramList } = refinement;
+    const { name, description, id, level, paramList } = refinement;
 
     return {
       name: decryptTextAsset(name),
@@ -178,7 +176,7 @@ function mapWeaponStats(weaonData: WeaponData) {
             multiplier: stat.getMultipliedValue(),
           };
         });
-      }),
+      })
   );
 
   //Remove empty arrays and flatten the array
@@ -213,6 +211,7 @@ function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
         name: artifact.name as string,
         icon: artifact.icon as string,
         stars: artifact.stars,
+        description: artifact.description,
       });
     }
   });
