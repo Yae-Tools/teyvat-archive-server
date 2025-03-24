@@ -12,8 +12,31 @@ import {
   WeaponRefinement,
 } from "enka-network-api";
 import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
-import { fetchFetterInfoExcelConfigData } from "../services/system.service";
 import { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
+
+// import fetterInfoExcelConfigData from "../data/FetterInfoExcelConfigData.json";
+
+const regionMap = new Map<string, string>([
+  ["ASSOC_TYPE_MONDSTADT", "Mondstadt"],
+  ["ASSOC_TYPE_LIYUE", "Liyue"],
+  ["ASSOC_TYPE_INAZUMA", "Inazuma"],
+  ["ASSOC_TYPE_SUMERU", "Sumeru"],
+  ["ASSOC_TYPE_SNEZHNAYA", "Snezhnaya"],
+  ["ASSOC_TYPE_FONTAINE", "Fontaine"],
+  ["ASSOC_TYPE_NATLAN", "Natlan"],
+  ["ASSOC_TYPE_FATUI", "Fatui"],
+  ["ASSOC_TYPE_RANGER", "Ranger"],
+]);
+
+async function loadFetterData() {
+  try {
+    const fetterModule = await import("../data/FetterInfoExcelConfigData.json");
+    return fetterModule.default; // JSON imports typically export as { default: data }
+  } catch (error) {
+    console.error("Failed to load FetterInfoExcelConfigData:", error);
+    return []; // Fallback to empty array or handle as needed
+  }
+}
 
 function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   try {
@@ -84,37 +107,28 @@ function mapAscensionData(characterData: CharacterData) {
 }
 
 async function mapCharacterRegion(characterId: number) {
-  const fetterResponse: {
-    avatarId: number;
-    avatarAssocType: string;
-  }[] = await fetchFetterInfoExcelConfigData();
+  const fetterInfoExcelConfigData = await loadFetterData();
 
-  const fetterChar = fetterResponse.find(
-    (fetter) => fetter.avatarId === characterId,
+  if (!fetterInfoExcelConfigData || !Array.isArray(fetterInfoExcelConfigData)) {
+    return "Unknown Region";
+  }
+
+  const fetterCharData = fetterInfoExcelConfigData.find((fetter) =>
+    Object.values(fetter).some(
+      (value) => typeof value === "number" && value === characterId,
+    ),
+  );
+  if (!fetterCharData) {
+    return "Unknown Region";
+  }
+
+  const fetterValues = Object.values(fetterCharData);
+  const regionId = fetterValues.find(
+    (value) => typeof value === "string" && regionMap.has(value),
   );
 
-  switch (fetterChar?.avatarAssocType) {
-    case "ASSOC_TYPE_MONDSTADT":
-      return "Mondstadt";
-    case "ASSOC_TYPE_LIYUE":
-      return "Liyue";
-    case "ASSOC_TYPE_INAZUMA":
-      return "Inazuma";
-    case "ASSOC_TYPE_SUMERU":
-      return "Sumeru";
-    case "SNEZHNAYA":
-      return "Snezhnaya";
-    case "ASSOC_TYPE_FONTAINE":
-      return "fontaine";
-    case "ASSOC_TYPE_NATLAN":
-      return "Natlan";
-    case "ASSOC_TYPE_FATUI":
-      return "Fatui";
-    case "ASSOC_TYPE_RANGER":
-      return "Ranger";
-    default:
-      return "other";
-  }
+  // Return mapped region or default
+  return regionMap.get(regionId) || "Unknown Region";
 }
 
 function mapRefinemetData(refinements: WeaponRefinement[]) {
