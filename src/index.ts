@@ -14,6 +14,8 @@ import {
   fetchHoyoPlayRequest,
 } from "./services/system.service";
 
+const PORT = process.env.PORT ?? 5000;
+
 const routes = [
   characterRoutes,
   materialRoutes,
@@ -37,7 +39,7 @@ routes.forEach(async (route) => {
 
 await Promise.all([fetchFetterInfoExcelConfigData(), fetchHoyoPlayRequest()]);
 
-app.listen(3000);
+app.listen(PORT);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
