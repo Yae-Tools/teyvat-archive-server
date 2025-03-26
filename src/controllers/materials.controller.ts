@@ -9,7 +9,7 @@ export const getMaterialById = (id: string) => {
       enkaId: response.id,
       name: decryptTextAsset(response.name),
       description: decryptTextAsset(response.description),
-      icon: response.icon.url,
+      icon: response.icon?.url,
       materialType: response.materialType,
       itemType: response.itemType,
       stars: response.stars,

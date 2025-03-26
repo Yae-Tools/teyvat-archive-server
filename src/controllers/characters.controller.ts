@@ -1,4 +1,4 @@
-import { CharacterData } from "enka-network-api";
+import { CharacterData, CharacterDetails } from "enka-network-api";
 import {
   getAllCharactersFromEnka,
   getCharacterByIdFromEnka,
@@ -53,19 +53,21 @@ export const getAllCharacters = async () => {
 
 export const getCharacterBySkillDepotId = async (
   charcterId: string,
-  skillDepotId: number,
+  skillDepotId: number
 ) => {
   try {
     const response: CharacterData = getCharacterByIdFromEnka(
       charcterId,
-      skillDepotId,
+      skillDepotId
     );
 
     const skills = mapSkills(response.skills);
     const passiveTalents = mapPassiveTalents(response.passiveTalents);
     const constellations = mapConstellations(response.constellations);
     const ascensionData = mapAscensionData(response);
-    const region = await mapCharacterRegion(response.id);
+    const region = await mapCharacterRegion(
+      response.details as CharacterDetails
+    );
 
     const {
       _nameId,

@@ -1,5 +1,6 @@
 import {
   CharacterData,
+  CharacterDetails,
   Constellation,
   Costume,
   ElementalBurst,
@@ -104,26 +105,11 @@ function mapAscensionData(characterData: CharacterData) {
   );
 }
 
-async function mapCharacterRegion(characterId: number) {
-  const fetterInfoExcelConfigData = await loadFetterData();
+async function mapCharacterRegion(details: CharacterDetails) {
+  const { _data } = details;
 
-  if (!fetterInfoExcelConfigData || !Array.isArray(fetterInfoExcelConfigData)) {
-    return "Unknown Region";
-  }
-
-  const fetterCharData = fetterInfoExcelConfigData.find((fetter) =>
-    Object.values(fetter).some(
-      (value) => typeof value === "number" && value === characterId
-    )
-  );
-  if (!fetterCharData) {
-    return "Unknown Region";
-  }
-
-  const fetterValues = Object.values(fetterCharData);
-  const regionId = fetterValues.find(
-    (value) => typeof value === "string" && regionMap.has(value)
-  );
+  // const fetterValues = Object.values(fetterCharData);
+  const regionId = _data.avatarAssocType as string;
 
   // Return mapped region or default
   return regionMap.get(regionId) ?? "Unknown Region";
