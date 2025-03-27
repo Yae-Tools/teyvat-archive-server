@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import logger from "../utils/logger";
 
 const HOYOPLAY_REQUEST_CAPTURE_URL = process.env.HOYOPLAY_REQUEST_CAPTURE_URL;
 const HOYO_GAME_CAPTURE_URL = process.env.HOYO_GAME_CAPTURE_URL;
@@ -55,16 +56,16 @@ export async function fetchHoyoGameRequest() {
 
   // If the file exists and it was fetched recently, no need to fetch again
   if (fs.existsSync(HOYO_GAME_FILE_PATH) && timeElapsed < 60) {
-    console.log("Game data is up to date. No fetch needed.");
+    logger.info("Game data is up to date. No fetch needed.");
     return JSON.parse(fs.readFileSync(HOYO_GAME_FILE_PATH, "utf8"));
   }
 
-  console.log("Fetching latest game data...");
+  logger.info("Fetching latest game data...");
 
   // Fetch the remote data
   const response = await fetch(HOYO_GAME_CAPTURE_URL as string);
   if (!response.ok) {
-    console.error("Failed to fetch game data:", response.statusText);
+    logger.error("Failed to fetch game data:", response.statusText);
     return;
   }
 
@@ -73,7 +74,7 @@ export async function fetchHoyoGameRequest() {
 
   // If the data hasn't changed, no need to update
   if (newHash === lastHash) {
-    console.log("No changes detected. Skipping game update.");
+    logger.info("No changes detected. Skipping game update.");
     return data;
   }
 
@@ -86,7 +87,7 @@ export async function fetchHoyoGameRequest() {
     "utf8"
   );
 
-  console.log("Game data updated successfully.");
+  logger.info("Game data updated successfully.");
   return data;
 }
 
@@ -111,16 +112,16 @@ export async function fetchHoyoPlayRequest() {
 
   // If the file exists and it was fetched recently, no need to fetch again
   if (fs.existsSync(EVENT_FILE_PATH) && timeElapsed < 60) {
-    console.log("Data is up to date. No fetch needed.");
+    logger.info("Event data is up to date. No fetch needed.");
     return JSON.parse(fs.readFileSync(EVENT_FILE_PATH, "utf8"));
   }
 
-  console.log("Fetching latest event data...");
+  logger.info("Fetching latest event data...");
 
   // Fetch the remote data
   const response = await fetch(HOYOPLAY_REQUEST_CAPTURE_URL as string);
   if (!response.ok) {
-    console.error("Failed to fetch event data:", response.statusText);
+    logger.error("Failed to fetch event data:", response.statusText);
     return;
   }
 
@@ -129,7 +130,7 @@ export async function fetchHoyoPlayRequest() {
 
   // If the data hasn't changed, no need to update
   if (newHash === lastHash) {
-    console.log("No changes detected. Skipping event update.");
+    logger.info("No changes detected. Skipping event update.");
     return data;
   }
 
@@ -142,6 +143,6 @@ export async function fetchHoyoPlayRequest() {
     "utf8"
   );
 
-  console.log("Event data updated successfully.");
+  logger.info("Event data updated successfully.");
   return data;
 }

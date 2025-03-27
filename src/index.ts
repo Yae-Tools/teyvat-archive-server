@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
+import { rateLimit } from "elysia-rate-limit";
 
 import {
   artifactRoutes,
@@ -14,6 +15,7 @@ import {
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest,
 } from "./services/system.service";
+import logger from "./utils/logger";
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -33,6 +35,8 @@ app.use(
     allowedHeaders: ["Content-Type"],
   })
 );
+
+app.use(rateLimit());
 
 app.use(
   swagger({
@@ -81,6 +85,6 @@ await Promise.all([fetchHoyoPlayRequest(), fetchHoyoGameRequest()]);
 
 app.listen(PORT);
 
-console.log(
+logger.info(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );

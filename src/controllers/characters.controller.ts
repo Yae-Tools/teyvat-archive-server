@@ -13,6 +13,7 @@ import {
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import { characterNotFoundError } from "../utils/errorMessageInterceptor";
+import logger from "../utils/logger";
 
 export const getAllCharacters = async () => {
   try {
@@ -47,7 +48,7 @@ export const getAllCharacters = async () => {
 
     return characters;
   } catch (error) {
-    console.log("Error fetching characters", error);
+    logger.error("Error fetching characters", error);
     return [];
   }
 };
@@ -149,7 +150,7 @@ export const getAllCharacterLocations = async () => {
 
     return characterLocationData;
   } catch (error) {
-    console.log("Error fetching character locations", error);
+    logger.error("Error fetching character locations", error);
     return [];
   }
 };

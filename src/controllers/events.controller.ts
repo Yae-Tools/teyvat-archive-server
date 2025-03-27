@@ -1,5 +1,6 @@
 import { fetchAllEventsFromAmber } from "../services/amberClient.service";
 import { IEvent, ILanguageCode } from "../types/events.type";
+import logger from "../utils/logger";
 
 export const getAllEvents = async (language?: ILanguageCode) => {
   const LANG = language ?? "EN";
@@ -22,7 +23,7 @@ export const getAllEvents = async (language?: ILanguageCode) => {
 
     return events;
   } catch (error) {
-    console.log("Error fetching events", error);
+    logger.error("Error fetching events", error);
     return [];
   }
 };
