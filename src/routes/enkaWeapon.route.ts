@@ -5,6 +5,7 @@ import {
   getAllWeaponSeries,
   getWeaponById,
 } from "../controllers/weapons.controller";
+import { weaponIdValidation } from "../schema/weapon.schema";
 
 export const weaponRoutes = async (app: Elysia) => {
   app.get("/weapons/all", async () => {
@@ -16,7 +17,7 @@ export const weaponRoutes = async (app: Elysia) => {
   });
 
   app.get("/weapons/id/:id", async ({ params: { id } }) => {
-    return getWeaponById(id);
+    return getWeaponById(id), weaponIdValidation;
   });
 
   return Promise.resolve(app);
