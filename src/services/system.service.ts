@@ -3,29 +3,40 @@ import path from "path";
 import crypto from "crypto";
 import logger from "../utils/logger";
 
-const HOYOPLAY_REQUEST_CAPTURE_URL = process.env.HOYOPLAY_REQUEST_CAPTURE_URL;
-const HOYO_GAME_CAPTURE_URL = process.env.HOYO_GAME_CAPTURE_URL;
+const BASE_DIR = path.join(__dirname, "..", "data");
 
-const EVENT_FILE_PATH = path.join(__dirname, "..", "data", "EventInfo.json");
-const EVENT_METADATA_PATH = path.join(
-  __dirname,
-  "..",
-  "data",
-  "EventInfoMetadata.json"
-);
-
-const HOYO_GAME_FILE_PATH = path.join(
-  __dirname,
-  "..",
-  "data",
-  "HoyoGameInfo.json"
-);
-const HOYO_GAME_METADATA_PATH = path.join(
-  __dirname,
-  "..",
-  "data",
-  "HoyoGameInfoMetadata.json"
-);
+const FILES = {
+  calendar: {
+    data: path.join(BASE_DIR, "HoyoApiCalendar.json"),
+    meta: path.join(BASE_DIR, "HoyoApiCalendarMetadata.json"),
+    url: process.env.HOYO_API + "/calendar",
+    name: "Calendar",
+  },
+  codes: {
+    data: path.join(BASE_DIR, "RedeemCodes.json"),
+    meta: path.join(BASE_DIR, "RedeemCodesMetadata.json"),
+    url: process.env.HOYO_API + "/codes",
+    name: "Redeem Codes",
+  },
+  game: {
+    data: path.join(BASE_DIR, "HoyoGameInfo.json"),
+    meta: path.join(BASE_DIR, "HoyoGameInfoMetadata.json"),
+    url: process.env.HOYO_GAME_CAPTURE_URL,
+    name: "Game",
+  },
+  build: {
+    data: path.join(BASE_DIR, "BuildInfo.json"),
+    meta: path.join(BASE_DIR, "BuildInfoMetadata.json"),
+    url: process.env.HOYOPLAY_REQUEST_CAPTURE_URL,
+    name: "Build",
+  },
+  events: {
+    data: path.join(BASE_DIR, "AmberEvents.json"),
+    meta: path.join(BASE_DIR, "AmberEventsMetadata.json"),
+    url: process.env.PROJECT_AMBR_BASE_URL + "/assets/data/event.json",
+    name: "Amber Events",
+  },
+};
 
 function getCurrentTimestamp(): number {
   return Math.floor(Date.now() / 1000); // Convert to seconds
@@ -35,114 +46,64 @@ function calculateFileHash(data: string): string {
   return crypto.createHash("md5").update(data).digest("hex");
 }
 
-export async function fetchHoyoGameRequest() {
-  if (!fs.existsSync(path.dirname(HOYO_GAME_FILE_PATH))) {
-    fs.mkdirSync(path.dirname(HOYO_GAME_FILE_PATH), { recursive: true });
+async function fetchData(fileKey: keyof typeof FILES) {
+  const { data: filePath, meta: metaPath, url, name } = FILES[fileKey];
+
+  // Ensure directory exists
+  if (!fs.existsSync(BASE_DIR)) {
+    fs.mkdirSync(BASE_DIR, { recursive: true });
   }
 
-  let lastFetched = 0;
-  let lastHash: string | null = null;
-
-  if (fs.existsSync(HOYO_GAME_METADATA_PATH)) {
-    const metadata: IMetadata = JSON.parse(
-      fs.readFileSync(HOYO_GAME_METADATA_PATH, "utf8")
-    );
-    lastFetched = metadata.lastFetched || 0;
-    lastHash = metadata.hash ?? null;
+  // Load metadata
+  let metadata: IMetadata = { lastFetched: 0, hash: null };
+  if (fs.existsSync(metaPath)) {
+    metadata = JSON.parse(fs.readFileSync(metaPath, "utf8"));
   }
 
   const now = getCurrentTimestamp();
-  const timeElapsed = now - lastFetched;
+  const timeElapsed = now - metadata.lastFetched;
 
-  // If the file exists and it was fetched recently, no need to fetch again
-  if (fs.existsSync(HOYO_GAME_FILE_PATH) && timeElapsed < 60) {
-    logger.info("Game data is up to date. No fetch needed.");
-    return JSON.parse(fs.readFileSync(HOYO_GAME_FILE_PATH, "utf8"));
+  // Return cached data if recent
+  if (fs.existsSync(filePath) && timeElapsed < 60) {
+    logger.info(`${name} data is up to date. No fetch needed.`);
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
   }
 
-  logger.info("Fetching latest game data...");
+  logger.info(`Fetching latest ${name.toLowerCase()} data...`);
 
-  // Fetch the remote data
-  const response = await fetch(HOYO_GAME_CAPTURE_URL as string);
+  // Fetch new data
+  const response = await fetch(url as string);
   if (!response.ok) {
-    logger.error("Failed to fetch game data:", response.statusText);
+    logger.error(
+      `Failed to fetch ${name.toLowerCase()} data:`,
+      response.statusText
+    );
     return;
   }
 
   const data = await response.text();
   const newHash = calculateFileHash(data);
 
-  // If the data hasn't changed, no need to update
-  if (newHash === lastHash) {
-    logger.info("No changes detected. Skipping game update.");
+  // Return if no changes
+  if (newHash === metadata.hash) {
+    logger.info(`No changes detected. Skipping ${name.toLowerCase()} update.`);
     return data;
   }
 
-  // Write the new data to the file and update metadata
-  fs.writeFileSync(HOYO_GAME_FILE_PATH, data, "utf8");
-  const metadata: IMetadata = { lastFetched: now, hash: newHash };
+  // Update files
+  fs.writeFileSync(filePath, data, "utf8");
   fs.writeFileSync(
-    HOYO_GAME_METADATA_PATH,
-    JSON.stringify(metadata, null, 2),
+    metaPath,
+    JSON.stringify({ lastFetched: now, hash: newHash }, null, 2),
     "utf8"
   );
 
-  logger.info("Game data updated successfully.");
+  logger.info(`${name} data updated successfully.`);
   return data;
 }
 
-export async function fetchHoyoPlayRequest() {
-  if (!fs.existsSync(path.dirname(EVENT_FILE_PATH))) {
-    fs.mkdirSync(path.dirname(EVENT_FILE_PATH), { recursive: true });
-  }
-
-  let lastFetched = 0;
-  let lastHash: string | null = null;
-
-  if (fs.existsSync(EVENT_METADATA_PATH)) {
-    const metadata: IMetadata = JSON.parse(
-      fs.readFileSync(EVENT_METADATA_PATH, "utf8")
-    );
-    lastFetched = metadata.lastFetched || 0;
-    lastHash = metadata.hash ?? null;
-  }
-
-  const now = getCurrentTimestamp();
-  const timeElapsed = now - lastFetched;
-
-  // If the file exists and it was fetched recently, no need to fetch again
-  if (fs.existsSync(EVENT_FILE_PATH) && timeElapsed < 60) {
-    logger.info("Event data is up to date. No fetch needed.");
-    return JSON.parse(fs.readFileSync(EVENT_FILE_PATH, "utf8"));
-  }
-
-  logger.info("Fetching latest event data...");
-
-  // Fetch the remote data
-  const response = await fetch(HOYOPLAY_REQUEST_CAPTURE_URL as string);
-  if (!response.ok) {
-    logger.error("Failed to fetch event data:", response.statusText);
-    return;
-  }
-
-  const data = await response.text();
-  const newHash = calculateFileHash(data);
-
-  // If the data hasn't changed, no need to update
-  if (newHash === lastHash) {
-    logger.info("No changes detected. Skipping event update.");
-    return data;
-  }
-
-  // Write the new data to the file and update metadata
-  fs.writeFileSync(EVENT_FILE_PATH, data, "utf8");
-  const metadata: IMetadata = { lastFetched: now, hash: newHash };
-  fs.writeFileSync(
-    EVENT_METADATA_PATH,
-    JSON.stringify(metadata, null, 2),
-    "utf8"
-  );
-
-  logger.info("Event data updated successfully.");
-  return data;
-}
+export const fetchHoyoCalendar = () => fetchData("calendar");
+export const fetchHoyoGameRequest = () => fetchData("game");
+export const fetchHoyoPlayRequest = () => fetchData("build");
+export const fetchAmberEvents = () => fetchData("events");
+export const fetchRedeemCodes = () => fetchData("codes");

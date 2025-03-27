@@ -98,7 +98,6 @@ function mapAscensionData(characterData: CharacterData) {
 async function mapCharacterRegion(details: CharacterDetails) {
   const { _data } = details;
 
-  // const fetterValues = Object.values(fetterCharData);
   const regionId = _data.avatarAssocType as string;
 
   // Return mapped region or default

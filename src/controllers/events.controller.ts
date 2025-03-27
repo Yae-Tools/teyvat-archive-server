@@ -1,13 +1,14 @@
-import { fetchAllEventsFromAmber } from "../services/amberClient.service";
+import { fetchAmberEvents } from "../services/system.service";
 import { IEvent, ILanguageCode } from "../types/events.type";
 import logger from "../utils/logger";
 
 export const getAllEvents = async (language?: ILanguageCode) => {
   const LANG = language ?? "EN";
   try {
-    const eventsResponse = await fetchAllEventsFromAmber();
+    const eventsResponse = await fetchAmberEvents();
+    const eventsParsed: IEvent[] = JSON.parse(eventsResponse);
 
-    const events = Object.values(eventsResponse).map((event: IEvent) => {
+    const events = Object.values(eventsParsed).map((event: IEvent) => {
       const { id, description, banner, endAt, name, nameFull, startAt } = event;
 
       return {

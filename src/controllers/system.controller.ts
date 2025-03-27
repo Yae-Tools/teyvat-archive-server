@@ -14,14 +14,16 @@ export const getGameVersion = async () => {
     const hoyoGameParsed = JSON.parse(hoyoGameResponse);
 
     const games = hoyoGameParsed.data.games;
-    const bgImage = games.find(
+
+    const game = games.find(
       (game: { id: string }) => game.id === "gopR6Cufr3"
-    ).display.background.url;
+    ).display;
 
     return {
       version: hoyoPlayParsed.data.tag,
       build: hoyoPlayParsed.data.build_id,
-      background: bgImage,
+      background: game.background.url,
+      logo: game.logo.url,
     };
   } catch (error) {
     return { version: "Unknown", build: "" };
