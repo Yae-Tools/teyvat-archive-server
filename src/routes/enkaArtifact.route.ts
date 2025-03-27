@@ -8,16 +8,51 @@ import {
 import { artifactIdValidation } from "../schema/artifact.schema";
 
 export const artifactRoutes = async (app: Elysia) => {
-  app.get("/artifacts/all", async () => {
-    return getAllArtifacts();
-  });
+  app.group("/artifacts", (artifacts) => {
+    artifacts.get(
+      "/all",
+      async () => {
+        return getAllArtifacts();
+      },
+      {
+        detail: {
+          tags: ["Artifacts"],
+          summary: "Get all artifacts",
+          description: "Get all artifacts in the game",
+        },
+      }
+    );
 
-  app.get("/artifacts/sets", async () => {
-    return getAllArtifactSets();
-  });
+    artifacts.get(
+      "/sets",
+      async () => {
+        return getAllArtifactSets();
+      },
+      {
+        detail: {
+          tags: ["Artifacts"],
+          summary: "Get all artifact sets",
+          description: "Get all artifact sets in the game",
+        },
+      }
+    );
 
-  app.get("/artifacts/set/:id", async ({ params: { id } }) => {
-    return getArtifactSetById(id), artifactIdValidation;
+    artifacts.get(
+      "/set/:id",
+      async ({ params: { id } }) => {
+        return getArtifactSetById(id);
+      },
+      {
+        params: artifactIdValidation.params,
+        detail: {
+          tags: ["Artifacts"],
+          summary: "Get artifact set by id",
+          description: "Get artifact set details by its id",
+        },
+      }
+    );
+
+    return artifacts;
   });
 
   return Promise.resolve(app);

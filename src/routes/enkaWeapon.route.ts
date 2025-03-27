@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 
 import {
   getAllWeapons,
@@ -8,16 +8,50 @@ import {
 import { weaponIdValidation } from "../schema/weapon.schema";
 
 export const weaponRoutes = async (app: Elysia) => {
-  app.get("/weapons/all", async () => {
-    return getAllWeapons();
-  });
+  app.group("/weapons", (weapons) => {
+    weapons.get(
+      "/all",
+      async () => {
+        return getAllWeapons();
+      },
+      {
+        detail: {
+          tags: ["Weapons"],
+          summary: "Get all weapons",
+          description: "Get all weapons in the game",
+        },
+      }
+    );
 
-  app.get("/weapons/series", async () => {
-    return getAllWeaponSeries();
-  });
+    weapons.get(
+      "/series",
+      async () => {
+        return getAllWeaponSeries();
+      },
+      {
+        detail: {
+          tags: ["Weapons"],
+          summary: "Get all weapon series",
+          description: "Get all weapon series in the game",
+        },
+      }
+    );
 
-  app.get("/weapons/id/:id", async ({ params: { id } }) => {
-    return getWeaponById(id), weaponIdValidation;
+    weapons.get(
+      "/id/:id",
+      async ({ params: { id } }) => {
+        return getWeaponById(id);
+      },
+      {
+        params: weaponIdValidation.params,
+        detail: {
+          tags: ["Weapons"],
+          summary: "Get weapon by id",
+          description: "Get weapon details by its id",
+        },
+      }
+    );
+    return weapons;
   });
 
   return Promise.resolve(app);

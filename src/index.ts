@@ -1,5 +1,6 @@
-import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
+import { cors } from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
 
 import {
   artifactRoutes,
@@ -30,6 +31,45 @@ const app = new Elysia();
 app.use(
   cors({
     allowedHeaders: ["Content-Type"],
+  })
+);
+
+app.use(
+  swagger({
+    documentation: {
+      info: {
+        title: "Teyvat Archive API",
+        version: "1.0.0",
+        description: "API for Genshin Impact data",
+      },
+      tags: [
+        {
+          name: "Characters",
+          description: "Character endpoints",
+        },
+        {
+          name: "Materials",
+          description: "Material endpoints",
+        },
+        {
+          name: "Weapons",
+          description: "Weapon endpoints",
+        },
+        {
+          name: "Events",
+          description: "Event endpoints",
+        },
+        {
+          name: "Artifacts",
+          description: "Artifact endpoints",
+        },
+        {
+          name: "System",
+          description: "System endpoints",
+        },
+      ],
+    },
+    path: "/docs",
   })
 );
 

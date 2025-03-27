@@ -4,9 +4,23 @@ import { getMaterialById } from "../controllers/materials.controller";
 import { materialIdValidation } from "../schema/material.schema";
 
 export const materialRoutes = async (app: Elysia) => {
-  app.get("/materials/id/:id", async (context) => {
-    const { id } = context.params;
-    return getMaterialById(id), materialIdValidation;
+  app.group("/materials", (materials) => {
+    materials.get(
+      "/id/:id",
+      async ({ params: { id } }) => {
+        return getMaterialById(id);
+      },
+      {
+        params: materialIdValidation.params,
+        detail: {
+          tags: ["Materials"],
+          summary: "Get material by id",
+          description: "Get material details by its id",
+        },
+      }
+    );
+
+    return materials;
   });
 
   return Promise.resolve(app);
