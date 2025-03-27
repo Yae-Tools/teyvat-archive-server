@@ -7,6 +7,7 @@ import {
   decryptTextAsset,
   getArtifactCollection,
 } from "../utils/enkaAssetMapper";
+import { artifactNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getAllArtifacts = async () => {
   try {
@@ -122,8 +123,12 @@ export const getArtifactSetById = async (id: string) => {
       })),
       collection: artifactCollection,
     };
-  } catch (error) {
-    console.log("Error fetching artifact set by ID", error);
-    return null;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      artifactNotFoundError(error.message, id);
+    }
+
+    // If the error is something else, rethrow it or return a generic error
+    throw new Error("Internal Server Error");
   }
 };

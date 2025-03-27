@@ -8,6 +8,7 @@ import {
   mapRefinemetData,
   mapWeaponStats,
 } from "../utils/enkaAssetMapper";
+import { weaponNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getAllWeapons = async () => {
   try {
@@ -69,9 +70,12 @@ export const getWeaponById = async (id: string) => {
       refinements,
       stats,
     };
-  } catch (error) {
-    console.log("Error fetching weapon by id", error);
-    return {};
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      weaponNotFoundError(error.message, id);
+    } else {
+      throw new Error("Internal Server Error");
+    }
   }
 };
 
@@ -100,7 +104,7 @@ export const getAllWeaponSeries = async () => {
 
         return acc;
       },
-      {},
+      {}
     );
 
     return weaponSeries;

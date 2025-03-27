@@ -6,6 +6,7 @@ import {
   getArtifactSetById,
 } from "../controllers/artifacts.controller";
 import { artifactIdValidation } from "../schema/artifact.schema";
+import artifactSwagger from "../swagger/artifact.swagger";
 
 export const artifactRoutes = async (app: Elysia) => {
   app.group("/artifacts", (artifacts) => {
@@ -15,11 +16,7 @@ export const artifactRoutes = async (app: Elysia) => {
         return getAllArtifacts();
       },
       {
-        detail: {
-          tags: ["Artifacts"],
-          summary: "Get all artifacts",
-          description: "Get all artifacts in the game",
-        },
+        detail: artifactSwagger.all,
       }
     );
 
@@ -29,11 +26,7 @@ export const artifactRoutes = async (app: Elysia) => {
         return getAllArtifactSets();
       },
       {
-        detail: {
-          tags: ["Artifacts"],
-          summary: "Get all artifact sets",
-          description: "Get all artifact sets in the game",
-        },
+        detail: artifactSwagger.sets,
       }
     );
 
@@ -44,11 +37,7 @@ export const artifactRoutes = async (app: Elysia) => {
       },
       {
         params: artifactIdValidation.params,
-        detail: {
-          tags: ["Artifacts"],
-          summary: "Get artifact set by id",
-          description: "Get artifact set details by its id",
-        },
+        detail: artifactSwagger.id,
       }
     );
 

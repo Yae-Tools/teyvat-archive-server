@@ -1,13 +1,10 @@
 import { Elysia } from "elysia";
 import { getGameVersion } from "../controllers/system.controller";
+import systemSwagger from "../swagger/system.swagger";
 
 export const systemRoutes = async (app: Elysia) => {
   app.get("/", () => "Welcome to Teyvat Archive API", {
-    detail: {
-      tags: ["System"],
-      summary: "Welcome message",
-      description: "Welcome message for the API",
-    },
+    detail: systemSwagger.home,
   });
 
   app.group("/system", (system) => {
@@ -17,11 +14,7 @@ export const systemRoutes = async (app: Elysia) => {
         return { status: "ok" };
       },
       {
-        detail: {
-          tags: ["System"],
-          summary: "Health check",
-          description: "Check if the server is running",
-        },
+        detail: systemSwagger.health,
       }
     );
 
@@ -31,11 +24,7 @@ export const systemRoutes = async (app: Elysia) => {
         return { version: "1.0.0" };
       },
       {
-        detail: {
-          tags: ["System"],
-          summary: "Get server version",
-          description: "Get the current version of the server",
-        },
+        detail: systemSwagger.serverVersion,
       }
     );
 
@@ -45,11 +34,7 @@ export const systemRoutes = async (app: Elysia) => {
         return getGameVersion();
       },
       {
-        detail: {
-          tags: ["System"],
-          summary: "Get game version",
-          description: "Get the current version of the game",
-        },
+        detail: systemSwagger.gameVersion,
       }
     );
 

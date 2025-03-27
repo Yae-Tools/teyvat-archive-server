@@ -6,6 +6,7 @@ import {
   getWeaponById,
 } from "../controllers/weapons.controller";
 import { weaponIdValidation } from "../schema/weapon.schema";
+import weaponSwagger from "../swagger/weapon.swagger";
 
 export const weaponRoutes = async (app: Elysia) => {
   app.group("/weapons", (weapons) => {
@@ -15,11 +16,7 @@ export const weaponRoutes = async (app: Elysia) => {
         return getAllWeapons();
       },
       {
-        detail: {
-          tags: ["Weapons"],
-          summary: "Get all weapons",
-          description: "Get all weapons in the game",
-        },
+        detail: weaponSwagger.all,
       }
     );
 
@@ -29,11 +26,7 @@ export const weaponRoutes = async (app: Elysia) => {
         return getAllWeaponSeries();
       },
       {
-        detail: {
-          tags: ["Weapons"],
-          summary: "Get all weapon series",
-          description: "Get all weapon series in the game",
-        },
+        detail: weaponSwagger.series,
       }
     );
 
@@ -44,11 +37,7 @@ export const weaponRoutes = async (app: Elysia) => {
       },
       {
         params: weaponIdValidation.params,
-        detail: {
-          tags: ["Weapons"],
-          summary: "Get weapon by id",
-          description: "Get weapon details by its id",
-        },
+        detail: weaponSwagger.id,
       }
     );
     return weapons;

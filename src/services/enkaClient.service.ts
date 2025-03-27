@@ -21,7 +21,7 @@ export function getAllCharactersFromEnka() {
   return enka.getAllCharacters();
 }
 
-export function getCharacterByIdFromEnka(id: string, skillDepotId: number) {
+export function getCharacterByIdFromEnka(id: number, skillDepotId: number) {
   return enka.getCharacterById(id, skillDepotId);
 }
 

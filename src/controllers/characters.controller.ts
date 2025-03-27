@@ -12,6 +12,7 @@ import {
   mapSkills,
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
+import { characterNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getAllCharacters = async () => {
   try {
@@ -52,7 +53,7 @@ export const getAllCharacters = async () => {
 };
 
 export const getCharacterBySkillDepotId = async (
-  charcterId: string,
+  charcterId: number,
   skillDepotId: number
 ) => {
   try {
@@ -123,9 +124,12 @@ export const getCharacterBySkillDepotId = async (
     };
 
     return character;
-  } catch (error) {
-    console.log("Error fetching character by skill depot id", error);
-    return null;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      characterNotFoundError(error.message, charcterId, skillDepotId);
+    } else {
+      throw new Error("Internal Server Error");
+    }
   }
 };
 

@@ -1,5 +1,6 @@
 import { getMaterialByEnkaId } from "../services/enkaClient.service";
 import { decryptTextAsset } from "../utils/enkaAssetMapper";
+import { materialNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getMaterialById = (id: string) => {
   try {
@@ -17,8 +18,11 @@ export const getMaterialById = (id: string) => {
     };
 
     return materialData;
-  } catch (error) {
-    console.log("Error fetching material", error);
-    return {};
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      materialNotFoundError(error.message, id);
+    } else {
+      throw new Error("Internal Server Error");
+    }
   }
 };

@@ -2,6 +2,7 @@ import Elysia from "elysia";
 
 import { getMaterialById } from "../controllers/materials.controller";
 import { materialIdValidation } from "../schema/material.schema";
+import materialSwagger from "../swagger/material.swagger";
 
 export const materialRoutes = async (app: Elysia) => {
   app.group("/materials", (materials) => {
@@ -12,11 +13,7 @@ export const materialRoutes = async (app: Elysia) => {
       },
       {
         params: materialIdValidation.params,
-        detail: {
-          tags: ["Materials"],
-          summary: "Get material by id",
-          description: "Get material details by its id",
-        },
+        detail: materialSwagger.id,
       }
     );
 
