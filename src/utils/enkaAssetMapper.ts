@@ -27,16 +27,6 @@ const regionMap = new Map<string, string>([
   ["ASSOC_TYPE_RANGER", "Ranger"],
 ]);
 
-async function loadFetterData() {
-  try {
-    const fetterModule = await import("../data/FetterInfoExcelConfigData.json");
-    return fetterModule.default; // JSON imports typically export as { default: data }
-  } catch (error) {
-    console.error("Failed to load FetterInfoExcelConfigData:", error);
-    return []; // Fallback to empty array or handle as needed
-  }
-}
-
 function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   try {
     if (param) return param.get(lang as LanguageCode);

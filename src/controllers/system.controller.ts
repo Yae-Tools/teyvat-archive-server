@@ -1,13 +1,27 @@
-import { fetchHoyoPlayRequest } from "../services/system.service";
+import {
+  fetchHoyoGameRequest,
+  fetchHoyoPlayRequest,
+} from "../services/system.service";
 
 export const getGameVersion = async () => {
   try {
-    const response = await fetchHoyoPlayRequest();
-    const parsed = JSON.parse(response);
+    const [hoyoPlayResponse, hoyoGameResponse] = await Promise.all([
+      fetchHoyoPlayRequest(),
+      fetchHoyoGameRequest(),
+    ]);
+
+    const hoyoPlayParsed = JSON.parse(hoyoPlayResponse);
+    const hoyoGameParsed = JSON.parse(hoyoGameResponse);
+
+    const games = hoyoGameParsed.data.games;
+    const bgImage = games.find(
+      (game: { id: string }) => game.id === "gopR6Cufr3"
+    ).display.background.url;
 
     return {
-      version: parsed.data.tag,
-      build: parsed.data.build_id,
+      version: hoyoPlayParsed.data.tag,
+      build: hoyoPlayParsed.data.build_id,
+      background: bgImage,
     };
   } catch (error) {
     return { version: "Unknown", build: "" };

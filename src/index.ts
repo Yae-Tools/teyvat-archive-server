@@ -10,7 +10,7 @@ import {
   weaponRoutes,
 } from "./routes";
 import {
-  fetchFetterInfoExcelConfigData,
+  fetchHoyoGameRequest,
   fetchHoyoPlayRequest,
 } from "./services/system.service";
 
@@ -37,7 +37,7 @@ routes.forEach(async (route) => {
   await route(app);
 });
 
-await Promise.all([fetchFetterInfoExcelConfigData(), fetchHoyoPlayRequest()]);
+await Promise.all([fetchHoyoPlayRequest(), fetchHoyoGameRequest()]);
 
 app.listen(PORT);
 
