@@ -3,7 +3,7 @@ import { EnkaClient } from "enka-network-api";
 const enka = new EnkaClient({
   defaultLanguage: "en",
   githubToken: process.env.GITHUB_TOKEN,
-  cacheDirectory: "src/cache",
+  cacheDirectory: "/tmp/enka-cache",
 });
 
 enka.cachedAssetsManager.activateAutoCacheUpdater({
