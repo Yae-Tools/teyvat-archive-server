@@ -2,5 +2,6 @@
 /cache
 
 /src/data
+/src/cache
 
 .env
