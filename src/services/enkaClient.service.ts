@@ -1,5 +1,4 @@
 import { EnkaClient } from "enka-network-api";
-import logger from "../utils/logger";
 
 const enka = new EnkaClient({
   defaultLanguage: "en",
@@ -10,11 +9,11 @@ enka.cachedAssetsManager.activateAutoCacheUpdater({
   instant: true, // Run the first update check immediately
   timeout: 60 * 120 * 1000, // 2 hour interval
   onUpdateStart: async () => {
-    logger.info("Updating Genshin Data...");
+    console.log("Updating Genshin Data...");
   },
   onUpdateEnd: async () => {
     enka.cachedAssetsManager.refreshAllData(); // Refresh memory
-    logger.info("Genshin Data Updated!");
+    console.log("Genshin Data Updated!");
   },
 });
 

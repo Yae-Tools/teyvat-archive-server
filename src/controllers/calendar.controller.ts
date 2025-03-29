@@ -1,5 +1,4 @@
 import { fetchHoyoCalendar } from "../services/system.service";
-import logger from "../utils/logger";
 
 export const getAllCalendarEvents = async () => {
   try {
@@ -9,7 +8,7 @@ export const getAllCalendarEvents = async () => {
 
     return calendarParsed;
   } catch (error: unknown) {
-    logger.error("Error fetching events", error);
+    console.log("Error fetching events", error);
     return [];
   }
 };

@@ -65,16 +65,16 @@ async function fetchData(fileKey: keyof typeof FILES) {
 
   // Return cached data if recent
   if (fs.existsSync(filePath) && timeElapsed < 60) {
-    logger.info(`${name} data is up to date. No fetch needed.`);
+    console.log(`${name} data is up to date. No fetch needed.`);
     return JSON.parse(fs.readFileSync(filePath, "utf8"));
   }
 
-  logger.info(`Fetching latest ${name.toLowerCase()} data...`);
+  console.log(`Fetching latest ${name.toLowerCase()} data...`);
 
   // Fetch new data
   const response = await fetch(url as string);
   if (!response.ok) {
-    logger.error(
+    console.log(
       `Failed to fetch ${name.toLowerCase()} data:`,
       response.statusText
     );
@@ -86,7 +86,7 @@ async function fetchData(fileKey: keyof typeof FILES) {
 
   // Return if no changes
   if (newHash === metadata.hash) {
-    logger.info(`No changes detected. Skipping ${name.toLowerCase()} update.`);
+    console.log(`No changes detected. Skipping ${name.toLowerCase()} update.`);
     return data;
   }
 
@@ -98,7 +98,7 @@ async function fetchData(fileKey: keyof typeof FILES) {
     "utf8"
   );
 
-  logger.info(`${name} data updated successfully.`);
+  console.log(`${name} data updated successfully.`);
   return data;
 }
 

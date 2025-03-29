@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT}:${PORT}"  # Maps host PORT to container PORT
+    env_file:
+      - .env  # Loads variables from .env
+    environment:
+      - NODE_ENV=production

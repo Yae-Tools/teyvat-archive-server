@@ -9,7 +9,6 @@ import {
   mapWeaponStats,
 } from "../utils/enkaAssetMapper";
 import { weaponNotFoundError } from "../utils/errorMessageInterceptor";
-import logger from "../utils/logger";
 
 export const getAllWeapons = async () => {
   try {
@@ -34,7 +33,7 @@ export const getAllWeapons = async () => {
 
     return weapons;
   } catch (error) {
-    logger.error("Error fetching weapons", error);
+    console.log("Error fetching weapons", error);
     return [];
   }
 };
@@ -110,7 +109,7 @@ export const getAllWeaponSeries = async () => {
 
     return weaponSeries;
   } catch (error) {
-    logger.error("Error fetching weapon series", error);
+    console.log("Error fetching weapon series", error);
     return [];
   }
 };

@@ -8,7 +8,6 @@ import {
   getArtifactCollection,
 } from "../utils/enkaAssetMapper";
 import { artifactNotFoundError } from "../utils/errorMessageInterceptor";
-import logger from "../utils/logger";
 
 export const getAllArtifacts = async () => {
   try {
@@ -44,7 +43,7 @@ export const getAllArtifacts = async () => {
 
     return artifacts;
   } catch (error) {
-    logger.error("Error fetching artifacts", error);
+    console.log("Error fetching artifacts", error);
     return [];
   }
 };
@@ -85,7 +84,7 @@ export const getAllArtifactSets = async () => {
 
     return mappedArtifactSets;
   } catch (error) {
-    logger.error("Error fetching artifact sets", error);
+    console.log("Error fetching artifact sets", error);
     return [];
   }
 };

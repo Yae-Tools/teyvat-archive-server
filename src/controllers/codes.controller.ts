@@ -1,5 +1,4 @@
 import { fetchRedeemCodes } from "../services/system.service";
-import logger from "../utils/logger";
 
 export const getAllRedeemCodes = async () => {
   try {
@@ -9,7 +8,7 @@ export const getAllRedeemCodes = async () => {
 
     return redeemCodesParsed;
   } catch (error: unknown) {
-    logger.error("Error fetching redeem codes", error);
+    console.log("Error fetching redeem codes", error);
     return [];
   }
 };

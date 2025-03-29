@@ -19,7 +19,6 @@ import {
   fetchHoyoPlayRequest,
   fetchRedeemCodes,
 } from "./services/system.service";
-import logger from "./utils/logger";
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -103,6 +102,6 @@ await Promise.all([
 
 app.listen(PORT);
 
-logger.info(
+console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
