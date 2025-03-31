@@ -1,13 +1,13 @@
 import {
   fetchHoyoGameRequest,
-  fetchHoyoPlayRequest,
+  fetchHoyoPlayRequest
 } from "../services/system.service";
 
 export const getGameVersion = async () => {
   try {
     const [hoyoPlayResponse, hoyoGameResponse] = await Promise.all([
       fetchHoyoPlayRequest(),
-      fetchHoyoGameRequest(),
+      fetchHoyoGameRequest()
     ]);
 
     const hoyoPlayParsed = JSON.parse(hoyoPlayResponse);
@@ -23,9 +23,9 @@ export const getGameVersion = async () => {
       version: hoyoPlayParsed.data.tag,
       build: hoyoPlayParsed.data.build_id,
       background: game.background.url,
-      logo: game.logo.url,
+      logo: game.logo.url
     };
-  } catch (error) {
-    return { version: "Unknown", build: "" };
+  } catch (error: unknown) {
+    return { version: "Unknown", build: "", error: error };
   }
 };

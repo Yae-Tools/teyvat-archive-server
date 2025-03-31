@@ -4,10 +4,10 @@ const codeSwagger = {
     summary: "Get all redeem codes",
     responses: {
       "200": {
-        description: "Return list of redeem codes",
-      },
-    },
-  },
+        description: "Return list of redeem codes"
+      }
+    }
+  }
 };
 
 export default codeSwagger;

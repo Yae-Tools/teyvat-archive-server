@@ -1,9 +1,9 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 
 import {
   getAllWeapons,
   getAllWeaponSeries,
-  getWeaponById,
+  getWeaponById
 } from "../controllers/weapons.controller";
 import { weaponIdValidation } from "../schema/weapon.schema";
 import weaponSwagger from "../swagger/weapon.swagger";
@@ -16,7 +16,7 @@ export const weaponRoutes = async (app: Elysia) => {
         return getAllWeapons();
       },
       {
-        detail: weaponSwagger.all,
+        detail: weaponSwagger.all
       }
     );
 
@@ -26,7 +26,7 @@ export const weaponRoutes = async (app: Elysia) => {
         return getAllWeaponSeries();
       },
       {
-        detail: weaponSwagger.series,
+        detail: weaponSwagger.series
       }
     );
 
@@ -37,7 +37,7 @@ export const weaponRoutes = async (app: Elysia) => {
       },
       {
         params: weaponIdValidation.params,
-        detail: weaponSwagger.id,
+        detail: weaponSwagger.id
       }
     );
     return weapons;

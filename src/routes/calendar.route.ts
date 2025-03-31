@@ -10,7 +10,7 @@ export const calendarRoutes = async (app: Elysia) => {
         return getAllCalendarEvents();
       },
       {
-        detail: calendarSwagger.all,
+        detail: calendarSwagger.all
       }
     );
 

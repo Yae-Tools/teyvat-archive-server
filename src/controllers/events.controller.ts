@@ -17,7 +17,7 @@ export const getAllEvents = async (language?: ILanguageCode) => {
         start: startAt,
         end: endAt,
         title: name[LANG],
-        fullTitle: nameFull[LANG],
+        fullTitle: nameFull[LANG]
       };
     });
 

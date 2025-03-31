@@ -9,38 +9,38 @@ const FILES = {
     data: path.join(BASE_DIR, "HoyoApiCalendar.json"),
     meta: path.join(BASE_DIR, "HoyoApiCalendarMetadata.json"),
     url: process.env.HOYO_API + "/calendar",
-    name: "Calendar",
+    name: "Calendar"
   },
   codes: {
     data: path.join(BASE_DIR, "RedeemCodes.json"),
     meta: path.join(BASE_DIR, "RedeemCodesMetadata.json"),
     url: process.env.HOYO_API + "/codes",
-    name: "Redeem Codes",
+    name: "Redeem Codes"
   },
   game: {
     data: path.join(BASE_DIR, "HoyoGameInfo.json"),
     meta: path.join(BASE_DIR, "HoyoGameInfoMetadata.json"),
     url: process.env.HOYO_GAME_CAPTURE_URL,
-    name: "Game",
+    name: "Game"
   },
   build: {
     data: path.join(BASE_DIR, "BuildInfo.json"),
     meta: path.join(BASE_DIR, "BuildInfoMetadata.json"),
     url: process.env.HOYOPLAY_REQUEST_CAPTURE_URL,
-    name: "Build",
+    name: "Build"
   },
   events: {
     data: path.join(BASE_DIR, "AmberEvents.json"),
     meta: path.join(BASE_DIR, "AmberEventsMetadata.json"),
     url: process.env.PROJECT_AMBR_BASE_URL + "/assets/data/event.json",
-    name: "Amber Events",
+    name: "Amber Events"
   },
   abyss: {
     data: path.join(BASE_DIR, "AbyssInfo.json"),
     meta: path.join(BASE_DIR, "AbyssInfoMetadata.json"),
     url: process.env.AZA_GG_API + "?key_id=genshin_abyss_statistics&ttl=86400",
-    name: "Abyss Info",
-  },
+    name: "Abyss Info"
+  }
 };
 
 function getCurrentTimestamp(): number {

@@ -4,7 +4,7 @@ import systemSwagger from "../swagger/system.swagger";
 
 export const systemRoutes = async (app: Elysia) => {
   app.get("/", () => "Welcome to Teyvat Archive API Server", {
-    detail: systemSwagger.home,
+    detail: systemSwagger.home
   });
 
   app.group("/system", (system) => {
@@ -14,7 +14,7 @@ export const systemRoutes = async (app: Elysia) => {
         return { status: "ok" };
       },
       {
-        detail: systemSwagger.health,
+        detail: systemSwagger.health
       }
     );
 
@@ -24,7 +24,7 @@ export const systemRoutes = async (app: Elysia) => {
         return { version: "1.0.0" };
       },
       {
-        detail: systemSwagger.serverVersion,
+        detail: systemSwagger.serverVersion
       }
     );
 
@@ -34,7 +34,7 @@ export const systemRoutes = async (app: Elysia) => {
         return getGameVersion();
       },
       {
-        detail: systemSwagger.gameVersion,
+        detail: systemSwagger.gameVersion
       }
     );
 

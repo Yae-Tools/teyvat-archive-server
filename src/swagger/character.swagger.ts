@@ -4,9 +4,9 @@ const characterSwagger = {
     summary: "Get all characters",
     responses: {
       "200": {
-        description: "Return all characters",
-      },
-    },
+        description: "Return all characters"
+      }
+    }
   },
 
   locations: {
@@ -14,9 +14,9 @@ const characterSwagger = {
     summary: "Get all character locations",
     responses: {
       "200": {
-        description: "Return all character locations",
-      },
-    },
+        description: "Return all character locations"
+      }
+    }
   },
 
   id: {
@@ -25,17 +25,17 @@ const characterSwagger = {
     description: "Get character details by its id",
     responses: {
       "200": {
-        description: "Return character by id",
+        description: "Return character by id"
       },
 
       "422": {
-        description: "Invalid character id or skill depot id",
+        description: "Invalid character id or skill depot id"
       },
       "404": {
-        description: "Either character id or skill depot not found",
-      },
-    },
-  },
+        description: "Either character id or skill depot not found"
+      }
+    }
+  }
 };
 
 export default characterSwagger;

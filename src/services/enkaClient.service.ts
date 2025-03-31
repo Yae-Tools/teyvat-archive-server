@@ -3,7 +3,7 @@ import { EnkaClient } from "enka-network-api";
 const enka = new EnkaClient({
   defaultLanguage: "en",
   githubToken: process.env.GITHUB_TOKEN,
-  cacheDirectory: "/tmp/enka-cache",
+  cacheDirectory: "/tmp/enka-cache"
 });
 
 enka.cachedAssetsManager.activateAutoCacheUpdater({
@@ -15,7 +15,7 @@ enka.cachedAssetsManager.activateAutoCacheUpdater({
   onUpdateEnd: async () => {
     enka.cachedAssetsManager.refreshAllData(); // Refresh memory
     console.log("Genshin Data Updated!");
-  },
+  }
 });
 
 export function getAllCharactersFromEnka() {

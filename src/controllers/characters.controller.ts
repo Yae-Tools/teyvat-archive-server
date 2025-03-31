@@ -1,7 +1,7 @@
 import { CharacterData, CharacterDetails } from "enka-network-api";
 import {
   getAllCharactersFromEnka,
-  getCharacterByIdFromEnka,
+  getCharacterByIdFromEnka
 } from "../services/enkaClient.service";
 import {
   decryptTextAsset,
@@ -9,7 +9,7 @@ import {
   mapCharacterRegion,
   mapConstellations,
   mapPassiveTalents,
-  mapSkills,
+  mapSkills
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import { characterNotFoundError } from "../utils/errorMessageInterceptor";
@@ -27,7 +27,7 @@ export const getAllCharacters = async () => {
         skillDepotId,
         isTraveler,
         id,
-        weaponType,
+        weaponType
       } = character;
 
       return {
@@ -41,7 +41,7 @@ export const getAllCharacters = async () => {
         nameCard: character.nameCard?.pictures[0].url,
         element: element ? decryptTextAsset(element?.name) : null,
         isTraveler,
-        weaponType,
+        weaponType
       };
     });
 
@@ -86,7 +86,7 @@ export const getCharacterBySkillDepotId = async (
       sideIcon,
       releasedAt,
       isArchon,
-      bodyType,
+      bodyType
     } = response;
 
     const character = {
@@ -105,7 +105,7 @@ export const getCharacterBySkillDepotId = async (
       constellations,
       location: {
         faction: decryptTextAsset(details?.location),
-        region: !isTraveler ? region : "Unknown",
+        region: !isTraveler ? region : "Unknown"
       },
       vision: decryptTextAsset(details?.vision),
       constellation: decryptTextAsset(details?.constellation),
@@ -120,7 +120,7 @@ export const getCharacterBySkillDepotId = async (
       releasedAt,
       isArchon,
       birthday: details?.birthday,
-      bodyType,
+      bodyType
     };
 
     return character;
@@ -143,7 +143,7 @@ export const getAllCharacterLocations = async () => {
         skillDepotId: character.skillDepotId,
         nameId: _nameId,
         enkaId: character.id,
-        location: decryptTextAsset(details?.location),
+        location: decryptTextAsset(details?.location)
       };
     });
 

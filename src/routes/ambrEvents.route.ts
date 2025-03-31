@@ -14,7 +14,7 @@ export const eventRoutes = async (app: Elysia) => {
         return getAllEvents(language as ILanguageCode);
       },
       {
-        detail: eventSwagger.all,
+        detail: eventSwagger.all
       }
     );
 

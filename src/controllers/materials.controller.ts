@@ -14,7 +14,7 @@ export const getMaterialById = (id: string) => {
       materialType: response.materialType,
       itemType: response.itemType,
       stars: response.stars,
-      picture: response.pictures,
+      picture: response.pictures
     };
 
     return materialData;

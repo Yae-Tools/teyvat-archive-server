@@ -36,5 +36,5 @@ export {
   artifactNotFoundError,
   characterNotFoundError,
   materialNotFoundError,
-  weaponNotFoundError,
+  weaponNotFoundError
 };

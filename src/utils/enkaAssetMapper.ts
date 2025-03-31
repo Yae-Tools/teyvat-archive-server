@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   CharacterData,
   CharacterDetails,
@@ -10,7 +11,7 @@ import {
   Skill,
   TextAssets,
   WeaponData,
-  WeaponRefinement,
+  WeaponRefinement
 } from "enka-network-api";
 import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
 import { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
@@ -24,13 +25,13 @@ const regionMap = new Map<string, string>([
   ["ASSOC_TYPE_FONTAINE", "Fontaine"],
   ["ASSOC_TYPE_NATLAN", "Natlan"],
   ["ASSOC_TYPE_FATUI", "Fatui"],
-  ["ASSOC_TYPE_RANGER", "Ranger"],
+  ["ASSOC_TYPE_RANGER", "Ranger"]
 ]);
 
 function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   try {
     if (param) return param.get(lang as LanguageCode);
-  } catch (error) {
+  } catch (error: unknown) {
     return "";
   }
 }
@@ -40,7 +41,7 @@ function mapSkills(skills: Skill[]) {
     id: skill.id,
     name: decryptTextAsset(skill.name),
     description: decryptTextAsset(skill.description),
-    icon: skill.icon?.url,
+    icon: skill.icon?.url
   }));
 }
 
@@ -49,7 +50,7 @@ function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
     id: passive.id,
     name: decryptTextAsset(passive.name),
     description: decryptTextAsset(passive.description),
-    icon: passive.icon?.url,
+    icon: passive.icon?.url
   }));
 }
 
@@ -58,16 +59,16 @@ function mapConstellations(constellations: Constellation[]) {
     id: cons.id,
     name: decryptTextAsset(cons.name),
     description: decryptTextAsset(cons.description),
-    icon: cons.icon?.url,
+    icon: cons.icon?.url
   }));
 }
 
-function mapCostumes(costumes: Costume[]): any[] {
+function mapCostumes(costumes: Costume[]) {
   return costumes.map((costume) => ({
     id: costume.id,
     name: decryptTextAsset(costume.name),
     description: decryptTextAsset(costume.description),
-    icon: costume.icon?.url,
+    icon: costume.icon?.url
   }));
 }
 
@@ -83,7 +84,7 @@ function mapAbility(
     id,
     name: decryptTextAsset(name),
     description: decryptTextAsset(description),
-    icon,
+    icon
   };
 }
 
@@ -113,7 +114,7 @@ function mapRefinemetData(refinements: WeaponRefinement[]) {
       description: decryptTextAsset(description),
       id,
       level,
-      paramList,
+      paramList
     };
   });
 }
@@ -131,7 +132,7 @@ function mapWeaponStats(weaonData: WeaponData) {
     { ascension: 3, start: 50, end: 60 },
     { ascension: 4, start: 60, end: 70 },
     { ascension: 5, start: 70, end: 80 },
-    { ascension: 6, start: 80, end: 90 },
+    { ascension: 6, start: 80, end: 90 }
   ];
 
   const unsanitizedStats = ascensionRanges.flatMap(
@@ -148,7 +149,7 @@ function mapWeaponStats(weaonData: WeaponData) {
             isPercent: stat.isPercent,
             rawValue: stat.rawValue,
             value: stat.value,
-            multiplier: stat.getMultipliedValue(),
+            multiplier: stat.getMultipliedValue()
           };
         });
       })
@@ -157,21 +158,36 @@ function mapWeaponStats(weaonData: WeaponData) {
   //Remove empty arrays and flatten the array
   const sanitizedStats = unsanitizedStats.flat();
 
-  return sanitizedStats.reduce((acc: { [key: number]: any[] }, stat) => {
-    const level = stat.level;
-    if (!acc[level]) {
-      acc[level] = [];
-    }
-    acc[level].push({
-      fightProp: stat.fightProp,
-      fightPropName: stat.fightPropName,
-      isPercent: stat.isPercent,
-      rawValue: stat.rawValue,
-      value: stat.value,
-      multiplier: stat.multiplier,
-    });
-    return acc;
-  }, {});
+  return sanitizedStats.reduce(
+    (
+      acc: {
+        [key: number]: {
+          fightProp: string;
+          fightPropName: string;
+          isPercent: boolean;
+          rawValue: number;
+          value: number;
+          multiplier: number;
+        }[];
+      },
+      stat
+    ) => {
+      const level = stat.level;
+      if (!acc[level]) {
+        acc[level] = [];
+      }
+      acc[level].push({
+        fightProp: stat.fightProp,
+        fightPropName: stat.fightPropName as string,
+        isPercent: stat.isPercent,
+        rawValue: stat.rawValue,
+        value: stat.value,
+        multiplier: stat.multiplier
+      });
+      return acc;
+    },
+    {}
+  );
 }
 
 function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
@@ -186,7 +202,7 @@ function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
         name: artifact.name as string,
         icon: artifact.icon as string,
         stars: artifact.stars,
-        description: artifact.description,
+        description: artifact.description
       });
     }
   });
@@ -205,5 +221,5 @@ export {
   mapRefinemetData,
   mapWeaponStats,
   mapCharacterRegion,
-  getArtifactCollection,
+  getArtifactCollection
 };

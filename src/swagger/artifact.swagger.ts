@@ -6,9 +6,9 @@ const artifactSwagger = {
       "This will return all artifacts with basic information in the enka system",
     responses: {
       "200": {
-        description: "Return all artifacts",
-      },
-    },
+        description: "Return all artifacts"
+      }
+    }
   },
 
   sets: {
@@ -18,9 +18,9 @@ const artifactSwagger = {
       "This will return all artifact sets with basic information in the enka system",
     responses: {
       "200": {
-        description: "Return all artifact sets",
-      },
-    },
+        description: "Return all artifact sets"
+      }
+    }
   },
 
   id: {
@@ -30,17 +30,17 @@ const artifactSwagger = {
       "This will return artifact set by id with all information including individual artifacts related to the set in the enka system",
     responses: {
       "200": {
-        description: "Return artifact set by id",
+        description: "Return artifact set by id"
       },
 
       "422": {
-        description: "Invalid artifact set id",
+        description: "Invalid artifact set id"
       },
       "404": {
-        description: "Artifact set not found",
-      },
-    },
-  },
+        description: "Artifact set not found"
+      }
+    }
+  }
 };
 
 export default artifactSwagger;
