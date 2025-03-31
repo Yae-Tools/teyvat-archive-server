@@ -7,6 +7,7 @@ services:
       - .env  # Loads variables from .env
     environment:
       - NODE_ENV=production
+    restart: unless-stopped  # Restarts unless explicitly stopped with `docker-compose stop`
   
   caddy:
     image: caddy:latest
@@ -21,6 +22,7 @@ services:
       - PORT=${PORT}  # Passes the PORT variable to Caddy
     depends_on:
       - app  # Ensures the app service is started before Caddy
+    restart: unless-stopped  # Restarts unless explicitly stopped with `docker-compose stop`
 
 volumes:
   caddy_data:
