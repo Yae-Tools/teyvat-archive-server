@@ -3,7 +3,7 @@ import { getGameVersion } from "../controllers/system.controller";
 import systemSwagger from "../swagger/system.swagger";
 
 export const systemRoutes = async (app: Elysia) => {
-  app.get("/", () => "Welcome to Teyvat Archive API", {
+  app.get("/", () => "Welcome to Teyvat Archive API Server", {
     detail: systemSwagger.home,
   });
 
