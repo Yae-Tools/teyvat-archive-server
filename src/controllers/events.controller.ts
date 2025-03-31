@@ -1,8 +1,8 @@
 import { fetchAmberEvents } from "../services/system.service";
-import { IEvent, ILanguageCode } from "../types/events.type";
+import { IEvent, ILanguageCode, LANGUAGE_CODES } from "../types/events.type";
 
 export const getAllEvents = async (language?: ILanguageCode) => {
-  const LANG = language ?? "EN";
+  const LANG = language ?? LANGUAGE_CODES.EN;
   try {
     const eventsResponse = await fetchAmberEvents();
     const eventsParsed: IEvent[] = JSON.parse(eventsResponse);
