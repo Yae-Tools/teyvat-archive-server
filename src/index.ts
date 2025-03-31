@@ -11,8 +11,10 @@ import {
   weaponRoutes,
   calendarRoutes,
   codeRoutes,
+  abyssRoutes,
 } from "./routes";
 import {
+  fetchAbyssInfo,
   fetchAmberEvents,
   fetchHoyoCalendar,
   fetchHoyoGameRequest,
@@ -31,6 +33,7 @@ const routes = [
   systemRoutes,
   calendarRoutes,
   codeRoutes,
+  abyssRoutes,
 ];
 
 const app = new Elysia();
@@ -98,6 +101,7 @@ await Promise.all([
   fetchHoyoCalendar(),
   fetchAmberEvents(),
   fetchRedeemCodes(),
+  fetchAbyssInfo(),
 ]);
 
 app.listen(PORT);
