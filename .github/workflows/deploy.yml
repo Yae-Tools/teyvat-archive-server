@@ -31,14 +31,15 @@ jobs:
           ssh -i ~/.ssh/id_ed25519 ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/teyvat-archive-server
             cat > .env << 'INNER_EOF'
-              PROJECT_AMBR_BASE_URL=${{ secrets.PROJECT_AMBR_BASE_URL }}
-              HOYOPLAY_REQUEST_CAPTURE_URL=${{ secrets.HOYOPLAY_REQUEST_CAPTURE_URL }}
-              HOYO_GAME_CAPTURE_URL=${{ secrets.HOYO_GAME_CAPTURE_URL }}
-              HOYO_API=${{ secrets.HOYO_API }}
-              AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}
-              AZA_GG_API=${{ secrets.AZA_GG_API }}
-              PORT=${{ secrets.PORT }}
-            INNER_EOF
+          PROJECT_AMBR_BASE_URL=${{ secrets.PROJECT_AMBR_BASE_URL }}
+          HOYOPLAY_REQUEST_CAPTURE_URL=${{ secrets.HOYOPLAY_REQUEST_CAPTURE_URL }}
+          HOYO_GAME_CAPTURE_URL=${{ secrets.HOYO_GAME_CAPTURE_URL }}
+          HOYO_API=${{ secrets.HOYO_API }}
+          AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}
+          AZA_GG_API=${{ secrets.AZA_GG_API }}
+          PORT=${{ secrets.PORT }}
+          INNER_EOF
+            echo "Updated .env file with secrets."
           EOF
 
       - name: Building Docker
