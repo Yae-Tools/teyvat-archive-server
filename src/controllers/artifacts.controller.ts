@@ -1,11 +1,11 @@
 import {
   getAllArtifactSetsFromEnka,
   getAllArtifactsFromEnka,
-  getArtifactSetByIdFromEnka,
+  getArtifactSetByIdFromEnka
 } from "../services/enkaClient.service";
 import {
   decryptTextAsset,
-  getArtifactCollection,
+  getArtifactCollection
 } from "../utils/enkaAssetMapper";
 import { artifactNotFoundError } from "../utils/errorMessageInterceptor";
 
@@ -22,7 +22,7 @@ export const getAllArtifacts = async () => {
         icon,
         stars,
         set,
-        description,
+        description
       } = artifact;
 
       return {
@@ -36,8 +36,8 @@ export const getAllArtifacts = async () => {
         set: {
           id: set.id,
           name: decryptTextAsset(set.name),
-          icon: set.icon.url,
-        },
+          icon: set.icon.url
+        }
       };
     });
 
@@ -52,7 +52,7 @@ export const getAllArtifactSets = async () => {
   try {
     const [artifactSets, artifacts] = await Promise.all([
       getAllArtifactSetsFromEnka(),
-      getAllArtifactsFromEnka(),
+      getAllArtifactsFromEnka()
     ]);
     const setRarities = new Map();
 
@@ -78,7 +78,7 @@ export const getAllArtifactSets = async () => {
         name: decryptTextAsset(name),
         icon: icon.url,
         rarities,
-        highestRarity: Math.max(...rarities),
+        highestRarity: Math.max(...rarities)
       };
     });
 
@@ -94,7 +94,7 @@ export const getArtifactSetById = async (id: string) => {
     const [artifactSet, artifactSets, artifacts] = await Promise.all([
       getArtifactSetByIdFromEnka(id),
       getAllArtifactSets(),
-      getAllArtifacts(),
+      getAllArtifacts()
     ]);
 
     const { name, icon, setBonus } = artifactSet;
@@ -118,10 +118,10 @@ export const getArtifactSetById = async (id: string) => {
           value: prop.value,
           isPercent: prop.isPercent,
           rawValue: prop.rawValue,
-          multiplier: prop.getMultipliedValue(),
-        })),
+          multiplier: prop.getMultipliedValue()
+        }))
       })),
-      collection: artifactCollection,
+      collection: artifactCollection
     };
   } catch (error: unknown) {
     if (error instanceof Error) {

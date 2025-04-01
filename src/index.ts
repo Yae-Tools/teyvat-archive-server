@@ -11,7 +11,7 @@ import {
   weaponRoutes,
   calendarRoutes,
   codeRoutes,
-  abyssRoutes,
+  abyssRoutes
 } from "./routes";
 import {
   fetchAbyssInfo,
@@ -19,7 +19,7 @@ import {
   fetchHoyoCalendar,
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest,
-  fetchRedeemCodes,
+  fetchRedeemCodes
 } from "./services/system.service";
 
 const PORT = process.env.PORT ?? 5000;
@@ -33,14 +33,14 @@ const routes = [
   systemRoutes,
   calendarRoutes,
   codeRoutes,
-  abyssRoutes,
+  abyssRoutes
 ];
 
 const app = new Elysia();
 
 app.use(
   cors({
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type"]
   })
 );
 
@@ -50,44 +50,44 @@ app.use(
       info: {
         title: "Teyvat Archive API",
         version: "1.0.0",
-        description: "API for Genshin Impact data",
+        description: "API for Genshin Impact data"
       },
       tags: [
         {
           name: "Characters",
-          description: "Character endpoints",
+          description: "Character endpoints"
         },
         {
           name: "Materials",
-          description: "Material endpoints",
+          description: "Material endpoints"
         },
         {
           name: "Weapons",
-          description: "Weapon endpoints",
+          description: "Weapon endpoints"
         },
         {
           name: "Events",
-          description: "Event endpoints",
+          description: "Event endpoints"
         },
         {
           name: "Calendar",
-          description: "Calendar endpoints",
+          description: "Calendar endpoints"
         },
         {
           name: "Artifacts",
-          description: "Artifact endpoints",
+          description: "Artifact endpoints"
         },
         {
           name: "Codes",
-          description: "Redeem code endpoints",
+          description: "Redeem code endpoints"
         },
         {
           name: "System",
-          description: "System endpoints",
-        },
-      ],
+          description: "System endpoints"
+        }
+      ]
     },
-    path: "/docs",
+    path: "/docs"
   })
 );
 
@@ -101,7 +101,7 @@ await Promise.all([
   fetchHoyoCalendar(),
   fetchAmberEvents(),
   fetchRedeemCodes(),
-  fetchAbyssInfo(),
+  fetchAbyssInfo()
 ]);
 
 app.listen(PORT);

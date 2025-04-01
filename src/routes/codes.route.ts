@@ -10,7 +10,7 @@ export const codeRoutes = async (app: Elysia) => {
         return getAllRedeemCodes();
       },
       {
-        detail: codeSwagger.all,
+        detail: codeSwagger.all
       }
     );
 

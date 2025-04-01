@@ -13,7 +13,7 @@ export const materialRoutes = async (app: Elysia) => {
       },
       {
         params: materialIdValidation.params,
-        detail: materialSwagger.id,
+        detail: materialSwagger.id
       }
     );
 

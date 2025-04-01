@@ -4,9 +4,9 @@ const weaponSwagger = {
     summary: "Get all weapons",
     responses: {
       "200": {
-        description: "Return all weapons",
-      },
-    },
+        description: "Return all weapons"
+      }
+    }
   },
 
   series: {
@@ -14,9 +14,9 @@ const weaponSwagger = {
     summary: "Get all weapon series",
     responses: {
       "200": {
-        description: "Return all weapon series",
-      },
-    },
+        description: "Return all weapon series"
+      }
+    }
   },
 
   id: {
@@ -24,17 +24,17 @@ const weaponSwagger = {
     summary: "Get weapon by id",
     responses: {
       "200": {
-        description: "Return weapon by id",
+        description: "Return weapon by id"
       },
 
       "422": {
-        description: "Invalid weapon id",
+        description: "Invalid weapon id"
       },
       "404": {
-        description: "Weapon not found",
-      },
-    },
-  },
+        description: "Weapon not found"
+      }
+    }
+  }
 };
 
 export default weaponSwagger;

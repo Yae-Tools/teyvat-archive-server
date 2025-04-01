@@ -3,7 +3,7 @@ import { Elysia } from "elysia";
 import {
   getAllArtifacts,
   getAllArtifactSets,
-  getArtifactSetById,
+  getArtifactSetById
 } from "../controllers/artifacts.controller";
 import { artifactIdValidation } from "../schema/artifact.schema";
 import artifactSwagger from "../swagger/artifact.swagger";
@@ -16,7 +16,7 @@ export const artifactRoutes = async (app: Elysia) => {
         return getAllArtifacts();
       },
       {
-        detail: artifactSwagger.all,
+        detail: artifactSwagger.all
       }
     );
 
@@ -26,7 +26,7 @@ export const artifactRoutes = async (app: Elysia) => {
         return getAllArtifactSets();
       },
       {
-        detail: artifactSwagger.sets,
+        detail: artifactSwagger.sets
       }
     );
 
@@ -37,7 +37,7 @@ export const artifactRoutes = async (app: Elysia) => {
       },
       {
         params: artifactIdValidation.params,
-        detail: artifactSwagger.id,
+        detail: artifactSwagger.id
       }
     );
 

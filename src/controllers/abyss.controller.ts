@@ -14,7 +14,7 @@ export const getAbyssData = async () => {
         sample_size_x_b: abyssParsed.data.sample_size_x_b,
         sample_collection_progress: abyssParsed.data.sample_collection_progress,
         sample_countries: abyssParsed.data.sample_countries,
-        threshold: abyssParsed.data.threshold,
+        threshold: abyssParsed.data.threshold
       },
       characters: Object.keys(abyssParsed.data.character).map((key) => {
         const character = abyssParsed.data.character[key];
@@ -25,16 +25,16 @@ export const getAbyssData = async () => {
           use_by_own_rate: character.use_by_own_rate,
           weapons: character.weapons.map((weapon) => ({
             id: weapon.id,
-            value: weapon.value,
+            value: weapon.value
           })),
           artifacts: character.artifacts.map((artifact) => ({
             set: artifact.set,
-            value: artifact.value,
+            value: artifact.value
           })),
           constellations: character.constellations.map((constellation) => ({
             id: constellation.id,
-            value: constellation.value,
-          })),
+            value: constellation.value
+          }))
           //   relation_overall: character.relation_overall.map((relation) => ({
           //     id: relation.id,
           //     value: relation.value,
@@ -79,9 +79,9 @@ export const getAbyssData = async () => {
           id: key,
           value: party.value,
           own_rate: party.own_rate,
-          use_by_own_rate: party.use_by_own_rate,
+          use_by_own_rate: party.use_by_own_rate
         };
-      }),
+      })
     };
 
     return sanitizedData;

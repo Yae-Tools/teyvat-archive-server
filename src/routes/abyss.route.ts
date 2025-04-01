@@ -15,10 +15,10 @@ export const abyssRoutes = async (app: Elysia) => {
           description: "Fetches Abyss data",
           responses: {
             200: {
-              description: "Abyss data fetched successfully",
-            },
-          },
-        },
+              description: "Abyss data fetched successfully"
+            }
+          }
+        }
       }
     );
 

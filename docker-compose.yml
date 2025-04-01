@@ -2,27 +2,27 @@ services:
   app:
     build: .
     ports:
-      - "${PORT}:${PORT}"  # Maps host PORT to container PORT
+      - "${PORT}:${PORT}" # Maps host PORT to container PORT
     env_file:
-      - .env  # Loads variables from .env
+      - .env # Loads variables from .env
     environment:
       - NODE_ENV=production
-    restart: unless-stopped  # Restarts unless explicitly stopped with `docker-compose stop`
-  
+    restart: unless-stopped # Restarts unless explicitly stopped with `docker-compose stop`
+
   caddy:
     image: caddy:latest
     ports:
-      - "80:80"  # Maps host port 80 to container port 80
-      - "443:443"  # Maps host port 443 to container port 443
+      - "80:80" # Maps host port 80 to container port 80
+      - "443:443" # Maps host port 443 to container port 443
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile  # Mounts Caddyfile into the container
-      - caddy_data:/data  # Persistent data for Caddy
-      - caddy_config:/config  # Persistent config for Caddy
+      - ./Caddyfile:/etc/caddy/Caddyfile # Mounts Caddyfile into the container
+      - caddy_data:/data # Persistent data for Caddy
+      - caddy_config:/config # Persistent config for Caddy
     environment:
-      - PORT=${PORT}  # Passes the PORT variable to Caddy
+      - PORT=${PORT} # Passes the PORT variable to Caddy
     depends_on:
-      - app  # Ensures the app service is started before Caddy
-    restart: unless-stopped  # Restarts unless explicitly stopped with `docker-compose stop`
+      - app # Ensures the app service is started before Caddy
+    restart: unless-stopped # Restarts unless explicitly stopped with `docker-compose stop`
 
 volumes:
   caddy_data:

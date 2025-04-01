@@ -4,16 +4,16 @@ const materialSwagger = {
     summary: "Get material by id",
     responses: {
       "200": {
-        description: "Return material by id",
+        description: "Return material by id"
       },
       "422": {
-        description: "Invalid material id",
+        description: "Invalid material id"
       },
       "404": {
-        description: "Material not found",
-      },
-    },
-  },
+        description: "Material not found"
+      }
+    }
+  }
 };
 
 export default materialSwagger;

@@ -4,10 +4,10 @@ const calendarSwagger = {
     description: "Get all calendar events",
     responses: {
       "200": {
-        description: "Get all calendar events",
-      },
-    },
-  },
+        description: "Get all calendar events"
+      }
+    }
+  }
 };
 
 export default calendarSwagger;

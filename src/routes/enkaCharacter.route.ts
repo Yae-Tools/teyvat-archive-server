@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import {
   getAllCharacterLocations,
   getAllCharacters,
-  getCharacterBySkillDepotId,
+  getCharacterBySkillDepotId
 } from "../controllers/characters.controller";
 import { characterIdValidation } from "../schema/character.schema";
 import characterSwagger from "../swagger/character.swagger";
@@ -15,7 +15,7 @@ export const characterRoutes = async (app: Elysia) => {
         return getAllCharacters();
       },
       {
-        detail: characterSwagger.all,
+        detail: characterSwagger.all
       }
     );
 
@@ -25,7 +25,7 @@ export const characterRoutes = async (app: Elysia) => {
         return getAllCharacterLocations();
       },
       {
-        detail: characterSwagger.locations,
+        detail: characterSwagger.locations
       }
     );
 
@@ -37,7 +37,7 @@ export const characterRoutes = async (app: Elysia) => {
       {
         params: characterIdValidation.params,
         query: characterIdValidation.query,
-        detail: characterSwagger.id,
+        detail: characterSwagger.id
       }
     );
 

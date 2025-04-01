@@ -1,12 +1,12 @@
 import { WeaponData } from "enka-network-api";
 import {
   getAllWeaponsFromEnka,
-  getWeaponByIdFromEnka,
+  getWeaponByIdFromEnka
 } from "../services/enkaClient.service";
 import {
   decryptTextAsset,
   mapRefinemetData,
-  mapWeaponStats,
+  mapWeaponStats
 } from "../utils/enkaAssetMapper";
 import { weaponNotFoundError } from "../utils/errorMessageInterceptor";
 
@@ -27,7 +27,7 @@ export const getAllWeapons = async () => {
         stars,
         weaponType,
         series: _nameId.split("_")[1],
-        data: _data,
+        data: _data
       };
     });
 
@@ -53,7 +53,7 @@ export const getWeaponById = async (id: string) => {
       stars,
       weaponType,
       description,
-      splashImage,
+      splashImage
     } = response;
 
     return {
@@ -68,7 +68,7 @@ export const getWeaponById = async (id: string) => {
       series: _nameId.split("_")[1],
       weaponType,
       refinements,
-      stats,
+      stats
     };
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -87,7 +87,16 @@ export const getAllWeaponSeries = async () => {
     // eg: if _nameId is "Sword_Blunt", group it as Blunt series. find other weapons with same 2nd part of _nameId
 
     const weaponSeries = response.reduce(
-      (acc: { [key: string]: any[] }, weapon) => {
+      (
+        acc: {
+          [key: string]: {
+            id: string;
+            enkaId: string;
+            name: string;
+          }[];
+        },
+        weapon
+      ) => {
         const { id, name, _nameId } = weapon;
 
         const series = _nameId.split("_")[1];
@@ -98,8 +107,8 @@ export const getAllWeaponSeries = async () => {
 
         acc[series].push({
           id: _nameId,
-          enkaId: id,
-          name: decryptTextAsset(name),
+          enkaId: id.toString(),
+          name: decryptTextAsset(name) as string
         });
 
         return acc;

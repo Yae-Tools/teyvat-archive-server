@@ -4,7 +4,7 @@ export const LANGUAGE_CODES = {
   CHS: "CHS", // Simplified Chinese
   CHT: "CHT", // Traditional Chinese
   KR: "KR",
-  JP: "JP",
+  JP: "JP"
 } as const;
 
 type ILanguageCode = (typeof LANGUAGE_CODES)[keyof typeof LANGUAGE_CODES];

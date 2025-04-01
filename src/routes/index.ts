@@ -17,5 +17,5 @@ export {
   weaponRoutes,
   calendarRoutes,
   codeRoutes,
-  abyssRoutes,
+  abyssRoutes
 };

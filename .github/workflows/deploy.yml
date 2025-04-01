@@ -24,6 +24,16 @@ jobs:
           ssh -i ~/.ssh/id_ed25519 ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/teyvat-archive-server
             git pull origin master
+            # Write ENV variables to .env
+            cat > .env << 'ENV_EOF'
+            PROJECT_AMBR_BASE_URL=${{ secrets.PROJECT_AMBR_BASE_URL }}
+            HOYOPLAY_REQUEST_CAPTURE_URL=${{ secrets.HOYOPLAY_REQUEST_CAPTURE_URL }}
+            HOYO_GAME_CAPTURE_URL=${{ secrets.HOYO_GAME_CAPTURE_URL }}
+            HOYO_API=${{ secrets.HOYO_API }}
+            AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}
+            AZA_GG_API=${{ secrets.AZA_GG_API }}
+            PORT=${{ secrets.PORT }}
+            ENV_EOF
             docker-compose down
             docker-compose up -d --build
           EOF
