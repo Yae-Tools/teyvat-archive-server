@@ -14,6 +14,7 @@ import {
   abyssRoutes
 } from "./routes";
 import {
+  fetchAbyssBlessingInfo,
   fetchAbyssInfo,
   fetchAmberEvents,
   fetchHoyoCalendar,
@@ -101,7 +102,8 @@ await Promise.all([
   fetchHoyoCalendar(),
   fetchAmberEvents(),
   fetchRedeemCodes(),
-  fetchAbyssInfo()
+  fetchAbyssInfo(),
+  fetchAbyssBlessingInfo()
 ]);
 
 app.listen(PORT);
