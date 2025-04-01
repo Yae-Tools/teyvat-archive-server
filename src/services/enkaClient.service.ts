@@ -2,7 +2,7 @@ import { EnkaClient } from "enka-network-api";
 
 const enka = new EnkaClient({
   defaultLanguage: "en",
-  githubToken: process.env.GITHUB_TOKEN,
+  githubToken: process.env.AUTH_TOKEN,
   cacheDirectory: "/tmp/enka-cache"
 });
 
