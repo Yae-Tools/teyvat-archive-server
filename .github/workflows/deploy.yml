@@ -37,6 +37,7 @@ jobs:
           HOYO_API=${{ secrets.HOYO_API }}
           AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}
           AZA_GG_API=${{ secrets.AZA_GG_API }}
+          HAKUSH_ABYSS_API=${{ secrets.HAKUSH_ABYSS_API }}
           PORT=${{ secrets.PORT }}
           INNER_EOF
             echo "Updated .env file with secrets."
