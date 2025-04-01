@@ -88,3 +88,17 @@ interface IAbyssData {
     party: IAbyssParty;
   };
 }
+
+interface IAbyssBlessing {
+  begin: string;
+  end: string;
+  icon: string;
+  EN: string;
+  desc: string;
+  live_begin: string;
+  live_end: string;
+}
+
+interface IAbyssBlessingData {
+  [key: string]: IAbyssBlessing;
+}

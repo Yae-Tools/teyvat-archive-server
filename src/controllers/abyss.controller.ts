@@ -1,4 +1,7 @@
-import { fetchAbyssInfo } from "../services/system.service";
+import {
+  fetchAbyssBlessingInfo,
+  fetchAbyssInfo
+} from "../services/system.service";
 
 export const getAbyssData = async () => {
   try {
@@ -87,6 +90,32 @@ export const getAbyssData = async () => {
     return sanitizedData;
   } catch (error) {
     console.error("Error fetching abyss data:", error);
+    return null;
+  }
+};
+
+export const getAbyssMoonBlessingData = async () => {
+  try {
+    const abyssBlessingResponse = await fetchAbyssBlessingInfo();
+    const abyssBlessingParsed: IAbyssBlessingData = JSON.parse(
+      abyssBlessingResponse
+    );
+
+    const sanitziedData = Object.keys(abyssBlessingParsed).map((key) => {
+      const blessing = abyssBlessingParsed[key];
+      return {
+        id: key,
+        begin: blessing.live_begin,
+        end: blessing.live_end,
+        icon: blessing.icon,
+        name: blessing.EN,
+        description: blessing.desc
+      };
+    });
+
+    return sanitziedData;
+  } catch (error) {
+    console.error("Error fetching abyss blessing data:", error);
     return null;
   }
 };

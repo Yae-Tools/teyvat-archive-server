@@ -40,6 +40,12 @@ const FILES = {
     meta: path.join(BASE_DIR, "AbyssInfoMetadata.json"),
     url: process.env.AZA_GG_API + "?key_id=genshin_abyss_statistics&ttl=86400",
     name: "Abyss Info"
+  },
+  abyssBlessing: {
+    data: path.join(BASE_DIR, "AbyssBlessingInfo.json"),
+    meta: path.join(BASE_DIR, "AbyssBlessingInfoMetadata.json"),
+    url: process.env.HAKUSH_ABYSS_API + "/data/tower.json",
+    name: "Abyss Blessing Info"
   }
 };
 
@@ -113,3 +119,4 @@ export const fetchHoyoPlayRequest = () => fetchData("build");
 export const fetchAmberEvents = () => fetchData("events");
 export const fetchRedeemCodes = () => fetchData("codes");
 export const fetchAbyssInfo = () => fetchData("abyss");
+export const fetchAbyssBlessingInfo = () => fetchData("abyssBlessing");
