@@ -101,7 +101,7 @@ export const getAbyssMoonBlessingData = async () => {
       abyssBlessingResponse
     );
 
-    const sanitziedData = Object.keys(abyssBlessingParsed).map((key) => {
+    const sanitizedData = Object.keys(abyssBlessingParsed).map((key) => {
       const blessing = abyssBlessingParsed[key];
       return {
         id: key,
@@ -113,7 +113,7 @@ export const getAbyssMoonBlessingData = async () => {
       };
     });
 
-    return sanitziedData;
+    return sanitizedData;
   } catch (error) {
     console.error("Error fetching abyss blessing data:", error);
     return null;
