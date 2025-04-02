@@ -1,6 +1,6 @@
 export const parsePartyData = (partyData: IAbyssPartyData[]) => {
   return partyData.map((party) => ({
-    characrerIds: party.id.split(","),
+    characterIds: party.id.split(","),
     value: party.value,
     ownRate: party.own_rate,
     useByOwnRate: party.use_by_own_rate
