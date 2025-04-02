@@ -67,9 +67,7 @@ interface IAbyssPartyData {
 }
 
 interface IAbyssParty {
-  [key: string]: {
-    [key: string]: IAbyssPartyData[];
-  };
+  [key: string]: IAbyssPartyData[];
 }
 
 interface IAbyssData {
