@@ -36,13 +36,110 @@ function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
   }
 }
 
-function mapSkills(skills: Skill[]) {
-  return skills.map((skill) => ({
+function mapSkills(
+  skills: Skill[],
+  NormalAttack: NormalAttack,
+  elementalSkill: ElementalSkill,
+  elementalBurst: ElementalBurst
+) {
+  const filterredSkills = skills.filter(
+    (skill) =>
+      skill.id !== NormalAttack.id &&
+      skill.id !== elementalSkill.id &&
+      skill.id !== elementalBurst.id
+  );
+
+  const mappedSkills = filterredSkills.map((skill) => ({
     id: skill.id,
     name: decryptTextAsset(skill.name),
     description: decryptTextAsset(skill.description),
-    icon: skill.icon?.url
+    icon: skill.icon?.url,
+    data: skill._data
   }));
+
+  const TALENT_LEVELS = 15;
+
+  // Helper function to generate attributes
+  function getAttributes(
+    skill: NormalAttack | ElementalSkill | ElementalBurst
+  ) {
+    const rawStats = Array.from({ length: TALENT_LEVELS }, (_, i) => {
+      return skill.getSkillAttributes(i + 1).map((attribute) => {
+        const data = attribute.getAttributeData();
+        return {
+          name: data.name,
+          value: data.valueText,
+          usedNumbers: data.usedNumbers,
+          level: i + 1
+        };
+      });
+    }).flat();
+
+    return [...new Set(rawStats.map((stat) => stat.name))].map((name) => {
+      const statsForName = rawStats.filter((stat) => stat.name === name);
+      return {
+        name,
+        values: statsForName.map((stat) => ({
+          level: stat.level,
+          value: stat.value
+        })),
+        usedNumbers: statsForName.map((stat) => ({
+          level: stat.level,
+          value: stat.usedNumbers
+        }))
+      };
+    });
+  }
+
+  // Generate attributes for each skill type
+  const normalAttackAttributes = getAttributes(NormalAttack);
+  const elementalSkillAttributes = getAttributes(elementalSkill);
+  const elementalBurstAttributes = getAttributes(elementalBurst);
+
+  const mappedNormalAttack = {
+    id: NormalAttack.id,
+    name: decryptTextAsset(NormalAttack.name),
+    description: decryptTextAsset(NormalAttack.description),
+    icon: NormalAttack.icon?.url,
+    stats: normalAttackAttributes
+  };
+
+  const mappedElementalSkill = {
+    id: elementalSkill.id,
+    name: decryptTextAsset(elementalSkill.name),
+    description: decryptTextAsset(elementalSkill.description),
+    icon: elementalSkill.icon?.url,
+    stats: elementalSkillAttributes
+  };
+
+  const mappedElementalBurst = {
+    id: elementalBurst.id,
+    name: decryptTextAsset(elementalBurst.name),
+    description: decryptTextAsset(elementalBurst.description),
+    icon: elementalBurst.icon?.url,
+    stats: elementalBurstAttributes
+  };
+
+  // Rearrange them to a single array in the order of original skills
+  const mappedAbilities = [
+    mappedNormalAttack,
+    mappedElementalSkill,
+    mappedElementalBurst
+  ];
+
+  // Rearrange into a single array in the order of original skills
+  const mappedSkillsWithAbilities = skills.map((originalSkill) => {
+    // Check if this skill is one of the abilities (Normal Attack, Elemental Skill, Burst)
+    const ability = mappedAbilities.find((a) => a.id === originalSkill.id);
+    if (ability) {
+      return ability;
+    }
+    // Otherwise, find it in mappedSkills (non-ability skills)
+    const skill = mappedSkills.find((s) => s.id === originalSkill.id);
+    return skill || null; // Return null if not found (shouldn't happen with proper data)
+  });
+
+  return mappedSkillsWithAbilities;
 }
 
 function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
@@ -50,7 +147,8 @@ function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
     id: passive.id,
     name: decryptTextAsset(passive.name),
     description: decryptTextAsset(passive.description),
-    icon: passive.icon?.url
+    icon: passive.icon?.url,
+    data: passive._data
   }));
 }
 
