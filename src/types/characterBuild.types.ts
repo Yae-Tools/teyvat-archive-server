@@ -1,6 +1,6 @@
-export interface ICharacterBuild {
-  buildId: string;
+export interface ICharacterBuildInput {
   buildName: string;
+  characterId: string;
   lastUpdate: string;
   weapons: {
     weaponId: string;
@@ -11,12 +11,11 @@ export interface ICharacterBuild {
   }[];
   artifacts: {
     mainArtifactSetId: string;
-    secondaryArtifactSets?: [
-      {
-        artifactSetIds: string[];
-        artifactSetName: string;
-      }
-    ];
+    secondaryArtifactSets?: {
+      artifactSetIds: string[];
+      artifactSetName: string;
+    }[];
+
     rank: number;
   }[];
 
@@ -24,17 +23,17 @@ export interface ICharacterBuild {
     sands: string[];
     goblet: string[];
     circlet: string[];
-    notes: string;
+    notes?: string;
   };
   subStats: {
     stats: string[];
-    notes: string;
+    notes?: string;
   };
   talentPriority: {
     normalAttack: number;
     elementalSkill: number;
     elementalBurst: number;
-    notes: string;
+    notes?: string;
   };
-  notes: string;
+  notes?: string;
 }
