@@ -17,7 +17,7 @@
     "elysia": "^1.2.25",
     "elysia-rate-limit": "^4.3.0",
     "enka-network-api": "^5.0.3",
-    "mongoose": "^8.13.1",
+    "mongoose": "^8.13.2",
     "nanoid": "^5.1.5"
   },
   "devDependencies": {
