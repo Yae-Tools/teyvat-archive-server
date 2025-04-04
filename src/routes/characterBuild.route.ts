@@ -8,10 +8,14 @@ export const characterBuildRoutes = async (app: Elysia) => {
       "/create",
       async ({ body }) => {
         const build = await createCharacterBuildHandler(body);
-        return build;
+        return {
+          status: 201,
+          message: "Build created successfully",
+          data: build
+        };
       },
       {
-        body: createCharacterBuildValidation.body
+        body: createCharacterBuildValidation
       }
     );
     return builds;
