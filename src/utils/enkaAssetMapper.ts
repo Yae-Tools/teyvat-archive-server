@@ -49,7 +49,7 @@ function mapSkills(
       skill.id !== elementalBurst.id
   );
 
-  const mappedSkills = filterredSkills.map((skill) => ({
+  const mappedSkills = filteredSkills.map((skill) => ({
     id: skill.id,
     name: decryptTextAsset(skill.name),
     description: decryptTextAsset(skill.description),
