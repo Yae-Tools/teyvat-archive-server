@@ -23,32 +23,34 @@ export const getAllCharacters = async () => {
   try {
     const response = getAllCharactersFromEnka();
 
-    const characters = response.map((character) => {
-      const {
-        _nameId,
-        rarity,
-        icon,
-        element,
-        skillDepotId,
-        isTraveler,
-        id,
-        weaponType
-      } = character;
+    const characters = response
+      .filter((char) => char.element !== null)
+      .map((character) => {
+        const {
+          _nameId,
+          rarity,
+          icon,
+          element,
+          skillDepotId,
+          isTraveler,
+          id,
+          weaponType
+        } = character;
 
-      return {
-        id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
-        enkaId: id,
-        name: decryptTextAsset(character.name),
-        nameId: _nameId,
-        skillDepotId,
-        rarity,
-        iconUrl: icon.url,
-        nameCard: character.nameCard?.pictures[0].url,
-        element: element ? decryptTextAsset(element?.name) : null,
-        isTraveler,
-        weaponType
-      };
-    });
+        return {
+          id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
+          enkaId: id,
+          name: decryptTextAsset(character.name),
+          nameId: _nameId,
+          skillDepotId,
+          rarity,
+          iconUrl: icon.url,
+          nameCard: character.nameCard?.pictures[0].url,
+          element: element ? decryptTextAsset(element?.name) : null,
+          isTraveler,
+          weaponType
+        };
+      });
 
     return characters;
   } catch (error) {
