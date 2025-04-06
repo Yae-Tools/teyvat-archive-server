@@ -76,6 +76,7 @@ export const getCharacterBySkillDepotId = async (
       response.elementalSkill as ElementalSkill,
       response.elementalBurst as ElementalBurst
     );
+
     const passiveTalents = mapPassiveTalents(response.passiveTalents);
     const constellations = mapConstellations(response.constellations);
 
