@@ -1,4 +1,9 @@
-import { CharacterData, CharacterDetails } from "enka-network-api";
+import {
+  CharacterData,
+  CharacterDetails,
+  ElementalBurst,
+  ElementalSkill
+} from "enka-network-api";
 import {
   getAllCharactersFromEnka,
   getCharacterByIdFromEnka
@@ -18,32 +23,34 @@ export const getAllCharacters = async () => {
   try {
     const response = getAllCharactersFromEnka();
 
-    const characters = response.map((character) => {
-      const {
-        _nameId,
-        rarity,
-        icon,
-        element,
-        skillDepotId,
-        isTraveler,
-        id,
-        weaponType
-      } = character;
+    const characters = response
+      .filter((char) => char.element !== null)
+      .map((character) => {
+        const {
+          _nameId,
+          rarity,
+          icon,
+          element,
+          skillDepotId,
+          isTraveler,
+          id,
+          weaponType
+        } = character;
 
-      return {
-        id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
-        enkaId: id,
-        name: decryptTextAsset(character.name),
-        nameId: _nameId,
-        skillDepotId,
-        rarity,
-        iconUrl: icon.url,
-        nameCard: character.nameCard?.pictures[0].url,
-        element: element ? decryptTextAsset(element?.name) : null,
-        isTraveler,
-        weaponType
-      };
-    });
+        return {
+          id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
+          enkaId: id,
+          name: decryptTextAsset(character.name),
+          nameId: _nameId,
+          skillDepotId,
+          rarity,
+          iconUrl: icon.url,
+          nameCard: character.nameCard?.pictures[0].url,
+          element: element ? decryptTextAsset(element?.name) : null,
+          isTraveler,
+          weaponType
+        };
+      });
 
     return characters;
   } catch (error) {
@@ -62,10 +69,16 @@ export const getCharacterBySkillDepotId = async (
       skillDepotId
     );
 
-    const skills = mapSkills(response.skills);
+    const ascensionData = mapAscensionData(response);
+    const skills = mapSkills(
+      response.skills,
+      response.normalAttack,
+      response.elementalSkill as ElementalSkill,
+      response.elementalBurst as ElementalBurst
+    );
     const passiveTalents = mapPassiveTalents(response.passiveTalents);
     const constellations = mapConstellations(response.constellations);
-    const ascensionData = mapAscensionData(response);
+
     const region = await mapCharacterRegion(
       response.details as CharacterDetails
     );

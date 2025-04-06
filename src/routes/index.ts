@@ -7,6 +7,7 @@ import { systemRoutes } from "./system.route";
 import { calendarRoutes } from "./calendar.route";
 import { codeRoutes } from "./codes.route";
 import { abyssRoutes } from "./abyss.route";
+import { characterBuildRoutes } from "./characterBuild.route";
 
 export {
   artifactRoutes,
@@ -17,5 +18,6 @@ export {
   weaponRoutes,
   calendarRoutes,
   codeRoutes,
-  abyssRoutes
+  abyssRoutes,
+  characterBuildRoutes
 };

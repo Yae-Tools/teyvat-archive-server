@@ -11,7 +11,8 @@ import {
   weaponRoutes,
   calendarRoutes,
   codeRoutes,
-  abyssRoutes
+  abyssRoutes,
+  characterBuildRoutes
 } from "./routes";
 import {
   fetchAbyssBlessingInfo,
@@ -22,6 +23,7 @@ import {
   fetchHoyoPlayRequest,
   fetchRedeemCodes
 } from "./services/system.service";
+import dbClient from "./db/dbClient";
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -34,7 +36,8 @@ const routes = [
   systemRoutes,
   calendarRoutes,
   codeRoutes,
-  abyssRoutes
+  abyssRoutes,
+  characterBuildRoutes
 ];
 
 const app = new Elysia();
@@ -103,7 +106,10 @@ await Promise.all([
   fetchAmberEvents(),
   fetchRedeemCodes(),
   fetchAbyssInfo(),
-  fetchAbyssBlessingInfo()
+  fetchAbyssBlessingInfo(),
+  dbClient().catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+  })
 ]);
 
 app.listen(PORT);
