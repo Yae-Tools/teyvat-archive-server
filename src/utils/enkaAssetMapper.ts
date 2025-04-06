@@ -42,7 +42,7 @@ function mapSkills(
   elementalSkill: ElementalSkill,
   elementalBurst: ElementalBurst
 ) {
-  const filterredSkills = skills.filter(
+  const filteredSkills = skills.filter(
     (skill) =>
       skill.id !== NormalAttack.id &&
       skill.id !== elementalSkill.id &&
