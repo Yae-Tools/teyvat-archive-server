@@ -1,3 +1,4 @@
+import { refetchEnkaCache } from "../services/enkaClient.service";
 import {
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest
@@ -27,5 +28,14 @@ export const getGameVersion = async () => {
     };
   } catch (error: unknown) {
     return { version: "Unknown", build: "", error: error };
+  }
+};
+
+export const refetchCache = async () => {
+  try {
+    refetchEnkaCache();
+  } catch (error) {
+    console.error("Error refetching cache:", error);
+    throw error;
   }
 };

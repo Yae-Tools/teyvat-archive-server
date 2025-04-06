@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { getGameVersion } from "../controllers/system.controller";
+import { getGameVersion, refetchCache } from "../controllers/system.controller";
 import systemSwagger from "../swagger/system.swagger";
 
 export const systemRoutes = async (app: Elysia) => {
@@ -35,6 +35,17 @@ export const systemRoutes = async (app: Elysia) => {
       },
       {
         detail: systemSwagger.gameVersion
+      }
+    );
+
+    system.get(
+      "/cache/refresh",
+      async () => {
+        refetchCache();
+        return { status: "ok" };
+      },
+      {
+        // detail: systemSwagger.cacheRefresh
       }
     );
 

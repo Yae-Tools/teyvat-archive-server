@@ -49,3 +49,7 @@ export const getArtifactSetByIdFromEnka = (id: string) => {
 export function getMaterialByEnkaId(materialId: number) {
   return enka.getMaterialById(materialId);
 }
+
+export function refetchEnkaCache() {
+  return enka.cachedAssetsManager.fetchAllContents();
+}
