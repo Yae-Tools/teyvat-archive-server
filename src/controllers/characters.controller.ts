@@ -14,7 +14,8 @@ import {
   mapCharacterRegion,
   mapConstellations,
   mapPassiveTalents,
-  mapSkills
+  mapSkills,
+  releaseDateMapper
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import { characterNotFoundError } from "../utils/errorMessageInterceptor";
@@ -37,6 +38,11 @@ export const getAllCharacters = async () => {
           weaponType
         } = character;
 
+        const releasedAt = releaseDateMapper(
+          character.releasedAt,
+          character.skillDepotId
+        );
+
         return {
           id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
           enkaId: id,
@@ -48,7 +54,8 @@ export const getAllCharacters = async () => {
           nameCard: character.nameCard?.pictures[0].url,
           element: element ? decryptTextAsset(element?.name) : null,
           isTraveler,
-          weaponType
+          weaponType,
+          releasedAt
         };
       });
 
