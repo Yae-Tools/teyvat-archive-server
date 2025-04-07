@@ -1,9 +1,4 @@
-import {
-  CharacterData,
-  CharacterDetails,
-  ElementalBurst,
-  ElementalSkill
-} from "enka-network-api";
+import { CharacterData, CharacterDetails } from "enka-network-api";
 import {
   getAllCharactersFromEnka,
   getCharacterByIdFromEnka
@@ -14,7 +9,8 @@ import {
   mapCharacterRegion,
   mapConstellations,
   mapPassiveTalents,
-  mapSkills
+  mapSkills,
+  releaseDateMapper
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import { characterNotFoundError } from "../utils/errorMessageInterceptor";
@@ -37,6 +33,11 @@ export const getAllCharacters = async () => {
           weaponType
         } = character;
 
+        const releasedAt = releaseDateMapper(
+          character.releasedAt,
+          character.skillDepotId
+        );
+
         return {
           id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
           enkaId: id,
@@ -48,7 +49,8 @@ export const getAllCharacters = async () => {
           nameCard: character.nameCard?.pictures[0].url,
           element: element ? decryptTextAsset(element?.name) : null,
           isTraveler,
-          weaponType
+          weaponType,
+          releasedAt
         };
       });
 
@@ -70,12 +72,7 @@ export const getCharacterBySkillDepotId = async (
     );
 
     const ascensionData = mapAscensionData(response);
-    const skills = mapSkills(
-      response.skills,
-      response.normalAttack,
-      response.elementalSkill as ElementalSkill,
-      response.elementalBurst as ElementalBurst
-    );
+    const skills = mapSkills(response);
 
     const passiveTalents = mapPassiveTalents(response.passiveTalents);
     const constellations = mapConstellations(response.constellations);
