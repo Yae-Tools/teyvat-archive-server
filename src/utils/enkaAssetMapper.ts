@@ -308,6 +308,52 @@ function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
   return artifactCollection;
 }
 
+function releaseDateMapper(releasedAt: Date | null, skillDepotId: number) {
+  let releaseDate = releasedAt;
+
+  const dateToISO = (date: string) => {
+    const parsedDate = new Date(date);
+
+    const year = parsedDate.getUTCFullYear();
+    const month = parsedDate.getUTCMonth(); // 0-indexed
+    const day = parsedDate.getUTCDate();
+
+    const utcDate = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
+
+    return utcDate;
+  };
+
+  if (releaseDate === null) {
+    switch (skillDepotId) {
+      case 504:
+      case 506:
+      case 704:
+      case 706:
+        releaseDate = dateToISO("September 28, 2020");
+        break;
+      case 507:
+      case 707:
+        releaseDate = dateToISO("July 21, 2021");
+        break;
+      case 508:
+      case 708:
+        releaseDate = dateToISO("August 24, 2022");
+        break;
+      case 503:
+      case 703:
+        releaseDate = dateToISO("August 16, 2023");
+        break;
+      case 502:
+      case 702:
+        releaseDate = dateToISO("August 28, 2024");
+        break;
+    }
+    //need to get first release character from each region
+  }
+
+  return releaseDate;
+}
+
 export {
   decryptTextAsset,
   mapAbility,
@@ -319,5 +365,6 @@ export {
   mapRefinemetData,
   mapWeaponStats,
   mapCharacterRegion,
-  getArtifactCollection
+  getArtifactCollection,
+  releaseDateMapper
 };

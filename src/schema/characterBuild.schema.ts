@@ -34,8 +34,8 @@ const createCharacterBuildValidation = t.Object({
       if (typeof value !== "string")
         throw new Error("Character id must be a string");
       return value;
-    }
-  ).Encode((value) => value),
+    })
+    .Encode((value) => value),
   weapons: t.Array(
     t.Object({
       weaponId: t.String({ error: "Invalid weapon id" }),
