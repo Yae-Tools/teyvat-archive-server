@@ -96,7 +96,10 @@ function mapSkills(characterData: CharacterData) {
           level: i + 1,
           items: asc?.items.map((item) => ({
             count: item.count,
-            materialId: item.material.id
+            materialId: item.material.id,
+            materialName: decryptTextAsset(item.material.name),
+            materialIcon: item.material.icon?.url,
+            materialRarity: item.material.stars
           })),
           coins: asc?.coin
         };
@@ -208,11 +211,55 @@ function mapAbility(
 }
 
 function mapAscensionData(characterData: CharacterData) {
-  const ascensionLevels = 6;
-  return Array.from(
-    { length: ascensionLevels },
-    (_, i) => characterData.getAscensionData(i + 1)._data
+  const ascensionLevels = 7;
+
+  const ascensionData = Array.from({ length: ascensionLevels }, (_, i) => {
+    const data = characterData.getAscensionData(i);
+    return {
+      level: i,
+      ascension: data.ascension,
+      unlockMaxLevel: data.unlockMaxLevel,
+      requiredAdventureRank: data.requiredAdventureRank,
+      items: data.cost.items.map((item) => ({
+        count: item.count,
+        materialId: item.material.id,
+        materialName: decryptTextAsset(item.material.name),
+        materialIcon: item.material.icon?.url,
+        materialRarity: item.material.stars
+      })),
+      addProps: data.addProps.map((prop) => ({
+        fightProp: prop.fightProp,
+        fightPropName: decryptTextAsset(prop.fightPropName),
+        isPercent: prop.isPercent,
+        rawValue: prop.rawValue,
+        value: prop.value,
+        multiplier: prop.getMultipliedValue()
+      })),
+      data: data._data
+    };
+  });
+
+  // Remove undefined values
+  const filteredAscensionData = ascensionData.filter(
+    (ascension) => ascension !== undefined
   );
+  // Remove duplicates
+  const uniqueAscensionData = filteredAscensionData.filter(
+    (ascension, index, self) =>
+      index === self.findIndex((a) => a.ascension === ascension.ascension)
+  );
+  // Sort by ascension level
+  const sortedAscensionData = uniqueAscensionData.toSorted(
+    (a, b) => a.ascension - b.ascension
+  );
+  return sortedAscensionData.map((ascension) => ({
+    level: ascension.level,
+    unlockMaxLevel: ascension.unlockMaxLevel,
+    requiredAdventureRank: ascension.requiredAdventureRank,
+    items: ascension.items,
+    addProps: ascension.addProps,
+    coins: ascension.data.scoinCost
+  }));
 }
 
 async function mapCharacterRegion(details: CharacterDetails) {
