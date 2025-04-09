@@ -11,8 +11,8 @@ export const getGameVersion = async () => {
       fetchHoyoGameRequest()
     ]);
 
-    const hoyoPlayParsed = JSON.parse(hoyoPlayResponse);
-    const hoyoGameParsed = JSON.parse(hoyoGameResponse);
+    const hoyoPlayParsed = JSON.parse(hoyoPlayResponse ?? "{}");
+    const hoyoGameParsed = JSON.parse(hoyoGameResponse ?? "{}");
 
     const games = hoyoGameParsed.data.games;
 
@@ -33,7 +33,7 @@ export const getGameVersion = async () => {
 
 export const refetchCache = async () => {
   try {
-    refetchEnkaCache();
+    await refetchEnkaCache();
   } catch (error) {
     console.error("Error refetching cache:", error);
     throw error;
