@@ -4,7 +4,7 @@ export const getAllRedeemCodes = async () => {
   try {
     const redeemCodesResponse = await fetchRedeemCodes();
 
-    const redeemCodesParsed = JSON.parse(redeemCodesResponse);
+    const redeemCodesParsed = JSON.parse(redeemCodesResponse ?? "{}");
 
     return redeemCodesParsed;
   } catch (error: unknown) {
