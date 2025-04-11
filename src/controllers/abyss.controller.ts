@@ -7,7 +7,7 @@ import { parseCharacterData, parsePartyData } from "../utils/abyssDataParser";
 export const getAbyssData = async () => {
   try {
     const abyssResponse = await fetchAbyssInfo();
-    const abyssParsed: IAbyssData = JSON.parse(abyssResponse);
+    const abyssParsed: IAbyssData = JSON.parse(abyssResponse!);
 
     const sanitizedData = {
       meta: abyssParsed.meta,
@@ -38,7 +38,7 @@ export const getAbyssMoonBlessingData = async () => {
   try {
     const abyssBlessingResponse = await fetchAbyssBlessingInfo();
     const abyssBlessingParsed: IAbyssBlessingData = JSON.parse(
-      abyssBlessingResponse
+      abyssBlessingResponse!
     );
 
     const sanitizedData = Object.keys(abyssBlessingParsed).map((key) => {

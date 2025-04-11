@@ -32,9 +32,16 @@ const weaponNotFoundError = (errorMsg: string, id: string) => {
   }
 };
 
+const domainsNotFoundError = (errorMsg: string) => {
+  if (errorMsg.includes("Domain") && errorMsg.includes("was not found")) {
+    throw new NotFoundError(`Domain Data not found.`);
+  }
+};
+
 export {
   artifactNotFoundError,
   characterNotFoundError,
   materialNotFoundError,
-  weaponNotFoundError
+  weaponNotFoundError,
+  domainsNotFoundError
 };

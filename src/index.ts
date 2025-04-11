@@ -12,12 +12,14 @@ import {
   calendarRoutes,
   codeRoutes,
   abyssRoutes,
+  domainRoutes,
   characterBuildRoutes
 } from "./routes";
 import {
   fetchAbyssBlessingInfo,
   fetchAbyssInfo,
   fetchAmberEvents,
+  fetchDailyDomainInfo,
   fetchHoyoCalendar,
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest,
@@ -35,6 +37,7 @@ const routes = [
   artifactRoutes,
   systemRoutes,
   calendarRoutes,
+  domainRoutes,
   codeRoutes,
   abyssRoutes,
   characterBuildRoutes
@@ -107,6 +110,7 @@ await Promise.all([
   fetchRedeemCodes(),
   fetchAbyssInfo(),
   fetchAbyssBlessingInfo(),
+  fetchDailyDomainInfo(),
   dbClient().catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   })
