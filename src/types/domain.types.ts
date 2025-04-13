@@ -18,4 +18,11 @@ interface IDailyDomainDataResponse {
   [key: string]: IDailyDomainData;
 }
 
-export { IDailyDomainData, IDailyDomainDataResponse, DateEnum };
+interface IRewardData {
+  id: number | undefined;
+  name: string | undefined;
+  icon: string | null | undefined;
+  stars: number | null;
+}
+
+export { IDailyDomainData, IDailyDomainDataResponse, DateEnum, IRewardData };
