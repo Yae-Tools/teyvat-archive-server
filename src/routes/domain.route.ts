@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { getDailyDomainData } from "../controllers/domain.controller";
+import { getDailyDomainData } from "../controllers/domains.controller";
 
 export const domainRoutes = async (app: Elysia) => {
   app.group("/domains", (domains) => {
