@@ -7,8 +7,8 @@ import { systemRoutes } from "./system.route";
 import { calendarRoutes } from "./calendar.route";
 import { codeRoutes } from "./codes.route";
 import { abyssRoutes } from "./abyss.route";
-import { characterBuildRoutes } from "./characterBuild.route";
 import { domainRoutes } from "./domain.route";
+import { authRoutes } from "./auth.route";
 
 export {
   artifactRoutes,
@@ -20,6 +20,6 @@ export {
   calendarRoutes,
   codeRoutes,
   abyssRoutes,
-  characterBuildRoutes,
-  domainRoutes
+  domainRoutes,
+  authRoutes
 };

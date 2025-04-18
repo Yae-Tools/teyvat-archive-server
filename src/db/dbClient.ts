@@ -1,18 +1,7 @@
-import mongoose from "mongoose";
+import { createClient } from "@supabase/supabase-js";
 
-const USERNAME = process.env.MONGO_USERNAME;
-const PASSWORD = process.env.MONGO_PASSWORD;
+const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
 
-const uri = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.lo2oqsx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE ?? "";
 
-const dbClient = async () => {
-  try {
-    await mongoose.connect(uri, {
-      dbName: "teyvatArchive"
-    });
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-  }
-};
-export default dbClient;
+export const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE);

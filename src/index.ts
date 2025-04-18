@@ -13,7 +13,7 @@ import {
   codeRoutes,
   abyssRoutes,
   domainRoutes,
-  characterBuildRoutes
+  authRoutes
 } from "./routes";
 import {
   fetchAbyssBlessingInfo,
@@ -25,7 +25,6 @@ import {
   fetchHoyoPlayRequest,
   fetchRedeemCodes
 } from "./services/system.service";
-import dbClient from "./db/dbClient";
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -40,7 +39,7 @@ const routes = [
   domainRoutes,
   codeRoutes,
   abyssRoutes,
-  characterBuildRoutes
+  authRoutes
 ];
 
 const app = new Elysia();
@@ -110,10 +109,7 @@ await Promise.all([
   fetchRedeemCodes(),
   fetchAbyssInfo(),
   fetchAbyssBlessingInfo(),
-  fetchDailyDomainInfo(),
-  dbClient().catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  })
+  fetchDailyDomainInfo()
 ]);
 
 app.listen(PORT);
