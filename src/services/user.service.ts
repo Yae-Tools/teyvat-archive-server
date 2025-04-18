@@ -1,13 +1,13 @@
 // services/userService.ts
 import { Kysely } from "kysely";
-import { IDatabase, IUserRole } from "../types/database.types";
+import { IDatabase, IUserRole, EUserRole } from "../types/database.types";
 
 export class UserService {
   constructor(private readonly db: Kysely<IDatabase>) {}
 
   async createUserProfile(
     userId: string,
-    role: IUserRole = "regular",
+    role: IUserRole = EUserRole.REGULAR,
     profilePicture?: string,
     displayName?: string
   ) {
