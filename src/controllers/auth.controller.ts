@@ -21,7 +21,6 @@ export const registerUser = async (body: {
         data.user.id,
         EUserRole.REGULAR
       );
-      console.log(response);
 
       return {
         user: data.user,
