@@ -1,4 +1,6 @@
-import { supabase } from "../db/dbClient";
+import { db, supabase } from "../db/db.client";
+import { UserService } from "../services/user.service";
+import { EUserRole } from "../types/database.types";
 
 export const registerUser = async (body: {
   email: string;
@@ -12,16 +14,21 @@ export const registerUser = async (body: {
   }
 
   if (data.user) {
-    const { error: profileError } = await supabase
-      .from("user_profiles")
-      .insert({
-        id: data.user.id,
-        email: body.email,
-        role: "user"
-      });
+    const userService = new UserService(db);
 
-    if (profileError) {
-      console.error("Error creating user profile", profileError);
+    try {
+      const response = await userService.createUserProfile(
+        data.user.id,
+        EUserRole.REGULAR
+      );
+      console.log(response);
+
+      return {
+        user: data.user,
+        profile: response
+      };
+    } catch (error) {
+      console.error("Error creating user profile", error);
       throw new Error("Error creating user profile");
     }
   }

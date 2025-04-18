@@ -1,12 +1,10 @@
+import decryptTextAsset from "../helpers/decryptTextAssets";
 import {
   getAllArtifactSetsFromEnka,
   getAllArtifactsFromEnka,
   getArtifactSetByIdFromEnka
 } from "../services/enkaClient.service";
-import {
-  decryptTextAsset,
-  getArtifactCollection
-} from "../utils/enkaAssetMapper";
+import { getArtifactCollection } from "../utils/enkaAssetMapper";
 import { artifactNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getAllArtifacts = async () => {

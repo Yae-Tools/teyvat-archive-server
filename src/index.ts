@@ -25,6 +25,7 @@ import {
   fetchHoyoPlayRequest,
   fetchRedeemCodes
 } from "./services/system.service";
+import { migrateToLatest } from "./db/db.migrator";
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -101,16 +102,21 @@ routes.forEach(async (route) => {
   await route(app);
 });
 
-await Promise.all([
-  fetchHoyoPlayRequest(),
-  fetchHoyoGameRequest(),
-  fetchHoyoCalendar(),
-  fetchAmberEvents(),
-  fetchRedeemCodes(),
-  fetchAbyssInfo(),
-  fetchAbyssBlessingInfo(),
-  fetchDailyDomainInfo()
-]);
+const preFetchData = async () => {
+  await Promise.all([
+    fetchHoyoPlayRequest(),
+    fetchHoyoGameRequest(),
+    fetchHoyoCalendar(),
+    fetchAmberEvents(),
+    fetchRedeemCodes(),
+    fetchAbyssInfo(),
+    fetchAbyssBlessingInfo(),
+    fetchDailyDomainInfo()
+  ]);
+};
+
+preFetchData();
+migrateToLatest();
 
 app.listen(PORT);
 

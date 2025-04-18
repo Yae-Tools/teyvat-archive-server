@@ -4,16 +4,16 @@ import {
   getCharacterByIdFromEnka
 } from "../services/enkaClient.service";
 import {
-  decryptTextAsset,
   mapAscensionData,
   mapCharacterRegion,
   mapConstellations,
   mapPassiveTalents,
   mapSkills,
-  releaseDateMapper
+  mapReleaseDate
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import { characterNotFoundError } from "../utils/errorMessageInterceptor";
+import decryptTextAsset from "../helpers/decryptTextAssets";
 
 export const getAllCharacters = async () => {
   try {
@@ -33,7 +33,7 @@ export const getAllCharacters = async () => {
           weaponType
         } = character;
 
-        const releasedAt = releaseDateMapper(
+        const releasedAt = mapReleaseDate(
           character.releasedAt,
           character.skillDepotId
         );

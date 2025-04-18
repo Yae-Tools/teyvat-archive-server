@@ -1,5 +1,5 @@
+import decryptTextAsset from "../helpers/decryptTextAssets";
 import { getMaterialByEnkaId } from "../services/enkaClient.service";
-import { decryptTextAsset } from "../utils/enkaAssetMapper";
 import { materialNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getMaterialById = (id: string) => {

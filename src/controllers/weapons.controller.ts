@@ -3,11 +3,8 @@ import {
   getAllWeaponsFromEnka,
   getWeaponByIdFromEnka
 } from "../services/enkaClient.service";
-import {
-  decryptTextAsset,
-  mapRefinemetData,
-  mapWeaponStats
-} from "../utils/enkaAssetMapper";
+import { mapRefinemetData, mapWeaponStats } from "../utils/enkaAssetMapper";
+import decryptTextAsset from "../helpers/decryptTextAssets";
 import { weaponNotFoundError } from "../utils/errorMessageInterceptor";
 
 export const getAllWeapons = async () => {

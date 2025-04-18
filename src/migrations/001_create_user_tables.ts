@@ -22,9 +22,7 @@ export async function up(db: Kysely<any>) {
     //make display name same as user id by default
     // this will be updated by the user later
     // this is a temporary solution until we have a better way to handle display names
-    .addColumn("display_name", "text", (col) =>
-      col.defaultTo(sql`(SELECT id FROM auth.users WHERE id = user_id)`)
-    )
+    .addColumn("display_name", "text", (col) => col.defaultTo(null))
     .addColumn("created_at", "timestamp", (col) =>
       col.notNull().defaultTo(sql`now()`)
     )
