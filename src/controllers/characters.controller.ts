@@ -136,7 +136,7 @@ export const getCharacterBySkillDepotId = async (
       vision: decryptTextAsset(details?.vision),
       constellation: decryptTextAsset(details?.constellation),
       constellationIcon: details?.constellationIcon?.url,
-      title: decryptTextAsset(details?.title),
+      title: isTraveler ? "The Outlander" : decryptTextAsset(details?.title),
       description: decryptTextAsset(details?.description),
       weaponType,
       skills,
@@ -152,9 +152,11 @@ export const getCharacterBySkillDepotId = async (
     if (character) {
       res.status(200).send(character);
     } else {
+      console.log("character not found");
       res.status(404).send({ error: "Character not found" });
     }
   } catch (error: unknown) {
+    console.log("error", error);
     res.status(500).send({ error: error });
   }
 };
