@@ -1,23 +1,22 @@
-import { eventRoutes } from "./ambrEvents.route";
-import { artifactRoutes } from "./enkaArtifact.route";
-import { characterRoutes } from "./enkaCharacter.route";
-import { materialRoutes } from "./enkaMaterial.route";
-import { weaponRoutes } from "./enkaWeapon.route";
-import { systemRoutes } from "./system.route";
-import { calendarRoutes } from "./calendar.route";
-import { codeRoutes } from "./codes.route";
-import { abyssRoutes } from "./abyss.route";
-import { characterBuildRoutes } from "./characterBuild.route";
+import { Router } from "express";
+import systemRoutes from "./system.routes";
+import domainRoutes from "./domain.routes";
+import codeRoutes from "./code.routes";
+import abyssRoutes from "./abyss.routes";
+import characterRoutes from "./character.routes";
+import eventRoutes from "./event.routes";
+import weaponRoutes from "./weapon.routes";
+import artifactRoutes from "./artifact.routes";
+import authRoutes from "./auth.routes";
+const router = Router();
 
-export {
-  artifactRoutes,
-  characterRoutes,
-  eventRoutes,
-  materialRoutes,
-  systemRoutes,
-  weaponRoutes,
-  calendarRoutes,
-  codeRoutes,
-  abyssRoutes,
-  characterBuildRoutes
-};
+router.use("/system", systemRoutes);
+router.use("/domains", domainRoutes);
+router.use("/codes", codeRoutes);
+router.use("/abyss", abyssRoutes);
+router.use("/characters", characterRoutes);
+router.use("/events", eventRoutes);
+router.use("/weapons", weaponRoutes);
+router.use("/artifacts", artifactRoutes);
+router.use("/auth", authRoutes);
+export default router;

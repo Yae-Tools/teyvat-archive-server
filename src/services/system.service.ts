@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import type { IMetadata } from "../types/system.types";
 
 const BASE_DIR = path.join(__dirname, "..", "data");
 
@@ -46,6 +47,12 @@ const FILES = {
     meta: path.join(BASE_DIR, "AbyssBlessingInfoMetadata.json"),
     url: process.env.HAKUSH_ABYSS_API + "/data/tower.json",
     name: "Abyss Blessing Info"
+  },
+  dailyDomain: {
+    data: path.join(BASE_DIR, "DailyDomainInfo.json"),
+    meta: path.join(BASE_DIR, "DailyDomainInfoMetadata.json"),
+    url: process.env.PROJECT_AMBR_BASE_URL + "/api/v2/en/dailyDungeon",
+    name: "Daily Domain Info"
   }
 };
 
@@ -122,3 +129,4 @@ export const fetchAmberEvents = () => fetchData("events");
 export const fetchRedeemCodes = () => fetchData("codes");
 export const fetchAbyssInfo = () => fetchData("abyss");
 export const fetchAbyssBlessingInfo = () => fetchData("abyssBlessing");
+export const fetchDailyDomainInfo = () => fetchData("dailyDomain");

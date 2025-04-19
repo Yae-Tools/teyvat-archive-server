@@ -1,16 +1,14 @@
 import { WeaponData } from "enka-network-api";
+import type { Request, Response } from "express";
+
 import {
   getAllWeaponsFromEnka,
   getWeaponByIdFromEnka
 } from "../services/enkaClient.service";
-import {
-  decryptTextAsset,
-  mapRefinemetData,
-  mapWeaponStats
-} from "../utils/enkaAssetMapper";
-import { weaponNotFoundError } from "../utils/errorMessageInterceptor";
+import { mapRefinemetData, mapWeaponStats } from "../utils/enkaAssetMapper";
+import decryptTextAsset from "../helpers/decryptTextAssets";
 
-export const getAllWeapons = async () => {
+export const getAllWeapons = async (_req: Request, res: Response) => {
   try {
     const response: WeaponData[] = getAllWeaponsFromEnka();
 
@@ -31,15 +29,19 @@ export const getAllWeapons = async () => {
       };
     });
 
-    return weapons;
+    res.status(200).send(weapons);
   } catch (error) {
     console.log("Error fetching weapons", error);
-    return [];
+    res.status(500).send({ error: error });
   }
 };
 
-export const getWeaponById = async (id: string) => {
+export const getWeaponById = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
   try {
+    const { id } = req.params;
     const response: WeaponData = getWeaponByIdFromEnka(id);
 
     const refinements = mapRefinemetData(response.refinements);
@@ -56,7 +58,7 @@ export const getWeaponById = async (id: string) => {
       splashImage
     } = response;
 
-    return {
+    const weapon = {
       id: _nameId,
       enkaId: id,
       name: decryptTextAsset(name),
@@ -70,16 +72,18 @@ export const getWeaponById = async (id: string) => {
       refinements,
       stats
     };
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      weaponNotFoundError(error.message, id);
+
+    if (weapon) {
+      res.status(200).send(weapon);
     } else {
-      throw new Error("Internal Server Error");
+      res.status(404).send({ error: "Weapon not found" });
     }
+  } catch (error: unknown) {
+    res.status(500).send({ error: error });
   }
 };
 
-export const getAllWeaponSeries = async () => {
+export const getAllWeaponSeries = async (_req: Request, res: Response) => {
   try {
     const response: WeaponData[] = getAllWeaponsFromEnka();
 
@@ -108,7 +112,7 @@ export const getAllWeaponSeries = async () => {
         acc[series].push({
           id: _nameId,
           enkaId: id.toString(),
-          name: decryptTextAsset(name) as string
+          name: decryptTextAsset(name)
         });
 
         return acc;
@@ -116,9 +120,9 @@ export const getAllWeaponSeries = async () => {
       {}
     );
 
-    return weaponSeries;
+    res.status(200).send(weaponSeries);
   } catch (error) {
     console.log("Error fetching weapon series", error);
-    return [];
+    res.status(500).send({ error: error });
   }
 };

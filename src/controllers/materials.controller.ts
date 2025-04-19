@@ -1,28 +1,16 @@
-import { getMaterialByEnkaId } from "../services/enkaClient.service";
-import { decryptTextAsset } from "../utils/enkaAssetMapper";
-import { materialNotFoundError } from "../utils/errorMessageInterceptor";
+import type { Request, Response } from "express";
 
-export const getMaterialById = (id: string) => {
+import getMaterialDataHelper from "../helpers/getMaterialData";
+
+export const getMaterialById = (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
   try {
-    const response = getMaterialByEnkaId(Number(id));
+    const materialData = getMaterialDataHelper(Number(req.params.id));
 
-    const materialData = {
-      enkaId: response.id,
-      name: decryptTextAsset(response.name),
-      description: decryptTextAsset(response.description),
-      icon: response.icon?.url,
-      materialType: response.materialType,
-      itemType: response.itemType,
-      stars: response.stars,
-      picture: response.pictures
-    };
-
-    return materialData;
+    res.status(200).json(materialData);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      materialNotFoundError(error.message, id);
-    } else {
-      throw new Error("Internal Server Error");
-    }
+    res.status(404).json({ error: error });
   }
 };

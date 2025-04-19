@@ -1,11 +1,20 @@
-import { fetchAmberEvents } from "../services/system.service";
-import { IEvent, ILanguageCode, LANGUAGE_CODES } from "../types/events.type";
+import type { Request, Response } from "express";
 
-export const getAllEvents = async (language?: ILanguageCode) => {
-  const LANG = language ?? LANGUAGE_CODES.EN;
+import { fetchAmberEvents } from "../services/system.service";
+import {
+  LANGUAGE_CODES,
+  type IEvent,
+  type ILanguageCode
+} from "../types/events.type";
+
+export const getAllEvents = async (
+  req: Request<{}, {}, {}, { language?: ILanguageCode }>,
+  res: Response
+) => {
+  const LANG = req.query.language ?? LANGUAGE_CODES.EN;
   try {
     const eventsResponse = await fetchAmberEvents();
-    const eventsParsed: IEvent[] = JSON.parse(eventsResponse);
+    const eventsParsed: IEvent[] = JSON.parse(eventsResponse!);
 
     const events = Object.values(eventsParsed).map((event: IEvent) => {
       const { id, description, banner, endAt, name, nameFull, startAt } = event;
@@ -21,9 +30,9 @@ export const getAllEvents = async (language?: ILanguageCode) => {
       };
     });
 
-    return events;
+    res.status(200).send(events);
   } catch (error) {
     console.log("Error fetching events", error);
-    return [];
+    res.status(500).send({ error: error });
   }
 };

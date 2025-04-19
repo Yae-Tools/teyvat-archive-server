@@ -21,4 +21,4 @@ interface IEvent {
 
 type IEventResponse = Record<string, IEvent>;
 
-export { IEvent, IEventResponse, ILanguageCode };
+export type { IEvent, IEventResponse, ILanguageCode };

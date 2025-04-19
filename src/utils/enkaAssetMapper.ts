@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   CharacterData,
   CharacterDetails,
@@ -8,12 +7,11 @@ import {
   ElementalSkill,
   NormalAttack,
   PassiveTalent,
-  TextAssets,
   WeaponData,
   WeaponRefinement
 } from "enka-network-api";
-import { LanguageCode } from "enka-network-api/dist/client/CachedAssetsManager";
-import { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
+import type { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
+import decryptTextAsset from "../helpers/decryptTextAssets";
 
 const regionMap = new Map<string, string>([
   ["ASSOC_TYPE_MONDSTADT", "Mondstadt"],
@@ -29,15 +27,7 @@ const regionMap = new Map<string, string>([
 
 type SkillType = NormalAttack | ElementalSkill | ElementalBurst;
 
-function decryptTextAsset(param: TextAssets | undefined, lang = "en") {
-  try {
-    if (param) return param.get(lang as LanguageCode);
-  } catch (error: unknown) {
-    return "";
-  }
-}
-
-function mapSkills(characterData: CharacterData) {
+export function mapSkills(characterData: CharacterData) {
   const { skills, normalAttack, elementalSkill, elementalBurst } =
     characterData;
   if (normalAttack && elementalSkill && elementalBurst) {
@@ -166,7 +156,7 @@ function mapSkills(characterData: CharacterData) {
   }
 }
 
-function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
+export function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
   return passiveTalents.map((passive) => ({
     id: passive.id,
     name: decryptTextAsset(passive.name),
@@ -176,7 +166,7 @@ function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
   }));
 }
 
-function mapConstellations(constellations: Constellation[]) {
+export function mapConstellations(constellations: Constellation[]) {
   return constellations.map((cons) => ({
     id: cons.id,
     name: decryptTextAsset(cons.name),
@@ -185,7 +175,7 @@ function mapConstellations(constellations: Constellation[]) {
   }));
 }
 
-function mapCostumes(costumes: Costume[]) {
+export function mapCostumes(costumes: Costume[]) {
   return costumes.map((costume) => ({
     id: costume.id,
     name: decryptTextAsset(costume.name),
@@ -194,7 +184,7 @@ function mapCostumes(costumes: Costume[]) {
   }));
 }
 
-function mapAbility(
+export function mapAbility(
   abilityData: ElementalBurst | ElementalSkill | NormalAttack
 ) {
   if (!abilityData) return null;
@@ -210,7 +200,7 @@ function mapAbility(
   };
 }
 
-function mapAscensionData(characterData: CharacterData) {
+export function mapAscensionData(characterData: CharacterData) {
   const ascensionLevels = 7;
 
   const ascensionData = Array.from({ length: ascensionLevels }, (_, i) => {
@@ -262,7 +252,7 @@ function mapAscensionData(characterData: CharacterData) {
   }));
 }
 
-async function mapCharacterRegion(details: CharacterDetails) {
+export async function mapCharacterRegion(details: CharacterDetails) {
   const { _data } = details;
 
   const regionId = _data.avatarAssocType as string;
@@ -271,7 +261,7 @@ async function mapCharacterRegion(details: CharacterDetails) {
   return regionMap.get(regionId) ?? "Unknown Region";
 }
 
-function mapRefinemetData(refinements: WeaponRefinement[]) {
+export function mapRefinemetData(refinements: WeaponRefinement[]) {
   return refinements.map((refinement) => {
     const { name, description, id, level, paramList } = refinement;
 
@@ -285,7 +275,7 @@ function mapRefinemetData(refinements: WeaponRefinement[]) {
   });
 }
 
-function mapWeaponStats(weaonData: WeaponData) {
+export function mapWeaponStats(weaonData: WeaponData) {
   // ascension ascension level 0-6 for 3-5 stars, and 0-4 for 1-2 stars.
   // level weapon level 1-90 for 3-5 stars, and 1-70 for 1-2 stars.
   const maxAscensionLevels = weaonData.stars > 2 ? 6 : 4;
@@ -344,7 +334,7 @@ function mapWeaponStats(weaonData: WeaponData) {
       }
       acc[level].push({
         fightProp: stat.fightProp,
-        fightPropName: stat.fightPropName as string,
+        fightPropName: stat.fightPropName,
         isPercent: stat.isPercent,
         rawValue: stat.rawValue,
         value: stat.value,
@@ -356,7 +346,10 @@ function mapWeaponStats(weaonData: WeaponData) {
   );
 }
 
-function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
+export function getArtifactCollection(
+  artifacts: ICustomArtifact[],
+  setId: string
+) {
   const artifactCollection: ICustomBaseArtifact[] = [];
 
   artifacts.forEach((artifact) => {
@@ -376,7 +369,7 @@ function getArtifactCollection(artifacts: ICustomArtifact[], setId: string) {
   return artifactCollection;
 }
 
-function releaseDateMapper(releasedAt: Date | null, skillDepotId: number) {
+export function mapReleaseDate(releasedAt: Date | null, skillDepotId: number) {
   let releaseDate = releasedAt;
 
   const dateToISO = (date: string) => {
@@ -421,18 +414,3 @@ function releaseDateMapper(releasedAt: Date | null, skillDepotId: number) {
 
   return releaseDate;
 }
-
-export {
-  decryptTextAsset,
-  mapAbility,
-  mapAscensionData,
-  mapConstellations,
-  mapCostumes,
-  mapPassiveTalents,
-  mapSkills,
-  mapRefinemetData,
-  mapWeaponStats,
-  mapCharacterRegion,
-  getArtifactCollection,
-  releaseDateMapper
-};

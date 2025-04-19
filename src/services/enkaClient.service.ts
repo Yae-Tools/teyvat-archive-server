@@ -8,7 +8,7 @@ const enka = new EnkaClient({
 
 enka.cachedAssetsManager.activateAutoCacheUpdater({
   instant: true, // Run the first update check immediately
-  timeout: 60 * 120 * 1000, // 2 hour interval
+  timeout: 60 * 60 * 24 * 1000, // 1 day interval
   onUpdateStart: async () => {
     console.log("Updating Genshin Data...");
   },
