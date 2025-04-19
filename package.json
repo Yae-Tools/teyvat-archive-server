@@ -38,5 +38,6 @@
     "helmet": "^8.1.0",
     "kysely": "^0.28.0",
     "pg": "^8.14.1"
-  }
+  },
+  "version": "undefined..1"
 }
