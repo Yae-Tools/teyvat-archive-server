@@ -1,34 +1,33 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-interface IAbyssMeta {
+export interface IAbyssMeta {
   author: string;
   version: string;
 }
 
-interface IAbyssSchedule {
+export interface IAbyssSchedule {
   id: number;
   start_time: number;
   end_time: number;
 }
 
-interface IAbyssSampleCountries {
+export interface IAbyssSampleCountries {
   id: string;
   value: string;
   color: string;
 }
 
-interface IAbyssCharacterArtifacts {
+export interface IAbyssCharacterArtifacts {
   set: {
     [key: string]: number;
   };
   value: number;
 }
 
-interface IAbyssGeneric {
+export interface IAbyssGeneric {
   id: string;
   value: number;
 }
 
-interface IAbyssCharacter {
+export interface IAbyssCharacter {
   [key: string]: {
     use_rate: number;
     own_rate: number;
@@ -59,18 +58,18 @@ interface IAbyssCharacter {
   };
 }
 
-interface IAbyssPartyData {
+export interface IAbyssPartyData {
   id: string;
   value: number;
   own_rate: number;
   use_by_own_rate: number;
 }
 
-interface IAbyssParty {
+export interface IAbyssParty {
   [key: string]: IAbyssPartyData[];
 }
 
-interface IAbyssData {
+export interface IAbyssData {
   meta: IAbyssMeta;
   data: {
     schedule: IAbyssSchedule;
@@ -87,7 +86,7 @@ interface IAbyssData {
   };
 }
 
-interface IAbyssBlessing {
+export interface IAbyssBlessing {
   begin: string;
   end: string;
   icon: string;
@@ -97,6 +96,6 @@ interface IAbyssBlessing {
   live_end: string;
 }
 
-interface IAbyssBlessingData {
+export interface IAbyssBlessingData {
   [key: string]: IAbyssBlessing;
 }

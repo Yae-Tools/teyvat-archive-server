@@ -1,4 +1,4 @@
-type DateEnum =
+export type DateEnum =
   | "monday"
   | "tuesday"
   | "wednesday"
@@ -7,22 +7,20 @@ type DateEnum =
   | "saturday"
   | "sunday";
 
-interface IDailyDomainData {
+export interface IDailyDomainData {
   id: number;
   name: string;
   reward: number[];
   city: number;
 }
 
-interface IDailyDomainDataResponse {
+export interface IDailyDomainDataResponse {
   [key: string]: IDailyDomainData;
 }
 
-interface IRewardData {
+export interface IRewardData {
   id: number | undefined;
   name: string | undefined;
   icon: string | null | undefined;
   stars: number | null;
 }
-
-export { IDailyDomainData, IDailyDomainDataResponse, DateEnum, IRewardData };

@@ -1,48 +1,65 @@
 import { db, supabase } from "../db/db.client";
 import { UserService } from "../services/user.service";
 import { EUserRole } from "../types/database.types";
+import type { Request, Response } from "express";
 
-export const registerUser = async (body: {
-  email: string;
-  password: string;
-}) => {
-  const { data, error } = await supabase.auth.signUp(body);
+const userService = new UserService(db);
+
+export const registerUser = async (
+  req: Request<
+    {},
+    {},
+    {
+      email: string;
+      password: string;
+    },
+    {}
+  >,
+  res: Response
+) => {
+  const { email, password } = req.body;
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
 
   if (error) {
-    console.error("Error registering user", error);
-    throw new Error("Error registering user");
+    res.status(400).send({ error: error.message });
   }
 
   if (data.user) {
-    const userService = new UserService(db);
-
     try {
       const response = await userService.createUserProfile(
         data.user.id,
         EUserRole.REGULAR
       );
 
-      return {
-        user: data.user,
-        profile: response
-      };
-    } catch (error) {
-      console.error("Error creating user profile", error);
-      throw new Error("Error creating user profile");
+      res.status(200).send({ user: data.user, profile: response });
+    } catch (error: any) {
+      res.status(500).send({ error: error.message });
     }
   }
 };
 
-export const loginWithEmailPassword = async (body: {
-  email: string;
-  password: string;
-}) => {
-  const { data, error } = await supabase.auth.signInWithPassword(body);
+export const loginWithEmailPassword = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
 
   if (error) {
-    console.error("Error logging in user", error);
-    throw new Error(error.message);
+    res.status(401).send({ error: error.message });
   }
 
-  return data.user;
+  if (data.user) {
+    const userProfile = await userService.getUserProfile(data.user.id);
+
+    res.status(200).send({
+      user: data.user,
+      session: data.session,
+      profile: userProfile
+    });
+  }
 };

@@ -1,3 +1,5 @@
+import type { IAbyssCharacter, IAbyssPartyData } from "../types/abyss.types";
+
 export const parsePartyData = (partyData: IAbyssPartyData[]) => {
   return partyData.map((party) => ({
     characterIds: party.id.split(",").map((id) => id.trim()),

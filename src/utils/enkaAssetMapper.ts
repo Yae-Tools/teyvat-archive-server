@@ -10,7 +10,7 @@ import {
   WeaponData,
   WeaponRefinement
 } from "enka-network-api";
-import { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
+import type { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
 import decryptTextAsset from "../helpers/decryptTextAssets";
 
 const regionMap = new Map<string, string>([

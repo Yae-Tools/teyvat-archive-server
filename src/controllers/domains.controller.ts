@@ -1,37 +1,21 @@
+import type { Request, Response } from "express";
 import { fetchDailyDomainInfo } from "../services/system.service";
-import {
+import type {
   DateEnum,
   IDailyDomainData,
   IDailyDomainDataResponse,
   IRewardData
 } from "../types/domain.types";
-import { domainsNotFoundError } from "../utils/errorMessageInterceptor";
-import { getMaterialById } from "./materials.controller";
+import fetchRewardData from "../helpers/fetchRewardData";
 
-const fetchRewardData = (id: number): IRewardData | null => {
-  try {
-    const rewardData = getMaterialById(id.toString());
-    return rewardData
-      ? {
-          id: rewardData.enkaId,
-          name: rewardData.name,
-          icon: rewardData.icon,
-          stars: rewardData.stars
-        }
-      : null;
-  } catch {
-    return null;
-  }
-};
-
-export const getDailyDomainData = async () => {
+export const getDailyDomainData = async (_req: Request, res: Response) => {
   try {
     const response = await fetchDailyDomainInfo();
     const { data: dailyDomainData }: IDailyDomainDataResponse = JSON.parse(
       response!
     );
 
-    return Object.entries(dailyDomainData).map(([day, domains]) => ({
+    const cx = Object.entries(dailyDomainData).map(([day, domains]) => ({
       day: day as DateEnum,
       domains: Object.entries(domains as Record<string, IDailyDomainData>).map(
         ([id, domain]) => ({
@@ -44,11 +28,9 @@ export const getDailyDomainData = async () => {
         })
       )
     }));
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      domainsNotFoundError(error.message);
-    } else {
-      throw new Error("Internal Server Error");
-    }
+
+    res.status(200).send(cx);
+  } catch (error) {
+    res.status(404).send({ error: error });
   }
 };

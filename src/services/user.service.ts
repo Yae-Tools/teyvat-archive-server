@@ -1,6 +1,10 @@
 // services/userService.ts
 import { Kysely } from "kysely";
-import { IDatabase, IUserRole, EUserRole } from "../types/database.types";
+import {
+  EUserRole,
+  type IDatabase,
+  type IUserRole
+} from "../types/database.types";
 
 export class UserService {
   constructor(private readonly db: Kysely<IDatabase>) {}

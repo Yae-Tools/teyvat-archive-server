@@ -2,9 +2,11 @@ import {
   fetchAbyssBlessingInfo,
   fetchAbyssInfo
 } from "../services/system.service";
+import type { IAbyssBlessingData, IAbyssData } from "../types/abyss.types";
 import { parseCharacterData, parsePartyData } from "../utils/abyssDataParser";
+import type { Request, Response } from "express";
 
-export const getAbyssData = async () => {
+export const getAbyssData = async (_req: Request, res: Response) => {
   try {
     const abyssResponse = await fetchAbyssInfo();
     const abyssParsed: IAbyssData = JSON.parse(abyssResponse!);
@@ -27,14 +29,17 @@ export const getAbyssData = async () => {
       }
     };
 
-    return sanitizedData;
+    res.status(200).send(sanitizedData);
   } catch (error) {
     console.error("Error fetching abyss data:", error);
-    return null;
+    res.status(500).send({ error: error });
   }
 };
 
-export const getAbyssMoonBlessingData = async () => {
+export const getAbyssMoonBlessingData = async (
+  _req: Request,
+  res: Response
+) => {
   try {
     const abyssBlessingResponse = await fetchAbyssBlessingInfo();
     const abyssBlessingParsed: IAbyssBlessingData = JSON.parse(
@@ -53,9 +58,9 @@ export const getAbyssMoonBlessingData = async () => {
       };
     });
 
-    return sanitizedData;
+    res.status(200).send(sanitizedData);
   } catch (error) {
     console.error("Error fetching abyss blessing data:", error);
-    return null;
+    res.status(500).send({ error: error });
   }
 };

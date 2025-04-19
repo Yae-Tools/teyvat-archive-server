@@ -12,10 +12,10 @@ import {
   mapReleaseDate
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
-import { characterNotFoundError } from "../utils/errorMessageInterceptor";
 import decryptTextAsset from "../helpers/decryptTextAssets";
+import type { Request, Response } from "express";
 
-export const getAllCharacters = async () => {
+export const getAllCharacters = async (_req: Request, res: Response) => {
   try {
     const response = getAllCharactersFromEnka();
 
@@ -54,21 +54,32 @@ export const getAllCharacters = async () => {
         };
       });
 
-    return characters;
+    res.status(200).send(characters);
   } catch (error) {
     console.log("Error fetching characters", error);
-    return [];
+    res.status(500).send({ error: error });
   }
 };
 
 export const getCharacterBySkillDepotId = async (
-  charcterId: number,
-  skillDepotId: number
+  req: Request<
+    {
+      characterId: string;
+    },
+    {},
+    {
+      skillDepotId: string;
+    }
+  >,
+  res: Response
 ) => {
   try {
+    const { characterId } = req.params;
+    const { skillDepotId } = req.query;
+
     const response: CharacterData = getCharacterByIdFromEnka(
-      charcterId,
-      skillDepotId
+      parseInt(characterId),
+      parseInt(skillDepotId as string)
     );
 
     const ascensionData = mapAscensionData(response);
@@ -101,7 +112,10 @@ export const getCharacterBySkillDepotId = async (
     } = response;
 
     const character = {
-      id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
+      id: uniqueIdMapper(
+        _nameId,
+        parseInt(skillDepotId as string)
+      ).toLowerCase(),
       enkaId,
       skillDepotId,
       name: decryptTextAsset(name),
@@ -134,13 +148,13 @@ export const getCharacterBySkillDepotId = async (
       bodyType
     };
 
-    return character;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      characterNotFoundError(error.message, charcterId, skillDepotId);
+    if (character) {
+      res.status(200).send(character);
     } else {
-      throw new Error("Internal Server Error");
+      res.status(404).send({ error: "Character not found" });
     }
+  } catch (error: unknown) {
+    res.status(500).send({ error: error });
   }
 };
 

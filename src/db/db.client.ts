@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
-import { IDatabase } from "../types/database.types";
+import type { IDatabase } from "../types/database.types";
 
 const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
 const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE ?? "";

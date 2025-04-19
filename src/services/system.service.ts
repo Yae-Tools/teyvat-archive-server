@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import type { IMetadata } from "../types/system.types";
 
 const BASE_DIR = path.join(__dirname, "..", "data");
 

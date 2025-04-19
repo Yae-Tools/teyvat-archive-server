@@ -1,105 +1,50 @@
+import type { Request, Response } from "express";
 import decryptTextAsset from "../helpers/decryptTextAssets";
-import {
-  getAllArtifactSetsFromEnka,
-  getAllArtifactsFromEnka,
-  getArtifactSetByIdFromEnka
-} from "../services/enkaClient.service";
+import { getArtifactSetByIdFromEnka } from "../services/enkaClient.service";
 import { getArtifactCollection } from "../utils/enkaAssetMapper";
-import { artifactNotFoundError } from "../utils/errorMessageInterceptor";
-
-export const getAllArtifacts = async () => {
+import {
+  fetchAllArtifacts,
+  fetchAllArtifactSets
+} from "../helpers/fetchArtifacts";
+export const getAllArtifacts = async (_req: Request, res: Response) => {
   try {
-    const response = getAllArtifactsFromEnka();
+    const artifacts = await fetchAllArtifacts();
 
-    const artifacts = response.map((artifact) => {
-      const {
-        id,
-        name,
-        equipType,
-        equipTypeName,
-        icon,
-        stars,
-        set,
-        description
-      } = artifact;
-
-      return {
-        id,
-        name: decryptTextAsset(name),
-        equipType,
-        equipTypeName: decryptTextAsset(equipTypeName),
-        icon: icon.url,
-        stars,
-        description: decryptTextAsset(description),
-        set: {
-          id: set.id,
-          name: decryptTextAsset(set.name),
-          icon: set.icon.url
-        }
-      };
-    });
-
-    return artifacts;
+    res.status(200).send(artifacts);
   } catch (error) {
     console.log("Error fetching artifacts", error);
-    return [];
+    res.status(500).send({ error: error });
   }
 };
 
-export const getAllArtifactSets = async () => {
+export const getAllArtifactSets = async (_req: Request, res: Response) => {
   try {
-    const [artifactSets, artifacts] = await Promise.all([
-      getAllArtifactSetsFromEnka(),
-      getAllArtifactsFromEnka()
-    ]);
-    const setRarities = new Map();
+    const artifactSets = await fetchAllArtifactSets();
 
-    artifacts.forEach((artifact) => {
-      const setId = artifact.set.id.toString();
-      const rarity = artifact.stars;
-
-      if (!setRarities.has(setId)) {
-        setRarities.set(setId, new Set());
-      }
-
-      setRarities.get(setId).add(rarity);
-    });
-
-    const mappedArtifactSets = artifactSets.map((artifactSet) => {
-      const { id, name, icon } = artifactSet;
-      const setId = id.toString();
-      const rarities: number[] = setRarities.has(setId)
-        ? Array.from(setRarities.get(setId))
-        : [];
-      return {
-        id,
-        name: decryptTextAsset(name),
-        icon: icon.url,
-        rarities,
-        highestRarity: Math.max(...rarities)
-      };
-    });
-
-    return mappedArtifactSets;
+    res.status(200).send(artifactSets);
   } catch (error) {
     console.log("Error fetching artifact sets", error);
-    return [];
+    res.status(500).send({ error: error });
   }
 };
 
-export const getArtifactSetById = async (id: string) => {
+export const getArtifactSetById = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
   try {
+    const { id } = req.params;
     const [artifactSet, artifactSets, artifacts] = await Promise.all([
       getArtifactSetByIdFromEnka(id),
-      getAllArtifactSets(),
-      getAllArtifacts()
+      fetchAllArtifactSets(),
+      fetchAllArtifacts()
     ]);
 
     const { name, icon, setBonus } = artifactSet;
 
     const artifactCollection = getArtifactCollection(artifacts, id);
 
-    return {
+    const set = {
       id,
       name: decryptTextAsset(name),
       icon: icon.url,
@@ -121,12 +66,9 @@ export const getArtifactSetById = async (id: string) => {
       })),
       collection: artifactCollection
     };
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      artifactNotFoundError(error.message, id);
-    }
 
-    // If the error is something else, rethrow it or return a generic error
-    throw new Error("Internal Server Error");
+    res.status(200).send(set);
+  } catch (error: unknown) {
+    res.status(500).send({ error: error });
   }
 };
