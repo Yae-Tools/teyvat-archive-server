@@ -1,14 +1,11 @@
 import type { Request, Response } from "express";
 
 import { fetchAmberEvents } from "../services/system.service";
-import {
-  LANGUAGE_CODES,
-  type IEvent,
-  type ILanguageCode
-} from "../types/events.type";
+import { LANGUAGE_CODES, type IEvent } from "../types/events.type";
+import type { GetEventsInput } from "../schema/event.schema";
 
 export const getAllEvents = async (
-  req: Request<{}, {}, {}, { language?: ILanguageCode }>,
+  req: Request<object, object, object, GetEventsInput["query"]>,
   res: Response
 ) => {
   const LANG = req.query.language ?? LANGUAGE_CODES.EN;
