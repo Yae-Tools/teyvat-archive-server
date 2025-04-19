@@ -51,7 +51,7 @@ export const loginWithEmailPassword = async (req: Request, res: Response) => {
   });
 
   if (error) {
-    res.status(401).send({ error: error.message });
+    res.status(401).send({ error: "Invalid credentials" });
   }
 
   if (data.user) {
@@ -62,5 +62,7 @@ export const loginWithEmailPassword = async (req: Request, res: Response) => {
       session: data.session,
       profile: userProfile
     });
+  } else {
+    res.status(401).send({ error: "User not found" });
   }
 };
