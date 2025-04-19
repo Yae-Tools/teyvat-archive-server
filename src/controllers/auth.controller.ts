@@ -3,19 +3,16 @@ import type { Request, Response } from "express";
 import { db, supabase } from "../db/db.client";
 import { UserService } from "../services/user.service";
 import { EUserRole } from "../types/database.types";
+import type {
+  LoginWithEmailPasswordInput,
+  RegisterUserInput
+} from "../schema/auth.schema";
 
 const userService = new UserService(db);
 
 export const registerUser = async (
-  req: Request<
-    {},
-    {},
-    {
-      email: string;
-      password: string;
-    },
-    {}
-  >,
+  req: Request<object, object, RegisterUserInput["body"]>,
+
   res: Response
 ) => {
   const { email, password } = req.body;
@@ -36,13 +33,19 @@ export const registerUser = async (
       );
 
       res.status(200).send({ user: data.user, profile: response });
-    } catch (error: any) {
-      res.status(500).send({ error: error.message });
+    } catch (error: unknown) {
+      res.status(500).send({
+        error:
+          error instanceof Error ? error.message : "An unknown error occurred"
+      });
     }
   }
 };
 
-export const loginWithEmailPassword = async (req: Request, res: Response) => {
+export const loginWithEmailPassword = async (
+  req: Request<object, object, LoginWithEmailPasswordInput["body"]>,
+  res: Response
+) => {
   const { email, password } = req.body;
 
   const { data, error } = await supabase.auth.signInWithPassword({

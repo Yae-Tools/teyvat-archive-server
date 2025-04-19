@@ -7,6 +7,7 @@ import {
 } from "../services/enkaClient.service";
 import { mapRefinemetData, mapWeaponStats } from "../utils/enkaAssetMapper";
 import decryptTextAsset from "../helpers/decryptTextAssets";
+import type { GetWeaponByIdInput } from "../schema/weapon.schema";
 
 export const getAllWeapons = async (_req: Request, res: Response) => {
   try {
@@ -37,7 +38,7 @@ export const getAllWeapons = async (_req: Request, res: Response) => {
 };
 
 export const getWeaponById = async (
-  req: Request<{ id: string }>,
+  req: Request<GetWeaponByIdInput["params"]>,
   res: Response
 ) => {
   try {

@@ -7,6 +7,7 @@ import {
   fetchAllArtifacts,
   fetchAllArtifactSets
 } from "../helpers/fetchArtifacts";
+import type { GetArtifactSetByIdInput } from "../schema/artifact.schema";
 
 export const getAllArtifacts = async (_req: Request, res: Response) => {
   try {
@@ -31,7 +32,7 @@ export const getAllArtifactSets = async (_req: Request, res: Response) => {
 };
 
 export const getArtifactSetById = async (
-  req: Request<{ id: string }>,
+  req: Request<GetArtifactSetByIdInput["params"]>,
   res: Response
 ) => {
   try {

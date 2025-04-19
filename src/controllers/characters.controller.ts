@@ -15,6 +15,7 @@ import {
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import decryptTextAsset from "../helpers/decryptTextAssets";
+import type { GetCharacterByIdInput } from "../schema/character.schema";
 
 export const getAllCharacters = async (_req: Request, res: Response) => {
   try {
@@ -64,13 +65,10 @@ export const getAllCharacters = async (_req: Request, res: Response) => {
 
 export const getCharacterBySkillDepotId = async (
   req: Request<
-    {
-      characterId: string;
-    },
-    {},
-    {
-      skillDepotId: string;
-    }
+    GetCharacterByIdInput["params"],
+    object,
+    object,
+    GetCharacterByIdInput["query"]
   >,
   res: Response
 ) => {
@@ -79,8 +77,8 @@ export const getCharacterBySkillDepotId = async (
     const { skillDepotId } = req.query;
 
     const response: CharacterData = getCharacterByIdFromEnka(
-      parseInt(characterId),
-      parseInt(skillDepotId as string)
+      characterId,
+      skillDepotId
     );
 
     const ascensionData = mapAscensionData(response);
@@ -113,10 +111,7 @@ export const getCharacterBySkillDepotId = async (
     } = response;
 
     const character = {
-      id: uniqueIdMapper(
-        _nameId,
-        parseInt(skillDepotId as string)
-      ).toLowerCase(),
+      id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
       enkaId,
       skillDepotId,
       name: decryptTextAsset(name),
