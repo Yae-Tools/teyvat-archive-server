@@ -19,4 +19,5 @@ router.use("/events", eventRoutes);
 router.use("/weapons", weaponRoutes);
 router.use("/artifacts", artifactRoutes);
 router.use("/auth", authRoutes);
+
 export default router;
