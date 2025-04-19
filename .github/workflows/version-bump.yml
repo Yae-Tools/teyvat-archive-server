@@ -33,8 +33,8 @@ jobs:
           # Increment patch version
           NEW_VERSION="$major.$minor.$((patch + 1))"
 
-          # Update package.json
-          npm version $NEW_VERSION --no-git-tag-version
+          # Update package.json directly
+          node -e "const pkg = require('./package.json'); pkg.version = '$NEW_VERSION'; require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');"
 
           # Commit and push changes
           git config --global user.name "GitHub Actions"
