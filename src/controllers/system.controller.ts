@@ -5,6 +5,7 @@ import {
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest
 } from "../services/system.service";
+import { migrateToLatest } from "../db/db.migrator";
 
 export const getGameVersion = async (
   _req: Request,
@@ -46,5 +47,15 @@ export const refetchCache = async (
   } catch (error) {
     console.error("Error refetching cache:", error);
     res.status(500).send({ error: "Failed to refetch cache" });
+  }
+};
+
+export const runMigrations = async (req: Request, res: Response) => {
+  try {
+    await migrateToLatest();
+    res.status(200).send({ message: "Migrations run successfully" });
+  } catch (error) {
+    console.error("Error running migrations:", error);
+    res.status(500).send({ error: "Failed to run migrations" });
   }
 };

@@ -4,7 +4,6 @@ import helmet from "helmet";
 import compression from "compression";
 
 import router from "./routes";
-import { migrateToLatest } from "./db/db.migrator";
 import prefetchData from "./helpers/prefetchData";
 
 const app = express();
@@ -18,8 +17,11 @@ app.use(compression());
 
 app.use(router);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to Teyvat Archive API");
+});
+
 prefetchData();
-migrateToLatest();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
