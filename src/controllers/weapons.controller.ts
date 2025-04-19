@@ -1,11 +1,12 @@
 import { WeaponData } from "enka-network-api";
+import type { Request, Response } from "express";
+
 import {
   getAllWeaponsFromEnka,
   getWeaponByIdFromEnka
 } from "../services/enkaClient.service";
 import { mapRefinemetData, mapWeaponStats } from "../utils/enkaAssetMapper";
 import decryptTextAsset from "../helpers/decryptTextAssets";
-import type { Request, Response } from "express";
 
 export const getAllWeapons = async (_req: Request, res: Response) => {
   try {

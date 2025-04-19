@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import { fetchRedeemCodes } from "../services/system.service";
 
 export const getAllRedeemCodes = async (_req: Request, res: Response) => {

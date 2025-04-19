@@ -1,7 +1,8 @@
+import type { Request, Response } from "express";
+
 import { db, supabase } from "../db/db.client";
 import { UserService } from "../services/user.service";
 import { EUserRole } from "../types/database.types";
-import type { Request, Response } from "express";
 
 const userService = new UserService(db);
 

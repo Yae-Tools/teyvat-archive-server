@@ -1,10 +1,11 @@
+import type { Request, Response } from "express";
+
 import {
   fetchAbyssBlessingInfo,
   fetchAbyssInfo
 } from "../services/system.service";
 import type { IAbyssBlessingData, IAbyssData } from "../types/abyss.types";
 import { parseCharacterData, parsePartyData } from "../utils/abyssDataParser";
-import type { Request, Response } from "express";
 
 export const getAbyssData = async (_req: Request, res: Response) => {
   try {

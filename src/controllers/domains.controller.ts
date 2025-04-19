@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import { fetchDailyDomainInfo } from "../services/system.service";
 import type {
   DateEnum,

@@ -1,4 +1,6 @@
 import { CharacterData, CharacterDetails } from "enka-network-api";
+import type { Request, Response } from "express";
+
 import {
   getAllCharactersFromEnka,
   getCharacterByIdFromEnka
@@ -13,7 +15,6 @@ import {
 } from "../utils/enkaAssetMapper";
 import uniqueIdMapper from "../utils/uniqueIdMapper";
 import decryptTextAsset from "../helpers/decryptTextAssets";
-import type { Request, Response } from "express";
 
 export const getAllCharacters = async (_req: Request, res: Response) => {
   try {

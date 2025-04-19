@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import decryptTextAsset from "../helpers/decryptTextAssets";
 import { getArtifactSetByIdFromEnka } from "../services/enkaClient.service";
 import { getArtifactCollection } from "../utils/enkaAssetMapper";
@@ -6,6 +7,7 @@ import {
   fetchAllArtifacts,
   fetchAllArtifactSets
 } from "../helpers/fetchArtifacts";
+
 export const getAllArtifacts = async (_req: Request, res: Response) => {
   try {
     const artifacts = await fetchAllArtifacts();

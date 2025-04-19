@@ -1,4 +1,4 @@
-import { EquipType } from "enka-network-api";
+import type { EquipType } from "enka-network-api";
 
 interface ICustomBaseArtifact {
   id: number;

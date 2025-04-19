@@ -8,7 +8,8 @@ import {
 import { Pool } from "pg";
 import * as path from "path";
 import * as fs from "fs/promises";
-import { IDatabase } from "../types/database.types";
+
+import type { IDatabase } from "../types/database.types";
 // Create database connection
 const db = new Kysely<IDatabase>({
   dialect: new PostgresDialect({

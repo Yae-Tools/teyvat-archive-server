@@ -1,10 +1,11 @@
+import type { Request, Response } from "express";
+
 import { fetchAmberEvents } from "../services/system.service";
 import {
   LANGUAGE_CODES,
   type IEvent,
   type ILanguageCode
 } from "../types/events.type";
-import type { Request, Response } from "express";
 
 export const getAllEvents = async (
   req: Request<{}, {}, {}, { language?: ILanguageCode }>,

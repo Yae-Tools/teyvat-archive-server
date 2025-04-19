@@ -4,16 +4,8 @@ import helmet from "helmet";
 import compression from "compression";
 
 import router from "./routes";
-import {
-  fetchHoyoPlayRequest,
-  fetchHoyoGameRequest,
-  fetchHoyoCalendar,
-  fetchAmberEvents,
-  fetchRedeemCodes,
-  fetchAbyssInfo,
-  fetchAbyssBlessingInfo,
-  fetchDailyDomainInfo
-} from "./services/system.service";
+import { migrateToLatest } from "./db/db.migrator";
+import prefetchData from "./helpers/prefetchData";
 
 const app = express();
 
@@ -25,20 +17,9 @@ app.use(helmet());
 app.use(compression());
 
 app.use(router);
-const preFetchData = async () => {
-  await Promise.all([
-    fetchHoyoPlayRequest(),
-    fetchHoyoGameRequest(),
-    fetchHoyoCalendar(),
-    fetchAmberEvents(),
-    fetchRedeemCodes(),
-    fetchAbyssInfo(),
-    fetchAbyssBlessingInfo(),
-    fetchDailyDomainInfo()
-  ]);
-};
 
-preFetchData();
+prefetchData();
+migrateToLatest();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
