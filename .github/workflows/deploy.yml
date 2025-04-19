@@ -34,13 +34,14 @@ jobs:
           PROJECT_AMBR_BASE_URL=${{ secrets.PROJECT_AMBR_BASE_URL }}
           HOYOPLAY_REQUEST_CAPTURE_URL=${{ secrets.HOYOPLAY_REQUEST_CAPTURE_URL }}
           HOYO_GAME_CAPTURE_URL=${{ secrets.HOYO_GAME_CAPTURE_URL }}
-          HOYO_API=${{ secrets.HOYO_API }}
           AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}
+          HOYO_API=${{ secrets.HOYO_API }}
           AZA_GG_API=${{ secrets.AZA_GG_API }}
           HAKUSH_ABYSS_API=${{ secrets.HAKUSH_ABYSS_API }}
-          MONGO_USERNAME=${{ secrets.MONGO_USERNAME }}
-          MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
           PORT=${{ secrets.PORT }}
+          SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          SUPABASE_CONNECTION_STRING=${{ secrets.SUPABASE_CONNECTION_STRING }}
+          SUPABASE_SERVICE_ROLE=${{ secrets.SUPABASE_SERVICE_ROLE}}
           INNER_EOF
             echo "Updated .env file with secrets."
           EOF
