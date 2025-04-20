@@ -14,8 +14,13 @@ const query = object({
   })
 });
 
-const getCharacterByIdSchema = object({ params, query });
+const getCharacterByIdSchema = {
+  params,
+  query
+};
 
-type GetCharacterByIdInput = TypeOf<typeof getCharacterByIdSchema>;
-
+type GetCharacterByIdInput = {
+  params: TypeOf<typeof params>;
+  query: TypeOf<typeof query>;
+};
 export { getCharacterByIdSchema, type GetCharacterByIdInput };

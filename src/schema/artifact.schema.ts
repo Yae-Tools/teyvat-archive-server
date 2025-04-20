@@ -7,10 +7,12 @@ const params = object({
   })
 });
 
-const getArtifactSetByIdSchema = object({
+const getArtifactSetByIdSchema = {
   params
-});
+};
 
-type GetArtifactSetByIdInput = TypeOf<typeof getArtifactSetByIdSchema>;
+type GetArtifactSetByIdInput = {
+  params: TypeOf<typeof params>;
+};
 
 export { getArtifactSetByIdSchema, type GetArtifactSetByIdInput };
