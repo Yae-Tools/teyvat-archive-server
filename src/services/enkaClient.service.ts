@@ -1,21 +1,9 @@
 import { EnkaClient } from "enka-network-api";
 
-const enka = new EnkaClient({
+export const enka = new EnkaClient({
   defaultLanguage: "en",
   githubToken: process.env.AUTH_TOKEN,
   cacheDirectory: "/tmp/enka-cache"
-});
-
-enka.cachedAssetsManager.activateAutoCacheUpdater({
-  instant: true, // Run the first update check immediately
-  timeout: 60 * 60 * 24 * 1000, // 1 day interval
-  onUpdateStart: async () => {
-    console.log("Updating Genshin Data...");
-  },
-  onUpdateEnd: async () => {
-    enka.cachedAssetsManager.refreshAllData(); // Refresh memory
-    console.log("Genshin Data Updated!");
-  }
 });
 
 export function getAllCharactersFromEnka() {
@@ -50,6 +38,20 @@ export function getMaterialByEnkaId(materialId: number) {
   return enka.getMaterialById(materialId);
 }
 
-export function refetchEnkaCache() {
-  return enka.cachedAssetsManager.fetchAllContents();
+export async function checkIfEnkaIsUpToDate() {
+  console.log("Checking if Enka is up to date...");
+  const updatesAvailable = await enka.cachedAssetsManager.checkForUpdates();
+
+  if (updatesAvailable) {
+    console.log("Enka is not up to date, refetching...");
+    await refetchEnkaCache();
+  }
+
+  console.log("Enka is up to date");
+  return true;
+}
+
+export async function refetchEnkaCache() {
+  await enka.cachedAssetsManager.fetchAllContents();
+  enka.cachedAssetsManager.refreshAllData();
 }
