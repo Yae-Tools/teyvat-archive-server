@@ -3,9 +3,17 @@ export interface ICharacterBuildInput {
   characterId: string;
   buildName: string;
   lastUpdatedPatch: string;
-  mainStats: any;
-  subStats: any;
-  talentPriority?: any;
+  mainStats: {
+    sands: string[];
+    goblet: string[];
+    circlet: string[];
+  };
+  subStats: string[];
+  talentPriority: {
+    normalAttack: number;
+    elementalSkill: number;
+    elementalBurst: number;
+  };
   notes?: string;
   weapons: {
     weaponId: string;
