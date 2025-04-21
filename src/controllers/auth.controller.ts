@@ -11,7 +11,7 @@ import type {
 const userService = new UserService(db);
 
 export const registerUser = async (
-  req: Request<object, object, RegisterUserInput["body"]>,
+  req: Request<object, object, RegisterUserInput>,
 
   res: Response
 ) => {
@@ -43,7 +43,7 @@ export const registerUser = async (
 };
 
 export const loginWithEmailPassword = async (
-  req: Request<object, object, LoginWithEmailPasswordInput["body"]>,
+  req: Request<object, object, LoginWithEmailPasswordInput>,
   res: Response
 ) => {
   const { email, password } = req.body;

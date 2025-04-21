@@ -5,7 +5,7 @@ import { LANGUAGE_CODES, type IEvent } from "../types/events.type";
 import type { GetEventsInput } from "../schema/event.schema";
 
 export const getAllEvents = async (
-  req: Request<object, object, object, GetEventsInput["query"]>,
+  req: Request<object, object, object, GetEventsInput>,
   res: Response
 ) => {
   const LANG = req.query.language ?? LANGUAGE_CODES.EN;
