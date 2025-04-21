@@ -38,7 +38,7 @@ export const getAllWeapons = async (_req: Request, res: Response) => {
 };
 
 export const getWeaponById = async (
-  req: Request<GetWeaponByIdInput["params"]>,
+  req: Request<GetWeaponByIdInput>,
   res: Response
 ) => {
   try {

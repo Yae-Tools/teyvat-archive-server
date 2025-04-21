@@ -19,14 +19,16 @@ const body = object({
     })
 });
 
-const registerUserSchema = object({
+const registerUserSchema = {
   body
-});
+};
 
-const loginWithEmailPasswordSchema = object({ body });
+const loginWithEmailPasswordSchema = {
+  body
+};
 
-type RegisterUserInput = TypeOf<typeof registerUserSchema>;
-type LoginWithEmailPasswordInput = TypeOf<typeof loginWithEmailPasswordSchema>;
+type RegisterUserInput = TypeOf<typeof body>;
+type LoginWithEmailPasswordInput = TypeOf<typeof body>;
 
 export {
   registerUserSchema,

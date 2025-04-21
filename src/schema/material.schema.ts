@@ -7,8 +7,10 @@ const params = object({
   })
 });
 
-const getMaterialByIdSchema = object({ params });
+const getMaterialByIdSchema = {
+  params
+};
 
-type GetMaterialByIdInput = TypeOf<typeof getMaterialByIdSchema>;
+type GetMaterialByIdInput = TypeOf<typeof params>;
 
 export { getMaterialByIdSchema, type GetMaterialByIdInput };

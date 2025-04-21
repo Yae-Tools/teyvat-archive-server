@@ -20,8 +20,10 @@ const query = object({
     .transform((val) => val as ILanguageCode | undefined)
 });
 
-const getEventsSchema = object({ query });
+const getEventsSchema = {
+  query
+};
 
-type GetEventsInput = TypeOf<typeof getEventsSchema>;
+type GetEventsInput = TypeOf<typeof query>;
 
 export { getEventsSchema, type GetEventsInput };

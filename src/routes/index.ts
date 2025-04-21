@@ -8,6 +8,7 @@ import eventRoutes from "./event.routes";
 import weaponRoutes from "./weapon.routes";
 import artifactRoutes from "./artifact.routes";
 import authRoutes from "./auth.routes";
+
 const router = Router();
 
 router.use("/system", systemRoutes);

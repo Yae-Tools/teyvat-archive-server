@@ -4,7 +4,7 @@ import helmet from "helmet";
 import compression from "compression";
 
 import router from "./routes";
-import prefetchData from "./helpers/prefetchData";
+import { setupDataUpdateScheduler } from "./services/scheduler.service";
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to Teyvat Archive API");
 });
 
-prefetchData();
+setupDataUpdateScheduler();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

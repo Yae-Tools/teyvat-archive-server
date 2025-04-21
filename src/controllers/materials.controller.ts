@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import getMaterialDataHelper from "../helpers/getMaterialData";
 import { type GetMaterialByIdInput } from "../schema/material.schema";
 export const getMaterialById = (
-  req: Request<GetMaterialByIdInput["params"]>,
+  req: Request<GetMaterialByIdInput>,
   res: Response
 ) => {
   try {

@@ -7,8 +7,10 @@ const params = object({
   })
 });
 
-const getWeaponByIdSchema = object({ params });
+const getWeaponByIdSchema = {
+  params
+};
 
-type GetWeaponByIdInput = TypeOf<typeof getWeaponByIdSchema>;
+type GetWeaponByIdInput = TypeOf<typeof params>;
 
 export { getWeaponByIdSchema, type GetWeaponByIdInput };
