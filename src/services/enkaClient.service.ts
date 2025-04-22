@@ -3,7 +3,7 @@ import { EnkaClient } from "enka-network-api";
 export const enka = new EnkaClient({
   defaultLanguage: "en",
   githubToken: process.env.AUTH_TOKEN,
-  cacheDirectory: "/tmp/enka-cache"
+  cacheDirectory: "src/data/enka-cache"
 });
 
 export function getAllCharactersFromEnka() {
