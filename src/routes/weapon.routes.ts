@@ -4,13 +4,22 @@ import { validateRequest } from "zod-express-middleware";
 import {
   getAllWeapons,
   getAllWeaponSeries,
-  getWeaponById
+  getWeaponById,
+  getAllWeaponsByType
 } from "../controllers/weapons.controller";
-import { getWeaponByIdSchema } from "../schema/weapon.schema";
+import {
+  getWeaponByIdSchema,
+  getWeaponByTypeSchema
+} from "../schema/weapon.schema";
 
 const router = Router();
 
 router.get("/all", getAllWeapons);
+router.get(
+  "/all/:type",
+  validateRequest(getWeaponByTypeSchema),
+  getAllWeaponsByType
+);
 router.get("/id/:id", validateRequest(getWeaponByIdSchema), getWeaponById);
 router.get("/series", getAllWeaponSeries);
 

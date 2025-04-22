@@ -22,7 +22,6 @@ app.get("/", (req, res) => {
 });
 
 setupDataUpdateScheduler();
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

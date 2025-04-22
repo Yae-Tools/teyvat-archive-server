@@ -7,7 +7,10 @@ import {
 } from "../services/enkaClient.service";
 import { mapRefinemetData, mapWeaponStats } from "../utils/enkaAssetMapper";
 import decryptTextAsset from "../helpers/decryptTextAssets";
-import type { GetWeaponByIdInput } from "../schema/weapon.schema";
+import type {
+  GetWeaponByIdInput,
+  GetWeaponByTypeInput
+} from "../schema/weapon.schema";
 
 export const getAllWeapons = async (_req: Request, res: Response) => {
   try {
@@ -33,6 +36,39 @@ export const getAllWeapons = async (_req: Request, res: Response) => {
     res.status(200).send(weapons);
   } catch (error) {
     console.log("Error fetching weapons", error);
+    res.status(500).send({ error: error });
+  }
+};
+
+export const getAllWeaponsByType = async (
+  req: Request<GetWeaponByTypeInput>,
+  res: Response
+) => {
+  try {
+    const { type } = req.params;
+    const response: WeaponData[] = getAllWeaponsFromEnka();
+
+    const weapons = response
+      .filter((weapon) => weapon.weaponType === type)
+      .map((weapon) => {
+        const { id, name, _nameId, awakenIcon, icon, stars, weaponType } =
+          weapon;
+
+        return {
+          id: _nameId,
+          enkaId: id,
+          name: decryptTextAsset(name),
+          awakenIcon: awakenIcon.url,
+          icon: icon.url,
+          stars,
+          weaponType,
+          series: _nameId.split("_")[1]
+        };
+      });
+
+    res.status(200).send(weapons);
+  } catch (error) {
+    console.log("Error fetching weapons by type", error);
     res.status(500).send({ error: error });
   }
 };

@@ -13,5 +13,16 @@ export function setupDataUpdateScheduler() {
     }
   });
 
+  // Run the task immediately on startup
+  (async () => {
+    console.log("Running immediate data update check...");
+    try {
+      await prefetchData();
+      console.log("Immediate data update check completed successfully");
+    } catch (error) {
+      console.error("Error during immediate data update check:", error);
+    }
+  })();
+
   console.log("Data update scheduler has been set up");
 }
