@@ -6,6 +6,7 @@ import {
   fetchHoyoPlayRequest
 } from "../services/system.service";
 import { migrateToLatest } from "../db/db.migrator";
+import { db } from "../db/db.client";
 
 export const getGameVersion = async (
   _req: Request,
@@ -57,5 +58,25 @@ export const runMigrations = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error running migrations:", error);
     res.status(500).send({ error: "Failed to run migrations" });
+  }
+};
+
+export const resetMigrations = async (req: Request, res: Response) => {
+  try {
+    // Drop the kysely_migrations table to reset migration state
+    await Promise.all([
+      db.schema.dropTable("kysely_migration").execute(),
+      db.schema.dropTable("kysely_migration_lock").execute()
+    ]);
+    console.log("Dropped kysely_migration tables");
+
+    // Run migrations again
+    await migrateToLatest();
+    res
+      .status(200)
+      .send({ message: "Migrations reset and rerun successfully" });
+  } catch (error) {
+    console.error("Error resetting migrations:", error);
+    res.status(500).send({ error: "Failed to reset migrations" });
   }
 };

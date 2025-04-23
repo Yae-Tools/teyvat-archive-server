@@ -10,7 +10,7 @@ export function getAllCharactersFromEnka() {
   return enka.getAllCharacters();
 }
 
-export function getCharacterByIdFromEnka(id: number, skillDepotId: number) {
+export function getCharacterByIdFromEnka(id: string, skillDepotId: string) {
   return enka.getCharacterById(id, skillDepotId);
 }
 

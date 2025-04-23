@@ -10,8 +10,8 @@ export const getMaterialById = (
     const { id } = req.params;
     const materialData = getMaterialDataHelper(id);
 
-    res.status(200).json(materialData);
+    res.status(200).send(materialData);
   } catch (error: unknown) {
-    res.status(404).json({ error: error });
+    res.status(404).send({ error: error });
   }
 };

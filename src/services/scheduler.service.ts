@@ -13,16 +13,22 @@ export function setupDataUpdateScheduler() {
     }
   });
 
-  // Run the task immediately on startup
-  (async () => {
-    console.log("Running immediate data update check...");
-    try {
-      await prefetchData();
-      console.log("Immediate data update check completed successfully");
-    } catch (error) {
-      console.error("Error during immediate data update check:", error);
-    }
-  })();
+  // Run the task immediately on startup only if the environment is not production
+  if (process.env.NODE_ENV === "production") {
+    (async () => {
+      console.log("Running immediate data update check...");
+      try {
+        await prefetchData();
+        console.log("Immediate data update check completed successfully");
+      } catch (error) {
+        console.error("Error during immediate data update check:", error);
+      }
+    })();
+  } else {
+    console.log(
+      "Immediate data update check skipped in development environment"
+    );
+  }
 
   console.log("Data update scheduler has been set up");
 }

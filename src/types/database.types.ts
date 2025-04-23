@@ -48,9 +48,9 @@ export interface ICharacterBuildTable {
   character_id: string;
   build_name: string;
   last_updated_patch: string;
-  main_stats: any;
-  sub_stats: any;
-  talent_priority: any;
+  main_stats: string;
+  sub_stats: string;
+  talent_priority: string;
   notes: string;
   created_at: Generated<Date>;
   updated_at: Generated<Date>;
@@ -61,10 +61,9 @@ export interface ICharacterBuildInsert {
   character_id: string;
   build_name: string;
   last_updated_patch: string;
-  main_stats: any;
-  sub_stats: any;
-  talent_priority: any;
-  notes: string;
+  main_stats: string;
+  sub_stats: string;
+  talent_priority: string;
 }
 export interface ICharacterBuild extends ICharacterBuildInsert {
   id: string;
@@ -75,7 +74,7 @@ export interface ICharacterBuild extends ICharacterBuildInsert {
 export interface IBuildWeaponsTable {
   id: Generated<number>;
   build_id: string;
-  weapon_id: string;
+  weapon_id: number;
   refinement: number | null;
   rank: number;
   created_at: Generated<Date>;
@@ -84,8 +83,8 @@ export interface IBuildWeaponsTable {
 
 export interface IBuildWeaponsInsert {
   build_id: string;
-  weapon_id: string;
-  refinement: number | null;
+  weapon_id: number;
+  refinement: number;
   rank: number;
 }
 
