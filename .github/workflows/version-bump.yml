@@ -16,22 +16,50 @@ jobs:
         with:
           ref: master
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0 # Fetch all history so we can compare with base branch
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Bump version
+      - name: Check if version was manually updated
+        id: version-check
+        run: |
+          # Get the current version in master
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+
+          # Checkout the PR base to check its version
+          git checkout HEAD~1
+          BASE_VERSION=$(node -p "require('./package.json').version")
+          echo "Base version: $BASE_VERSION"
+
+          # Go back to master
+          git checkout master
+
+          # Compare versions
+          if [ "$CURRENT_VERSION" != "$BASE_VERSION" ]; then
+            echo "Version was manually updated from $BASE_VERSION to $CURRENT_VERSION"
+            echo "manual_update=true" >> $GITHUB_OUTPUT
+          else
+            echo "No manual version update detected"
+            echo "manual_update=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version if not manually updated
+        if: steps.version-check.outputs.manual_update == 'false'
         run: |
           # Get current version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
 
           # Split version into parts
           IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
 
           # Increment patch version
           NEW_VERSION="$major.$minor.$((patch + 1))"
+          echo "Bumping to: $NEW_VERSION"
 
           # Update package.json directly
           node -e "const pkg = require('./package.json'); pkg.version = '$NEW_VERSION'; require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');"
