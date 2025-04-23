@@ -1,16 +1,16 @@
-import { number, object, type TypeOf } from "zod";
+import { object, string, type TypeOf } from "zod";
 
 const params = object({
-  characterId: number({
+  characterId: string({
     required_error: "Character ID is required",
-    invalid_type_error: "Character ID must be a number"
+    invalid_type_error: "Character ID must be a string"
   })
 });
 
 const query = object({
-  skillDepotId: number({
+  skillDepotId: string({
     required_error: "Skill Depot ID is required",
-    invalid_type_error: "Skill Depot ID must be a number"
+    invalid_type_error: "Skill Depot ID must be a string"
   })
 });
 

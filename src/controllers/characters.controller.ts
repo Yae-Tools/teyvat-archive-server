@@ -111,7 +111,7 @@ export const getCharacterBySkillDepotId = async (
     } = response;
 
     const character = {
-      id: uniqueIdMapper(_nameId, skillDepotId).toLowerCase(),
+      id: uniqueIdMapper(_nameId, Number(skillDepotId)).toLowerCase(),
       enkaId,
       skillDepotId,
       name: decryptTextAsset(name),
@@ -143,7 +143,6 @@ export const getCharacterBySkillDepotId = async (
       birthday: details?.birthday,
       bodyType
     };
-
     if (character) {
       res.status(200).send(character);
     } else {

@@ -15,16 +15,20 @@ export interface ICharacterBuildInput {
     elementalBurst: number;
   };
   notes?: string;
+  artifactNotes?: string;
+  statNotes?: string;
+  talentNotes?: string;
+  weaponNotes?: string;
   weapons: {
-    weaponId: string;
+    weaponId: number;
     weaponRank: number;
     weaponRefinement: number | null;
-  }[]; // Default empty array
+  }[];
   artifacts: {
     rank: number;
     artifactSets: {
       setId: string;
       piecesCount: number;
     }[];
-  }[]; // Default empty array
+  }[];
 }

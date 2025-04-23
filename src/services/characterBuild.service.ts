@@ -49,7 +49,7 @@ export class CharacterBuildService {
   private async insertBuildWeapons(
     buildId: string,
     weapons: {
-      weaponId: string;
+      weaponId: number;
       weaponRank: number;
       weaponRefinement: number | null;
     }[]
@@ -122,5 +122,9 @@ export class CharacterBuildService {
       .where("id", "=", buildId)
       .selectAll()
       .executeTakeFirst();
+  }
+
+  async getAllCharacterBuilds() {
+    return await this.db.selectFrom("character_builds").selectAll().execute();
   }
 }

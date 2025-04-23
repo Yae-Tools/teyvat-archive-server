@@ -2,6 +2,7 @@
 import { Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<any>) {
+  console.log("Creating character builds table");
   await db.schema
     .createTable("character_builds")
     .addColumn("id", "serial", (col) => col.primaryKey())
@@ -10,7 +11,7 @@ export async function up(db: Kysely<any>) {
       col.notNull().references("user_profiles.user_id").onDelete("cascade")
     )
     .addColumn("character_id", "text", (col) => col.notNull())
-    .addColumn("last_updated_path", "text", (col) => col.notNull())
+    .addColumn("last_updated_patch", "text", (col) => col.notNull())
     .addColumn("main_stats", "jsonb", (col) => col.notNull())
     .addColumn("sub_stats", "jsonb", (col) => col.notNull())
     .addColumn("talent_priority", "jsonb", (col) => col.notNull())
@@ -31,8 +32,8 @@ export async function up(db: Kysely<any>) {
     .addColumn("build_id", "integer", (col) =>
       col.notNull().references("character_builds.id").onDelete("cascade")
     )
-    .addColumn("weapon_id", "text", (col) => col.notNull())
-    .addColumn("refinement", "integer")
+    .addColumn("weapon_id", "integer", (col) => col.notNull())
+    .addColumn("refinement", "integer", (col) => col.notNull())
     .addColumn("rank", "integer", (col) => col.notNull())
     .addColumn("created_at", "timestamp", (col) =>
       col.notNull().defaultTo(sql`now()`)
