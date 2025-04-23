@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { supabase } from "../db/db.client";
-
+import { db, supabase } from "../db/db.client";
+import { UserService } from "../services/user.service";
 export const deserializeUser = async (
   req: Request,
   res: Response,
@@ -16,7 +16,14 @@ export const deserializeUser = async (
   } = await supabase.auth.getUser(accessToken);
 
   if (user) {
-    res.locals.user = user;
+    const userService = new UserService(db);
+
+    const userProfile = await userService.getUserProfile(user.id);
+
+    if (userProfile) {
+      res.locals.user = userProfile;
+    }
+
     next();
   } else {
     res.status(401).json({ error: "Unauthorized" });

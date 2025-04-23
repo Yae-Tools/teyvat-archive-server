@@ -5,14 +5,27 @@ import {
   runMigrations,
   resetMigrations
 } from "../controllers/system.controller";
+import { requireUser } from "../middleware/requireUser";
+import { hasPermission } from "../middleware/hasPermission";
+import { EUserRole } from "../types/database.types";
 
 const router = Router();
 
-//add route prefix
-
 router.get("/game/version", getGameVersion);
-router.get("/cache/refresh", refetchCache);
-router.get("/migrate", runMigrations);
-router.get("/migrate/reset", resetMigrations);
+router.get(
+  "/cache/refresh",
+  [requireUser, hasPermission(EUserRole.ADMIN)],
+  refetchCache
+);
+router.get(
+  "/migrate",
+  [requireUser, hasPermission(EUserRole.ADMIN)],
+  runMigrations
+);
+router.get(
+  "/migrate/reset",
+  [requireUser, hasPermission(EUserRole.ADMIN)],
+  resetMigrations
+);
 
 export default router;

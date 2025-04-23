@@ -1,13 +1,13 @@
 import type { Request, Response, NextFunction } from "express";
 
 export const requireUser = (
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const user = res.locals.user;
   if (!user) {
-    return res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ error: "Unauthorized" });
   }
-  return next();
+  next();
 };
