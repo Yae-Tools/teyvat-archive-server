@@ -4,6 +4,7 @@ declare module "express" {
   interface Response {
     locals: {
       user?: IUserProfile;
+      token?: string;
     };
   }
 }

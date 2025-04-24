@@ -6,7 +6,7 @@ export const deserializeUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const accessToken = req.headers.authorization;
+  const accessToken = req.headers.authorization?.split(" ")[1];
   if (!accessToken) {
     return next();
   }
@@ -22,6 +22,7 @@ export const deserializeUser = async (
 
     if (userProfile) {
       res.locals.user = userProfile;
+      res.locals.token = accessToken;
     }
 
     next();

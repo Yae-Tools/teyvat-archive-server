@@ -82,3 +82,27 @@ export const loginWithEmailPassword = async (
     res.status(401).send({ message: "User not found" });
   }
 };
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  const { user, token } = res.locals;
+
+  const supabaseUser = await supabase.auth.getUser(token ?? "");
+  const userProfile = await userService.getUserProfile(user?.user_id ?? "");
+
+  if (!userProfile) {
+    res.status(404).send({ message: "User profile not found" });
+  }
+
+  const formattedUserProfile = {
+    email: supabaseUser.data.user?.email,
+    displayName: userProfile?.display_name,
+    role: userProfile?.role,
+    id: userProfile?.id,
+    userId: userProfile?.user_id,
+    createdAt: userProfile?.created_at,
+    updatedAt: userProfile?.updated_at,
+    profilePicture: userProfile?.profile_picture
+  };
+
+  res.status(200).send(formattedUserProfile);
+};
