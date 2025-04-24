@@ -5,6 +5,7 @@ import compression from "compression";
 
 import router from "./routes";
 import { setupDataUpdateScheduler } from "./services/scheduler.service";
+import { deserializeUser } from "./middleware/deserializeUser";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(helmet());
 app.use(compression());
 
+app.use(deserializeUser);
 app.use(router);
 
 app.get("/", (req, res) => {

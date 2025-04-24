@@ -22,7 +22,7 @@ export const registerUser = async (
   });
 
   if (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).send({ message: error.message });
   }
 
   if (data.user) {
@@ -35,7 +35,7 @@ export const registerUser = async (
       res.status(200).send({ user: data.user, profile: response });
     } catch (error: unknown) {
       res.status(500).send({
-        error:
+        message:
           error instanceof Error ? error.message : "An unknown error occurred"
       });
     }
@@ -54,18 +54,55 @@ export const loginWithEmailPassword = async (
   });
 
   if (error) {
-    res.status(401).send({ error: "Invalid credentials" });
+    res.status(401).send({ message: "Invalid credentials" });
   }
 
   if (data.user) {
     const userProfile = await userService.getUserProfile(data.user.id);
 
     res.status(200).send({
-      user: data.user,
-      session: data.session,
-      profile: userProfile
+      session: {
+        accessToken: data.session?.access_token,
+        refreshToken: data.session?.refresh_token,
+        expiresAt: data.session?.expires_at,
+        tokenType: data.session?.token_type
+      },
+      profile: {
+        email: data.user.email,
+        displayName: userProfile?.display_name,
+        role: userProfile?.role,
+        id: userProfile?.id,
+        userId: userProfile?.user_id,
+        createdAt: userProfile?.created_at,
+        updatedAt: userProfile?.updated_at,
+        profilePicture: userProfile?.profile_picture
+      }
     });
   } else {
-    res.status(401).send({ error: "User not found" });
+    res.status(401).send({ message: "User not found" });
   }
+};
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  const { user, token } = res.locals;
+
+  const supabaseUser = await supabase.auth.getUser(token ?? "");
+  const userProfile = await userService.getUserProfile(user?.user_id ?? "");
+
+  if (!userProfile) {
+    res.status(404).send({ message: "User profile not found" });
+  }
+
+  const formattedUserProfile = {
+    email: supabaseUser.data.user?.email,
+    displayName: userProfile?.display_name,
+    role: userProfile?.role,
+    id: userProfile?.id,
+    userId: userProfile?.user_id,
+    createdAt: userProfile?.created_at,
+    updatedAt: userProfile?.updated_at,
+    profilePicture: userProfile?.profile_picture
+  };
+
+  res.status(200).send(formattedUserProfile);
 };

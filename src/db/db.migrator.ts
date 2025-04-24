@@ -22,8 +22,6 @@ const db = new Kysely<IDatabase>({
 
 const MIGRATION_FOLDER = path.join(__dirname, "../migrations");
 
-console.log("MIGRATION_FOLDER", MIGRATION_FOLDER);
-
 // Create migrator
 const migrator = new Migrator({
   db,
@@ -37,8 +35,6 @@ const migrator = new Migrator({
 // Export migration function
 export async function migrateToLatest() {
   console.log("Running database migrations...");
-
-  console.log("MIGRATOR", await migrator.migrateUp());
 
   const { error, results } = await migrator.migrateToLatest();
 
@@ -57,5 +53,5 @@ export async function migrateToLatest() {
     console.log("No migrations were executed. Database schema is up to date.");
   }
 
-  return { db }; // Return the database instance if needed elsewhere
+  return { db };
 }
