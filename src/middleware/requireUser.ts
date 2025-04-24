@@ -8,6 +8,7 @@ export const requireUser = (
   const user = res.locals.user;
   if (!user) {
     res.status(401).json({ error: "Unauthorized" });
+    return;
   }
   next();
 };
