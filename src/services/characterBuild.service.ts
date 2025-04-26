@@ -27,7 +27,11 @@ export class CharacterBuildService {
       mainStats,
       subStats,
       talentPriority,
-      notes = ""
+      notes,
+      talentNotes,
+      statNotes,
+      weaponNotes,
+      artifactNotes
     } = buildData;
 
     return await this.db
@@ -40,7 +44,11 @@ export class CharacterBuildService {
         main_stats: JSON.stringify(mainStats),
         sub_stats: JSON.stringify(subStats),
         talent_priority: JSON.stringify(talentPriority),
-        notes
+        notes: notes ?? "",
+        talent_notes: talentNotes ?? "",
+        stat_notes: statNotes ?? "",
+        weapon_notes: weaponNotes ?? "",
+        artifact_notes: artifactNotes ?? ""
       })
       .returningAll()
       .executeTakeFirstOrThrow();

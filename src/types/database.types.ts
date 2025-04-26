@@ -52,6 +52,10 @@ export interface ICharacterBuildTable {
   sub_stats: string;
   talent_priority: string;
   notes: string;
+  talent_notes: string;
+  stat_notes: string;
+  weapon_notes: string;
+  artifact_notes: string;
   created_at: Generated<Date>;
   updated_at: Generated<Date>;
 }
@@ -64,6 +68,11 @@ export interface ICharacterBuildInsert {
   main_stats: string;
   sub_stats: string;
   talent_priority: string;
+  notes: string;
+  talent_notes: string;
+  stat_notes: string;
+  weapon_notes: string;
+  artifact_notes: string;
 }
 export interface ICharacterBuild extends ICharacterBuildInsert {
   id: string;
