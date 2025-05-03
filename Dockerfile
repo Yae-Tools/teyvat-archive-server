@@ -1,4 +1,4 @@
-FROM oven/bun AS build
+FROM oven/bun:latest AS build
 
 WORKDIR /app
 
@@ -8,10 +8,8 @@ COPY bun.lock bun.lock
 
 RUN bun install
 
+# Copy the entire src directory
 COPY ./src ./src
-
-# Ensure required directories exist
-RUN mkdir -p ./src/data/enka-cache
 
 ENV NODE_ENV=production
 
@@ -23,14 +21,22 @@ RUN bun build \
     --outfile server \
     ./src/index.ts
 
-FROM gcr.io/distroless/base
+# Pre-create the directories needed by the application
+RUN mkdir -p ./empty-dirs/src/data/enka-cache
+
+# Use the full Bun image as the runtime, since it has everything needed
+FROM oven/bun:latest
 
 WORKDIR /app
 
+# Copy the compiled server binary
 COPY --from=build /app/server server
 
-# create directories for cache
-RUN mkdir -p /app/src/data/enka-cache/data
+# Copy the empty directory structure
+COPY --from=build /app/empty-dirs/src /app/src
+
+# Make directories writable
+RUN chmod -R 777 /app/src/data/enka-cache
 
 # Default to 5500 if PORT is not provided
 ENV PORT=5500
