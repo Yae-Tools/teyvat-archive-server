@@ -1,4 +1,4 @@
-import { fetchHoyoCalendar } from "../services/system.service";
+import { fetchHoyoCalendar } from "../services/datafetch.service";
 
 export const getAllCalendarEvents = async () => {
   try {

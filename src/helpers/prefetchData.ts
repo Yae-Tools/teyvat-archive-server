@@ -7,7 +7,7 @@ import {
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest,
   fetchRedeemCodes
-} from "../services/system.service";
+} from "../services/datafetch.service";
 import { checkIfEnkaIsUpToDate } from "../services/enkaClient.service";
 
 const prefetchData = async () => {

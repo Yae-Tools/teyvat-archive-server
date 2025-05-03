@@ -3,42 +3,112 @@ import {
   CharacterDetails,
   Constellation,
   Costume,
-  ElementalBurst,
-  ElementalSkill,
-  NormalAttack,
   PassiveTalent,
   WeaponData,
   WeaponRefinement
 } from "enka-network-api";
-import type { ICustomArtifact, ICustomBaseArtifact } from "../types/enka.type";
+import type { ICustomArtifact, ICustomBaseArtifact, SkillType } from "../types/enka.type";
 import decryptTextAsset from "../helpers/decryptTextAssets";
-
-const regionMap = new Map<string, string>([
-  ["ASSOC_TYPE_MONDSTADT", "Mondstadt"],
-  ["ASSOC_TYPE_LIYUE", "Liyue"],
-  ["ASSOC_TYPE_INAZUMA", "Inazuma"],
-  ["ASSOC_TYPE_SUMERU", "Sumeru"],
-  ["ASSOC_TYPE_SNEZHNAYA", "Snezhnaya"],
-  ["ASSOC_TYPE_FONTAINE", "Fontaine"],
-  ["ASSOC_TYPE_NATLAN", "Natlan"],
-  ["ASSOC_TYPE_FATUI", "Fatui"],
-  ["ASSOC_TYPE_RANGER", "Ranger"]
-]);
-
-type SkillType = NormalAttack | ElementalSkill | ElementalBurst;
+import { regionMap } from "./maps/regionMap";
 
 export function mapSkills(characterData: CharacterData) {
-  const { skills, normalAttack, elementalSkill, elementalBurst } =
-    characterData;
-  if (normalAttack && elementalSkill && elementalBurst) {
-    const filteredSkills = skills.filter(
-      (skill) =>
-        skill.id !== normalAttack.id &&
-        skill.id !== elementalSkill.id &&
-        skill.id !== elementalBurst.id
-    );
+  const { skills, normalAttack, elementalSkill, elementalBurst } = characterData;
+  
+  // Early return if required data is missing
+  if (!normalAttack || !elementalSkill || !elementalBurst) {
+    return [];
+  }
 
-    const mappedSkills = filteredSkills.map((skill) => ({
+  const TALENT_LEVELS = 15;
+  const abilityIds = new Set([normalAttack.id, elementalSkill.id, elementalBurst.id]);
+  
+  // Helper function to generate attributes (extracted to reduce duplication)
+  function getAttributes(skill: SkillType) {
+    const attributesByName = new Map();
+    
+    for (let level = 1; level <= TALENT_LEVELS; level++) {
+      const attributes = skill.getSkillAttributes(level);
+      
+      for (const attribute of attributes) {
+        const data = attribute.getAttributeData();
+        const { name, valueText: value, usedNumbers } = data;
+        
+        if (!attributesByName.has(name)) {
+          attributesByName.set(name, {
+            name,
+            values: [],
+            usedNumbers: []
+          });
+        }
+        
+        const entry = attributesByName.get(name);
+        entry.values.push({ level, value });
+        entry.usedNumbers.push({ level, value: usedNumbers });
+      }
+    }
+    
+    return Array.from(attributesByName.values());
+  }
+
+  // Helper function to get ascension costs (extracted to reduce duplication)
+  function getAscensionCost(skill:SkillType) {
+    return Array.from({ length: TALENT_LEVELS }, (_, i) => {
+      const level = i + 1;
+      const asc = skill.getUpgradeCost(level);
+      
+      return {
+        level,
+        items: asc?.items.map(item => ({
+          count: item.count,
+          materialId: item.material.id,
+          materialName: decryptTextAsset(item.material.name),
+          materialIcon: item.material.icon?.url,
+          materialRarity: item.material.stars
+        })),
+        coins: asc?.coin
+      };
+    });
+  }
+
+  // Process the three main abilities
+  const mappedNormalAttack = {
+    id: normalAttack.id,
+    name: decryptTextAsset(normalAttack.name),
+    description: decryptTextAsset(normalAttack.description),
+    icon: normalAttack.icon?.url,
+    stats: getAttributes(normalAttack),
+    ascensionCost: getAscensionCost(normalAttack)
+  };
+
+  const mappedElementalSkill = {
+    id: elementalSkill.id,
+    name: decryptTextAsset(elementalSkill.name),
+    description: decryptTextAsset(elementalSkill.description),
+    icon: elementalSkill.icon?.url,
+    stats: getAttributes(elementalSkill),
+    ascensionCost: getAscensionCost(elementalSkill)
+  };
+
+  const mappedElementalBurst = {
+    id: elementalBurst.id,
+    name: decryptTextAsset(elementalBurst.name),
+    description: decryptTextAsset(elementalBurst.description),
+    icon: elementalBurst.icon?.url,
+    stats: getAttributes(elementalBurst),
+    ascensionCost: getAscensionCost(elementalBurst)
+  };
+
+  // Create a map for quick lookup of the three main abilities
+  const abilityMap = new Map([
+    [normalAttack.id, mappedNormalAttack],
+    [elementalSkill.id, mappedElementalSkill],
+    [elementalBurst.id, mappedElementalBurst]
+  ]);
+
+  // Process the non-ability skills
+  const mappedSkills = skills
+    .filter(skill => !abilityIds.has(skill.id))
+    .map(skill => ({
       id: skill.id,
       name: decryptTextAsset(skill.name),
       description: decryptTextAsset(skill.description),
@@ -46,115 +116,15 @@ export function mapSkills(characterData: CharacterData) {
       data: skill._data
     }));
 
-    const TALENT_LEVELS = 15;
-
-    // Helper function to generate attributes
-    function getAttributes(skill: SkillType) {
-      const rawStats = Array.from({ length: TALENT_LEVELS }, (_, i) => {
-        return skill.getSkillAttributes(i + 1).map((attribute) => {
-          const data = attribute.getAttributeData();
-
-          return {
-            name: data.name,
-            value: data.valueText,
-            usedNumbers: data.usedNumbers,
-            level: i + 1
-          };
-        });
-      }).flat();
-
-      return [...new Set(rawStats.map((stat) => stat.name))].map((name) => {
-        const statsForName = rawStats.filter((stat) => stat.name === name);
-        return {
-          name,
-          values: statsForName.map((stat) => ({
-            level: stat.level,
-            value: stat.value
-          })),
-          usedNumbers: statsForName.map((stat) => ({
-            level: stat.level,
-            value: stat.usedNumbers
-          }))
-        };
-      });
+  // Map all skills in original order
+  return skills.map(originalSkill => {
+    if (abilityIds.has(originalSkill.id)) {
+      return abilityMap.get(originalSkill.id);
     }
-
-    function getAscensionCost(skill: SkillType) {
-      const ascensionCost = Array.from({ length: TALENT_LEVELS }, (_, i) => {
-        const asc = skill.getUpgradeCost(i + 1);
-        return {
-          level: i + 1,
-          items: asc?.items.map((item) => ({
-            count: item.count,
-            materialId: item.material.id,
-            materialName: decryptTextAsset(item.material.name),
-            materialIcon: item.material.icon?.url,
-            materialRarity: item.material.stars
-          })),
-          coins: asc?.coin
-        };
-      });
-
-      return ascensionCost;
-    }
-
-    // Generate attributes for each skill type
-    const normalAttackAttributes = getAttributes(normalAttack);
-    const elementalSkillAttributes = getAttributes(elementalSkill);
-    const elementalBurstAttributes = getAttributes(elementalBurst);
-    const normalAttackAscensionCost = getAscensionCost(normalAttack);
-    const elementalSkillAscensionCost = getAscensionCost(elementalSkill);
-    const elementalBurstAscensionCost = getAscensionCost(elementalBurst);
-
-    const mappedNormalAttack = {
-      id: normalAttack.id,
-      name: decryptTextAsset(normalAttack.name),
-      description: decryptTextAsset(normalAttack.description),
-      icon: normalAttack.icon?.url,
-      stats: normalAttackAttributes,
-      ascensionCost: normalAttackAscensionCost
-    };
-
-    const mappedElementalSkill = {
-      id: elementalSkill.id,
-      name: decryptTextAsset(elementalSkill.name),
-      description: decryptTextAsset(elementalSkill.description),
-      icon: elementalSkill.icon?.url,
-      stats: elementalSkillAttributes,
-      ascensionCost: elementalSkillAscensionCost
-    };
-
-    const mappedElementalBurst = {
-      id: elementalBurst.id,
-      name: decryptTextAsset(elementalBurst.name),
-      description: decryptTextAsset(elementalBurst.description),
-      icon: elementalBurst.icon?.url,
-      stats: elementalBurstAttributes,
-      ascensionCost: elementalBurstAscensionCost
-    };
-
-    // Rearrange them to a single array in the order of original skills
-    const mappedAbilities = [
-      mappedNormalAttack,
-      mappedElementalSkill,
-      mappedElementalBurst
-    ];
-
-    // Rearrange into a single array in the order of original skills
-    const mappedSkillsWithAbilities = skills.map((originalSkill) => {
-      // Check if this skill is one of the abilities (Normal Attack, Elemental Skill, Burst)
-      const ability = mappedAbilities.find((a) => a.id === originalSkill.id);
-      if (ability) {
-        return ability;
-      }
-      // Otherwise, find it in mappedSkills (non-ability skills)
-      const skill = mappedSkills.find((s) => s.id === originalSkill.id);
-      return skill || null; // Return null if not found (shouldn't happen with proper data)
-    });
-
-    return mappedSkillsWithAbilities;
-  }
+    return mappedSkills.find(s => s.id === originalSkill.id) || null;
+  });
 }
+
 
 export function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
   return passiveTalents.map((passive) => ({
@@ -185,7 +155,7 @@ export function mapCostumes(costumes: Costume[]) {
 }
 
 export function mapAbility(
-  abilityData: ElementalBurst | ElementalSkill | NormalAttack
+  abilityData: SkillType
 ) {
   if (!abilityData) return null;
 

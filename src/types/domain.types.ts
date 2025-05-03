@@ -23,4 +23,5 @@ export interface IRewardData {
   name: string | undefined;
   icon: string | null | undefined;
   stars: number | null;
+  usedBy: any;
 }

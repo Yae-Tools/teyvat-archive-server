@@ -43,6 +43,7 @@ export const fetchAllArtifactSets = async () => {
     getAllArtifactSetsFromEnka(),
     getAllArtifactsFromEnka()
   ]);
+  
   const setRarities = new Map();
 
   artifacts.forEach((artifact) => {

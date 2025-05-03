@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import {
   fetchAbyssBlessingInfo,
   fetchAbyssInfo
-} from "../services/system.service";
+} from "../services/datafetch.service";
 import type { IAbyssBlessingData, IAbyssData } from "../types/abyss.types";
 import { parseCharacterData, parsePartyData } from "../utils/abyssDataParser";
 
