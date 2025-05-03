@@ -80,8 +80,8 @@ async function fetchData(fileKey: keyof typeof FILES) {
 
   const now = getCurrentTimestamp();
   const timeElapsed = now - metadata.lastFetched;
-  const CAHCE_TIME = 86400; // 24 hours in seconds
-  const isCacheValid = timeElapsed < CAHCE_TIME;
+  const CACHE_TIME = 86400; // 24 hours in seconds
+  const isCacheValid = timeElapsed < CACHE_TIME;
 
   // Return cached data if recent
   if (fs.existsSync(filePath) && isCacheValid) {
