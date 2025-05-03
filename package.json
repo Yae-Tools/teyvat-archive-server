@@ -43,5 +43,5 @@
     "zod": "^3.24.3",
     "zod-express-middleware": "^1.4.0"
   },
-  "version": "1.2.6"
+  "version": "1.2.7"
 }
