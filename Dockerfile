@@ -29,6 +29,9 @@ WORKDIR /app
 
 COPY --from=build /app/server server
 
+# create directories for cache
+RUN mkdir -p ./src/data/enka-cache
+
 # Default to 5500 if PORT is not provided
 ENV PORT=5500
 ENV NODE_ENV=production
