@@ -26,7 +26,6 @@ app.get("/", (req, res) => {
 
 await systemServices.createRequiredDirectories();
 setupDataUpdateScheduler();
-await systemServices.preBuildCharacterMaterialMap();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
