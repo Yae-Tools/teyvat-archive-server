@@ -47,7 +47,6 @@ jobs:
           ssh -i ~/.ssh/id_ed25519 ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/teyvat-archive-server
             git pull origin master
-            mkdir -p src/data/enka-cache
           EOF
 
       - name: Updating ENV

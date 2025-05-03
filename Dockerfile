@@ -10,6 +10,9 @@ RUN bun install
 
 COPY ./src ./src
 
+# Ensure required directories exist
+RUN mkdir -p ./src/data/enka-cache
+
 ENV NODE_ENV=production
 
 RUN bun build \
