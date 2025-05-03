@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 
-import { fetchAmberEvents } from "../services/system.service";
+import { fetchAmberEvents } from "../services/datafetch.service";
 import { LANGUAGE_CODES, type IEvent } from "../types/events.type";
 import type { GetEventsInput } from "../schema/event.schema";
 

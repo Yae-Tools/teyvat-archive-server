@@ -4,7 +4,7 @@ import { refetchEnkaCache } from "../services/enkaClient.service";
 import {
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest
-} from "../services/system.service";
+} from "../services/datafetch.service";
 import { migrateToLatest } from "../db/db.migrator";
 import { db } from "../db/db.client";
 

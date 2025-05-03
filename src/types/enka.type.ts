@@ -1,6 +1,11 @@
-import type { EquipType } from "enka-network-api";
+import type {
+  ElementalBurst,
+  ElementalSkill,
+  EquipType,
+  NormalAttack
+} from "enka-network-api";
 
-interface ICustomBaseArtifact {
+export interface ICustomBaseArtifact {
   id: number;
   equipType: EquipType;
   equipTypeName: string | undefined;
@@ -10,7 +15,7 @@ interface ICustomBaseArtifact {
   description: string | undefined;
 }
 
-interface ICustomArtifact extends ICustomBaseArtifact {
+export interface ICustomArtifact extends ICustomBaseArtifact {
   set: {
     id: number;
     name: string | undefined;
@@ -18,4 +23,13 @@ interface ICustomArtifact extends ICustomBaseArtifact {
   };
 }
 
-export type { ICustomBaseArtifact, ICustomArtifact };
+export interface ICustomBaseCharacter {
+  id: number;
+  name?: string;
+  iconUrl: string | null;
+  element: string;
+  isTraveler: boolean;
+  rarity: string;
+}
+
+export type SkillType = NormalAttack | ElementalSkill | ElementalBurst;

@@ -1,3 +1,4 @@
+import { getCharactersForMaterial } from "../services/domain.service";
 import { getMaterialByEnkaId } from "../services/enkaClient.service";
 import decryptTextAsset from "./decryptTextAssets";
 
@@ -12,7 +13,11 @@ const getMaterialDataHelper = (id: number) => {
     materialType: response.materialType,
     itemType: response.itemType,
     stars: response.stars,
-    picture: response.pictures
+    picture: response.pictures,
+    usedBy:
+      response.materialType == "MATERIAL_AVATAR_MATERIAL"
+        ? getCharactersForMaterial(response.id)
+        : []
   };
 
   return materialData;

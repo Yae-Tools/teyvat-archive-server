@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 
-import { fetchDailyDomainInfo } from "../services/system.service";
+import { fetchDailyDomainInfo } from "../services/datafetch.service";
 import type {
   DateEnum,
   IDailyDomainData,
@@ -8,6 +8,7 @@ import type {
   IRewardData
 } from "../types/domain.types";
 import fetchRewardData from "../helpers/fetchRewardData";
+import { getCharactersForMaterial } from "../services/domain.service";
 
 export const getDailyDomainData = async (_req: Request, res: Response) => {
   try {

@@ -1,3 +1,4 @@
+import { getCharactersForMaterial } from "../services/domain.service";
 import getMaterialDataHelper from "./getMaterialData";
 
 const fetchRewardData = (id: number) => {
@@ -8,7 +9,10 @@ const fetchRewardData = (id: number) => {
           id: rewardData.enkaId,
           name: rewardData.name,
           icon: rewardData.icon,
-          stars: rewardData.stars
+          stars: rewardData.stars,
+          materialType: rewardData.materialType,
+          itemType: rewardData.itemType,
+          usedBy: rewardData.usedBy
         }
       : null;
   } catch {

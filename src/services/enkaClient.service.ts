@@ -40,15 +40,18 @@ export function getMaterialByEnkaId(materialId: number) {
 
 export async function checkIfEnkaIsUpToDate() {
   console.log("Checking if Enka is up to date...");
-  const updatesAvailable = await enka.cachedAssetsManager.checkForUpdates();
-
-  if (updatesAvailable) {
-    console.log("Enka is not up to date, refetching...");
+  if (process.env.NODE_ENV === "production") {
     await refetchEnkaCache();
-  }
+  } else {
+    const updatesAvailable = await enka.cachedAssetsManager.checkForUpdates();
 
-  console.log("Enka is up to date");
-  return true;
+    if (updatesAvailable) {
+      console.log("Enka is not up to date, refetching...");
+      await refetchEnkaCache();
+    }
+
+    console.log("Enka is up to date");
+  }
 }
 
 export async function refetchEnkaCache() {
