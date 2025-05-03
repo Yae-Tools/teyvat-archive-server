@@ -12,7 +12,7 @@ import { checkIfEnkaIsUpToDate } from "../services/enkaClient.service";
 
 const prefetchData = async () => {
   await Promise.all([
-    checkIfEnkaIsUpToDate(),
+    // checkIfEnkaIsUpToDate(),
     fetchHoyoPlayRequest(),
     fetchHoyoGameRequest(),
     fetchHoyoCalendar(),
