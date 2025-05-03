@@ -24,8 +24,9 @@ app.get("/", (req, res) => {
   res.send("Welcome to Teyvat Archive API");
 });
 
+await systemServices.createRequiredDirectories();
 setupDataUpdateScheduler();
-// systemServices.preBuildCharacterMaterialMap();
+await systemServices.preBuildCharacterMaterialMap();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
