@@ -1,9 +1,9 @@
-import { getCharactersForMaterial } from "../services/domain.service";
+import type { DomainType } from "../types/enka.type";
 import getMaterialDataHelper from "./getMaterialData";
 
-const fetchRewardData = (id: number) => {
+const fetchRewardData = (id: number, domainType: DomainType) => {
   try {
-    const rewardData = getMaterialDataHelper(id);
+    const rewardData = getMaterialDataHelper(id, domainType);
     return rewardData
       ? {
           id: rewardData.enkaId,

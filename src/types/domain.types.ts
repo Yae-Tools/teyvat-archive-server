@@ -1,4 +1,4 @@
-import type { ICustomBaseCharacter } from "./enka.type";
+import type { ICustomBaseCharacter, ICustomBaseWeapon } from "./enka.type";
 
 export type DateEnum =
   | "monday"
@@ -25,5 +25,5 @@ export interface IRewardData {
   name: string | undefined;
   icon: string | null | undefined;
   stars: number | null;
-  usedBy: ICustomBaseCharacter[];
+  usedBy: ICustomBaseCharacter[] | ICustomBaseWeapon[] | null;
 }

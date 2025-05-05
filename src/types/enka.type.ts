@@ -25,11 +25,21 @@ export interface ICustomArtifact extends ICustomBaseArtifact {
 
 export interface ICustomBaseCharacter {
   id: number;
-  name?: string;
+  name: string;
   iconUrl: string | null;
   element: string;
   isTraveler: boolean;
   rarity: string;
+  nameId: string;
+}
+
+export interface ICustomBaseWeapon {
+  id: number;
+  name: string;
+  iconUrl: string | null;
+  rarity: string;
 }
 
 export type SkillType = NormalAttack | ElementalSkill | ElementalBurst;
+
+export type DomainType = "WEAPON_ASC" | "CHAR_ASC";

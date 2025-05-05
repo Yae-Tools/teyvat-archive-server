@@ -8,27 +8,24 @@ const characterBuildService = new CharacterBuildService(db);
 export const getAllCharacterBuilds = async (_req: Request, res: Response) => {
   try {
     const response = await characterBuildService.getAllCharacterBuilds();
-    const builds = response.map((build) => {
-      return {
-        authorId: build.author_id,
-        buildId: build.id,
-        buildName: build.build_name,
-        lastUpdatedPatch: build.last_updated_patch,
-        mainStats: build.main_stats,
-        subStats: build.sub_stats,
-        talentPriority: build.talent_priority,
-        id: build.id,
-        characterId: build.character_id,
-        notes: build.notes,
-        artifactNotes: build.artifact_notes,
-        statNotes: build.stat_notes,
-        talentNotes: build.talent_notes,
-        weaponNotes: build.weapon_notes,
-        weapons: build.weapons,
-        artifacts: build.artifacts
-      };
-    });
-    res.status(200).send(builds);
+    const characterBuilds = response.map((build) => ({
+      buildName: build.build_name,
+      characterId: build.character_id,
+      lastUpdatedPatch: build.last_updated_patch,
+      mainStats: build.main_stats,
+      subStats: build.sub_stats,
+      talentPriority: build.talent_priority,
+      notes: build.notes,
+      talentNotes: build.talent_notes,
+      statNotes: build.stat_notes,
+      weaponNotes: build.weapon_notes,
+      artifactNotes: build.artifact_notes,
+      createdAt: build.created_at,
+      updatedAt: build.updated_at,
+      id: build.id
+    }));
+
+    res.status(200).send(characterBuilds);
   } catch (error: unknown) {
     res.status(500).send({
       error:

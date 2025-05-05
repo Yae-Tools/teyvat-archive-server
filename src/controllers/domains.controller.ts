@@ -8,7 +8,7 @@ import type {
   IRewardData
 } from "../types/domain.types";
 import fetchRewardData from "../helpers/fetchRewardData";
-import { getCharactersForMaterial } from "../services/domain.service";
+import { getDomainType } from "../utils/getDomainType";
 
 export const getDailyDomainData = async (_req: Request, res: Response) => {
   try {
@@ -24,9 +24,13 @@ export const getDailyDomainData = async (_req: Request, res: Response) => {
           id,
           name: domain.name,
           reward: domain.reward
-            .map(fetchRewardData)
+            .map((rew) => {
+              const domainType = getDomainType(domain.name);
+              return fetchRewardData(rew, domainType);
+            })
             .filter(Boolean) as IRewardData[],
-          city: domain.city
+          city: domain.city,
+          domainType: getDomainType(domain.name)
         })
       )
     }));
