@@ -1,8 +1,12 @@
-import { getCharactersForMaterial } from "../services/domain.service";
+import {
+  getCharactersForMaterial,
+  getWeaponsForMaterial
+} from "../services/domain.service";
 import { getMaterialByEnkaId } from "../services/enkaClient.service";
+import type { DomainType } from "../types/enka.type";
 import decryptTextAsset from "./decryptTextAssets";
 
-const getMaterialDataHelper = (id: number) => {
+const getMaterialDataHelper = (id: number, domainType: DomainType) => {
   const response = getMaterialByEnkaId(Number(id));
 
   const materialData = {
@@ -15,9 +19,9 @@ const getMaterialDataHelper = (id: number) => {
     stars: response.stars,
     picture: response.pictures,
     usedBy:
-      response.materialType == "MATERIAL_AVATAR_MATERIAL"
+      domainType === "CHAR_ASC"
         ? getCharactersForMaterial(response.id)
-        : []
+        : getWeaponsForMaterial(response.id)
   };
 
   return materialData;
