@@ -14,17 +14,17 @@
     "pre-commit": "format && lint:fix"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.10",
+    "@types/bun": "^1.2.12",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/helmet": "^4.0.0",
-    "@types/pg": "^8.11.13",
-    "eslint": "^9.25.1",
+    "@types/pg": "^8.12.0",
+    "eslint": "^9.26.0",
     "eslint-plugin-import": "^2.31.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
-    "typescript-eslint": "^8.31.0"
+    "typescript-eslint": "^8.32.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
@@ -37,10 +37,10 @@
     "enka-network-api": "^5.0.4",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "kysely": "^0.28.1",
+    "kysely": "^0.28.2",
     "node-cron": "^3.0.3",
-    "pg": "^8.15.1",
-    "zod": "^3.24.3",
+    "pg": "^8.15.6",
+    "zod": "^3.24.4",
     "zod-express-middleware": "^1.4.0"
   },
   "version": "1.2.14"
