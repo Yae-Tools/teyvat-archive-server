@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 
-import { refetchEnkaCache } from "../services/enkaClient.service";
 import {
   fetchHoyoGameRequest,
   fetchHoyoPlayRequest
 } from "../services/datafetch.service";
 import { migrateToLatest } from "../db/db.migrator";
 import { db } from "../db/db.client";
+import prefetchData from "../helpers/prefetchData";
 
 export const getGameVersion = async (
   _req: Request,
@@ -43,7 +43,7 @@ export const refetchCache = async (
   res: Response
 ): Promise<void> => {
   try {
-    await refetchEnkaCache();
+    await prefetchData();
     res.status(200).send({ message: "Cache refetched successfully" });
   } catch (error) {
     console.error("Error refetching cache:", error);
