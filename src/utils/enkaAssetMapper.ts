@@ -14,6 +14,7 @@ import type {
 } from "../types/enka.type";
 import decryptTextAsset from "../helpers/decryptTextAssets";
 import { regionMap } from "./maps/regionMap";
+import { isValueUnknownAsset } from "./filterUnknownTalents";
 
 export function mapSkills(characterData: CharacterData) {
   const { skills, normalAttack, elementalSkill, elementalBurst } =
@@ -128,8 +129,8 @@ export function mapSkills(characterData: CharacterData) {
   return skills
     .filter(
       (skill) =>
-        !skill.name.toString().toLowerCase().includes("unknown") ||
-        !skill.description.toString().toLowerCase().includes("unknown")
+        !isValueUnknownAsset(skill.name.toString()) ||
+        !isValueUnknownAsset(skill.description.toString())
     )
     .map((originalSkill) => {
       if (abilityIds.has(originalSkill.id)) {
@@ -141,7 +142,7 @@ export function mapSkills(characterData: CharacterData) {
 
 export function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
   const pa = passiveTalents
-    .filter((skill) => !skill.name.toString().toLowerCase().includes("unknown"))
+    .filter((skill) => !isValueUnknownAsset(skill.name.toString()))
     .map((passive) => ({
       id: passive.id,
       name: decryptTextAsset(passive.name),
