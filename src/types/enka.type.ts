@@ -26,6 +26,7 @@ export interface ICustomArtifact extends ICustomBaseArtifact {
 export interface ICustomBaseCharacter {
   id: number;
   name: string;
+  skillDepotId: number;
   iconUrl: string | null;
   element: string;
   isTraveler: boolean;
@@ -35,6 +36,7 @@ export interface ICustomBaseCharacter {
 
 export interface ICustomBaseWeapon {
   id: number;
+  nameId: string;
   name: string;
   iconUrl: string | null;
   rarity: string;

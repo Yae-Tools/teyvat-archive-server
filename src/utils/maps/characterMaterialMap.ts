@@ -18,6 +18,7 @@ export function buildMaterialToCharacterMap() {
         id: character.id,
         name: decryptTextAsset(character.name),
         iconUrl: character.icon.url,
+        skillDepotId: character.skillDepotId,
         element: decryptTextAsset(character.element?.name),
         isTraveler: character.isTraveler,
         rarity: character.rarity,
