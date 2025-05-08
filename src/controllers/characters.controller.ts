@@ -83,7 +83,6 @@ export const getCharacterBySkillDepotId = async (
 
     const ascensionData = mapAscensionData(response);
     const skills = mapSkills(response);
-
     const passiveTalents = mapPassiveTalents(response.passiveTalents);
     const constellations = mapConstellations(response.constellations);
 
