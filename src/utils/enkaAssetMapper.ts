@@ -141,7 +141,7 @@ export function mapSkills(characterData: CharacterData) {
 }
 
 export function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
-  const pa = passiveTalents
+  return passiveTalents
     .filter((skill) => !isValueUnknownAsset(skill.name.toString()))
     .map((passive) => ({
       id: passive.id,
@@ -150,9 +150,6 @@ export function mapPassiveTalents(passiveTalents: PassiveTalent[]) {
       icon: passive.icon?.url,
       data: passive._data
     }));
-
-  console.log("mappedPassiveTalents", pa);
-  return pa;
 }
 
 export function mapConstellations(constellations: Constellation[]) {
