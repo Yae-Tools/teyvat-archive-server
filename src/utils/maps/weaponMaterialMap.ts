@@ -14,6 +14,7 @@ export function buildMaterialToWeaponMap() {
 
     const customWeapon: ICustomBaseWeapon = {
       id: weapon.id,
+      nameId: weapon._nameId,
       name: decryptTextAsset(weapon.name),
       iconUrl: weapon.icon.url,
       rarity: starsToRarity(weapon.stars)
