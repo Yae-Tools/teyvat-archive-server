@@ -14,17 +14,17 @@
     "pre-commit": "format && lint:fix"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.12",
+    "@types/bun": "^1.2.13",
     "@types/compression": "^1.7.5",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.1",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
     "@types/helmet": "^4.0.0",
-    "@types/pg": "^8.15.0",
-    "eslint": "^9.26.0",
+    "@types/pg": "^8.15.2",
+    "eslint": "^9.27.0",
     "eslint-plugin-import": "^2.31.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
-    "typescript-eslint": "^8.32.0"
+    "typescript-eslint": "^8.32.1"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
@@ -38,8 +38,8 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "kysely": "^0.28.2",
-    "node-cron": "^3.0.3",
-    "pg": "^8.15.6",
+    "node-cron": "^4.0.5",
+    "pg": "^8.16.0",
     "zod": "^3.24.4",
     "zod-express-middleware": "^1.4.0"
   },
